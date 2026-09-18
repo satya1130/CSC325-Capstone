@@ -4,7 +4,8 @@
 The project that the professor approved for the team is a Marvel character website. Our target audience is fans who love Marvel. The existing problem is that Marvel character info is scattered across many different websites, making it hard to find consolidated data. Our project will address this by allowing users to search for Marvel characters in one place and view their descriptions, powers, and abilities. New information and activities provided to the audience will include a streamlined search interface and consolidated, easy-to-read character profiles.
 
 **Context Diagram:** 
-*(Insert your Context Diagram image here when Aryan and Kyle finish it)*
+<img width="887" height="431" alt="image" src="https://github.com/user-attachments/assets/151695f5-7da3-4d5a-a52e-2b733140afd6" />
+
 
 **Epics & User Stories:**
 
