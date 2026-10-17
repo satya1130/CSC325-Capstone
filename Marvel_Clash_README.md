@@ -1,3 +1,8 @@
+> **Documentation note:** This file preserves an earlier group-created version of the Marvel Clash prototype documentation. For the current CSC 325 assignment submission, please refer to the main [README.md](README.md), which contains the current Product Goal, primary Figma design, architecture, test plan, and submission links.
+
+---
+
+
 # Marvel Clash
 
 Marvel Clash is a fan-made Marvel character exploration and brawler prototype built in Figma (CSC 325). Users can explore 49 character profiles, learn abilities and powers, compare characters, choose two fighters, and view an explained simulated matchup.
