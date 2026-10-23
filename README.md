@@ -164,3 +164,11 @@ Remaining implementation work includes a working frontend, secure authenticated 
 - [ ] Confirm that the YouTube link is unlisted and the video runs for **less than two minutes**.
 - [ ] Demonstrate MarvelFan's complete Figma workflow, from sign-in to the Brawl result.
 - [ ] Confirm that the AI-use statement and team contribution information are accurate.
+
+## CSC 325 Midpoint Scrum / Kanban Plan
+
+The [midpoint Scrum and Kanban plan](MIDPOINT_SCRUM_PLAN.md) maps the existing 15 issues and five new Brawl user stories to the current product goal, with proposed owners, priority, dates, workflow rules, architecture milestones and presentation evidence requirements.
+
+**Important:** Proposed owners are planning assignments to be confirmed by the actual team; they are not proof of prior contributions. The interactive Figma prototype is not the same as a working Python/Django application. GitHub Project card statuses, individual feature branches, reviews and merges must be verified from real artifacts before reporting them as complete.
+
+The previous prototype walkthrough's under-two-minute limit applies to that earlier deliverable. The **new midpoint assignment requires an 8–10-minute group presentation video**, with every actual group member participating.
