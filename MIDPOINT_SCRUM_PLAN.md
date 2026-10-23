@@ -22,17 +22,17 @@ Make Marvel characters easy to explore and turn character comparisons into enter
 **These are suggested target columns, not edits to GitHub Projects cards.** Change the actual board only after verifying status. Never move unimplemented user stories to Done solely because their Figma screens exist.
 
 ## Proposed ownership and target dates
-Names below are *proposed task owners*, not historical credit. Team must confirm capacity, GitHub handles and member roster. Kyle is not included in proposed assignments.
+Names below are *proposed task owners*, not historical credit. Team must confirm capacity, GitHub handles and member roster. Kyle is proposed for two stories (US-06 and US-13), per the latest team request. His GitHub username is not confirmed, so these are not GitHub account assignments.
 
 | Issues | Work area | Proposed owner | Priority | Target | Target column |
 | --- | --- | --- | --- | --- | --- |
 | #4 US-01, #7 US-04 | Search and character descriptions | Satya / Salih | High | Nov 5 | Ready |
 | #5 US-02, #8 US-05 | Browse and powers | Salih / Aryan | High | Nov 5–12 | Ready |
-| #6 US-03, #9 US-06 | Filter and images | Aryan / Satya | Medium | Nov 12 | Product Backlog |
+| #6 US-03, #9 US-06 | Filter and images | Aryan / Kyle | Medium | Nov 12 | Product Backlog |
 | #10 US-07, #11 US-08 | Selection and comparison | Salih / Aryan | High | Nov 12–19 | Ready |
 | #12 US-09 | Persistent favorites | Satya | Medium | Nov 19 | Product Backlog |
 | #13–15 US-10–12 | AI summaries, recommendations, Q&A | Salih / Aryan / Satya | Low | Dec 3 | Product Backlog |
-| #16 US-13, #17 US-14, #18 US-15 | Responsive UI, navigation, errors | Salih / Aryan / Satya | Medium / High | Nov 19–26 | Backlog / Ready |
+| #16 US-13, #17 US-14, #18 US-15 | Responsive UI, navigation, errors | Kyle / Aryan / Satya | Medium / High | Nov 19–26 | Backlog / Ready |
 | #19–21 US-16–18 | Fighter selection, scripted Brawl, results | Aryan / Salih / Satya | High | Nov 19–26 | Ready |
 | #22–23 US-19–20 | AI battle engine and explanations (stretch) | Salih / Aryan | Low | Dec 10 | Product Backlog |
 | #24–25 | Final Figma and context/persona review | Satya / Aryan | High / Medium | Oct 29 | In Review (verify) |
@@ -84,3 +84,11 @@ Names below are *proposed task owners*, not historical credit. Team must confirm
 - [README](README.md), [Original proposal](Project_Description.md), [Brawl extension](BRAWL_BACKLOG.md)
 - [GitHub Issues](https://github.com/satya1130/CSC325-Capstone/issues)
 - Kanban Project URL and actual PR links: add once confirmed.
+
+## Workflow update (2026-10-22)
+- Archived duplicate Kanban setup issues #1 and #3 as Done; #2 remains open because the update was unavailable.
+- Design-verification tasks #24, #25 and #27 are **In Review**, not Done; the referenced materials exist, but formal team approval is not verified.
+- Process/presentation preparation tasks #31 and #33 are marked **In Progress** at the issue-label level. The prototype video is not the midpoint recording.
+- Planned backend implementation and Brawl coding tasks remain **Ready** or **Product Backlog**, not Done.
+- Salih's GitHub username is **Justemre12** and existing repository permission was confirmed as **write**. GitHub write access does not automatically grant access to another person's ChatGPT connector.
+- Issue-label statuses are not the same thing as moving cards into GitHub Projects board columns. Confirm board status independently.
