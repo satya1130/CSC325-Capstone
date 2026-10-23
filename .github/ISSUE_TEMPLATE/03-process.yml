@@ -1,0 +1,50 @@
+name: "🗂️ Marvel Clash Process / Scrum Task"
+description: "Track Kanban, handoff, reviews, evidence, source preparation and course milestones."
+title: "PROCESS: "
+labels: ["kanban:backlog", "priority:medium"]
+body:
+  - type: dropdown
+    id: category
+    attributes:
+      label: Process category
+      options:
+        - "Kanban board / task ownership"
+        - "Figma design review / handoff"
+        - "Data cleanup / import preparation"
+        - "GitHub branch / pull request / review evidence"
+        - "Testing / quality assurance"
+        - "Midpoint presentation / submission"
+    validations:
+      required: true
+  - type: textarea
+    id: work
+    attributes:
+      label: Concrete task and output
+      description: "Describe an artifact or review that can actually be checked."
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Definition of Done
+      description: "Use checkable criteria; do not count planned work as complete."
+      placeholder: |
+        1. Deliverable exists at ...
+        2. Evidence linked at ...
+        3. Reviewed / approved by ...
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Proposed owner / due date
+      description: "Not historical credit; confirm owner and deadline with the team."
+    validations:
+      required: false
+  - type: textarea
+    id: source
+    attributes:
+      label: Source documents and links
+      description: "e.g. MIDPOINT_SCRUM_PLAN.md, Figma, original spreadsheet or instructor rubric."
+    validations:
+      required: false
