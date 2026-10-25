@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Marvel Clash | Character Roster</title>
+<link rel="stylesheet" href="./style.css">
+<script src="./roster.js" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="./index.html">MARVEL <span>CLASH</span></a><span class="tag">Character Lab · Frontend MVP</span></header>
+<main>
+<section class="hero"><p class="eyebrow">DISCOVER / ROSTER</p><h1>Meet the fighters.</h1><p>Explore the team's Marvel character descriptions and powers. This standalone roster is a working frontend preview; Django integration is planned.</p></section>
+<section aria-label="Character search" class="controls"><label for="search">Search Marvel characters</label><input id="search" type="search" placeholder="Try Spider-Man, Thor, or Iron Man…" autocomplete="off"><button id="clear" type="button">Clear search</button><p id="count" role="status" aria-live="polite"></p></section>
+<section id="roster" class="cards" aria-label="Character results"></section>
+<section id="empty" class="empty" hidden><h2>No characters found</h2><p>Try a different name or clear your search.</p></section>
+</main>
+<dialog id="profile"><div class="dialog-inner"><button type="button" id="close" class="close" aria-label="Close character profile">×</button><p class="eyebrow">CHARACTER PROFILE</p><h2 id="profile-name"></h2><p id="profile-description"></p><h3>Powers &amp; abilities</h3><p id="profile-powers"></p><p class="note">Descriptions are sourced from the team's character spreadsheet. No active AI or Django API is used on this page.</p></div></dialog>
+<footer>Marvel Clash · CSC 325 student prototype · Fan-made, unofficial</footer>
+</body>
+</html>
