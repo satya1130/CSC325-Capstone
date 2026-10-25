@@ -1,0 +1,55 @@
+name: "🐞 Marvel Clash Bug / UX Report"
+description: "Report an observed issue in Figma Present mode or in running code."
+title: "BUG: "
+labels: ["kanban:backlog", "priority:medium"]
+body:
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where did this happen?
+      options:
+        - "Figma desktop dark"
+        - "Figma desktop light"
+        - "Figma mobile dark"
+        - "Figma mobile light"
+        - "Working frontend (if implemented)"
+        - "Django API / database (if implemented)"
+        - "Documentation or GitHub issue / process"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Start from ...
+        2. Click/select ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual result
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots, Figma node link, logs, or affected issue
+      description: "Include only real screenshots/logs. Do not paste credentials or personal secrets."
+    validations:
+      required: false
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Basic verification
+      options:
+        - label: I checked whether this is already reported.
+        - label: I stated whether the bug concerns a Figma mockup or actually running code.

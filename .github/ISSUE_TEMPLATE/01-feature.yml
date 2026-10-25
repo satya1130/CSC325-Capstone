@@ -1,0 +1,66 @@
+name: "⚔️ Marvel Clash Feature / User Story"
+description: "Plan a real Marvel Clash feature with scope, evidence and acceptance criteria."
+title: "US: "
+labels: ["kanban:backlog", "priority:medium"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This project uses real source materials: 49 curated Marvel characters, a Figma prototype and a planned Django application. **Do not mark planned code as completed.** Check existing issues before filing a duplicate.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Work area
+      options:
+        - "Character roster / profiles"
+        - "Compare / Favorites"
+        - "Scripted Brawl / results"
+        - "Django REST API / database"
+        - "Accounts / roles"
+        - "AI / grounded battle engine (future)"
+        - "Responsive frontend / accessibility"
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: Who / what / why
+      description: "Describe the user and the useful behavior."
+      placeholder: "As a Marvel Clash member, I want to ..., so that ..."
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: "Prefer Given / When / Then; include error and limitation cases."
+      placeholder: |
+        1. Given ..., When ..., Then ...
+        2. Given ..., When ..., Then ...
+        3. Given ..., When ..., Then ...
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Starting status (also set matching kanban label after submission)
+      options:
+        - "Product Backlog"
+        - "Ready — requirements and dependencies checked"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Existing evidence and dependencies
+      description: "Link Figma screens, source files, related issues or PRs. Say 'not built' if not built."
+    validations:
+      required: true
+  - type: input
+    id: owner
+    attributes:
+      label: Proposed task owner and target date
+      description: "A proposal only, not credit for past contributions. Confirm before assigning."
+      placeholder: "Member to confirm — YYYY-MM-DD"
+    validations:
+      required: false
