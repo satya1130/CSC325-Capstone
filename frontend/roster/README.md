@@ -32,6 +32,6 @@ The tests cover case-insensitive searching, empty and unmatched searches, and so
 - 12 representative character records copied from the team's supplied **Marvel .xlsx** file
 
 ## Scope and next steps
-This PR intentionally adds files only inside `frontend/roster/` so it does not conflict with Kyle's Django project setup or Salih's planned database/API work. The team can replace `sampleCharacters` with an API request returning the documented `{characters: [...]}` format once the Django endpoint exists. Character images are deliberately omitted until reviewed assets are available. The source workbook contains **49 characters**, while this proof-of-concept loads **12**. No AI battles, persistence, or authentication is claimed.
+This PR intentionally adds files only inside `frontend/roster/` so it does not conflict with our Django project setup or Salih's planned database/API work. The team can replace `sampleCharacters` with an API request returning the documented `{characters: [...]}` format once the Django endpoint exists. Character images are deliberately omitted until reviewed assets are available. The source workbook contains **49 characters**, while this proof-of-concept loads **12**. No AI battles, persistence, or authentication is claimed.
 
 **Reviewer:** AryanGrewal05. Please inspect the source, try a valid name and a nonsense query, open/close a profile and verify responsive behavior before approving.
