@@ -155,7 +155,7 @@ Results would represent fan-made game simulations rather than official Marvel ca
 
 ### AI Tools Used
 
-**ChatGPT (OpenAI):** Used to help plan and revise prototype flows, the context diagram, written explanations and some Figma interactions.
+**ChatGPT (OpenAI):** Used to help plan and revise prototype flows, the context diagram, written explanations and some Figma interactions. For the Django MVP in PR #58, Satya also used ChatGPT to generate and revise Python/Django backend code, the character model and API views, the CSV import command, HTML template and JavaScript API integration, Django automated tests, setup documentation, and Git/GitHub instructions. Satya copied the code into VS Code, ran the application locally, verified the 49-character roster and search/profile features, and ran the Django tests (8 passed). The AI-assisted code remains subject to team code review.
 
 **Claude (Anthropic):** A group contributor reported using Claude to assist with README drafting and a separate Figma prototype.
 
@@ -165,7 +165,7 @@ Results would represent fan-made game simulations rather than official Marvel ca
 
 ### AI Outputs Accepted, Edited or Rejected
 
-**Accepted:** Useful interface ideas, navigation layouts, a structured primary user journey, and a README architecture and testing outline.
+**Accepted:** Useful interface ideas, navigation layouts, a structured primary user journey, and a README architecture and testing outline. The Django MVP also incorporated AI-generated starter code for the model, APIs, import, frontend integration, and tests, which was checked by running the application and local tests.
 
 **Edited:** Persona identities, account-access differences, context flows, navigation hit areas, mobile layouts and wording about current versus planned functionality.
 
