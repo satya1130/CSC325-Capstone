@@ -7,14 +7,38 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
+## Current Django MVP (PR #58, pending team review)
+
+The repository now includes a working **local Django character-roster MVP** on the `feature/satya-django-backend` branch. This supersedes the earlier Figma-only implementation-status descriptions below once PR #58 is merged. The Django app supports a searchable roster, profiles and read-only APIs backed by SQLite. The CSV source contains 49 characters; the local database is intentionally not committed. Brawl simulation, accounts, favorites, images and public deployment remain future work.
+
+### Run locally (Windows PowerShell)
+
+From the repository root, with Python 3.14 available:
+
+```powershell
+py -3.14 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+cd backend
+..\.venv\Scripts\python.exe manage.py migrate
+..\.venv\Scripts\python.exe manage.py import_characters
+..\.venv\Scripts\python.exe manage.py test
+..\.venv\Scripts\python.exe manage.py runserver
+```
+
+Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON list, or `/api/characters/1/` for one character. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
+
+**Tests:** Six tests passed locally before PR #58. Two more API edge-case tests have been added to the PR and should be run locally before merge. No GitHub CI check is currently reported for this PR.
+
+**Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
+
 ## Architecture
 
 ### Current architecture: Interactive prototype
 
-This repository currently contains project documentation, not a deployed client/server codebase. The prototype uses these conceptual layers:
+This section documents the original Figma prototype. A working local Django roster is now included in PR #58, as described above; the app is not deployed. The prototype uses these conceptual layers:
 
 - **Presentation:** Figma desktop/mobile and dark/light screens for Discover, Roster, character profiles, Compare, Favorites, Brawl and results, with Guest, member and admin demonstrations.
-- **Character content:** A curated set of 49 character profiles and illustrations based on the team's spreadsheet and presentation, represented as static prototype content. There is no active character-data API.
+- **Character content:** A curated set of 49 character profiles and illustrations based on the team's spreadsheet and presentation, represented as static prototype content. The original Figma prototype does not call the API; the new local Django roster does.
 - **Prototype interaction/state:** Figma navigation and variables demonstrate the selected persona, fighter choices and screen transitions. These are not secure, persistent accounts or a browser database.
 - **Illustrative simulation:** Pre-authored battle actions, commentary, health changes and results. Fights are **not** computed by a running AI or combat engine.
 
@@ -24,7 +48,7 @@ A possible future deployment would use a web client, a character-data service an
 
 The planned AI-assisted battle service would generate varied explanations and battle sequences grounded in that data. Animation and replay capabilities could be added later.
 
-**These services are plans, not implemented integrations.**
+**The character roster, SQLite data layer and read-only API are implemented locally in PR #58.** Accounts and battle simulation are still planned.
 
 ## Prototype
 
@@ -155,7 +179,7 @@ The original backlog and project details are in [Project_Description.md](Project
 
 The additional Brawl-focused user stories are documented in [BRAWL_BACKLOG.md](BRAWL_BACKLOG.md).
 
-Remaining implementation work includes a working frontend, secure authenticated backend, verified character dataset, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations.
+Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The local Django roster frontend and character APIs are included in PR #58.
 
 ## Submission Checklist
 
