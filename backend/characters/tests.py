@@ -59,3 +59,15 @@ class CharacterAPITests(TestCase):
             response,
             "characters/index.html"
         )
+
+    def test_empty_character_list(self):
+        Character.objects.all().delete()
+        response = self.client.get("/api/characters/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"characters": []})
+
+    def test_unreviewed_fields_are_null(self):
+        response = self.client.get(f"/api/characters/{self.character.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(response.json()["image_ref"])
+        self.assertIsNone(response.json()["category"])
