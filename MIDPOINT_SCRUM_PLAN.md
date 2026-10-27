@@ -1,13 +1,13 @@
 # Marvel Clash — Midpoint Scrum and Kanban Plan
 
-> **Planning document, not evidence of completed implementation.** Based on the actual current README, original 15 GitHub user stories, `BRAWL_BACKLOG.md`, the team's Figma prototype, 49-character source materials and the CSC 325 midpoint instructions. No live Django server or pull-request evidence was verified on 2026-10-22.
+> **Historical October 22 planning snapshot, not today's implementation status.** Current verified Django code and CI are on `main` via PR #60 (Oct 27 UTC). See [current Kanban/team matrix](docs/M7_TEAM_KANBAN_EVIDENCE.md) and [midpoint run of show](docs/M7_MIDPOINT_PRESENTATION.md).
 
 ## Product goal
 Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
 ## Current evidence versus proposed work
 - **Existing artifacts:** Figma prototype, revised context diagram, personas, 49-character source materials, illustrated/scripted Brawl flow, README and original GitHub user stories.
-- **Not yet verified as built:** Django backend, production database, REST API, persistent accounts/favorites, real simulation engine, automated tests, feature pull requests.
+- **Current correction (after PR #60):** Django API, local SQLite, 49-record importer, roster frontend and automated tests are now verified on `main`. Real account permissions/favorites, combat engine, browser tests and deployment remain future work.
 - **Scope guardrail:** Deliver basic character browsing/profiles plus a simple Brawl demonstration before stretching into AI-generated fights. AI summary, Q&A and recommendations remain low priority.
 
 ## Kanban columns and entry/exit rules
@@ -97,3 +97,12 @@ Names below are *proposed task owners*, not historical credit. Team must confirm
 ## Implementation evidence update — October 26, 2026
 
 The original milestones and proposed ownership above are retained as planning history; the status snapshot dated October 22 is **not current**. Satya's PR #57 added a merged 12-character standalone frontend. PR #58 implemented a local Django roster, 49-character CSV import, read-only character API, frontend integration and eight locally passing Django tests; it was merged and then reverted by PR #59. The restoration branch `fix/restore-django-reviewed-midpoint` proposes those changes for fresh teammate review, includes automated GitHub Actions testing, and documents the database-generated ID limitation identified in Aryan's post-merge review. **This work remains unmerged until a new PR passes checks and receives teammate approval.** Real GitHub Projects card statuses must be checked separately; planned assignments do not prove completion. The Brawl flow remains Figma-only and the required midpoint recording must still be produced.
+
+
+## Current Module 7 status (Oct 27, 2026 UTC)
+- PR #60 restored the local Django roster, SQLite model, 49-record importer and read-only API to `main`.
+- A [green workflow run](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711) verified migrations, 49 imported characters and eight Django tests.
+- Earlier references above to unmerged/recovery-branch Django are historical; do not use them as current status.
+- **Actual GitHub Projects board card fields still require owner verification**; issue labels alone do not complete rubric item 6.
+- **Kyle needs a meaningful authored feature PR**, and the team's 8–10-minute recording must include all members; these cannot be declared complete through documentation.
+- Use [M7 feature matrix](docs/M7_FEATURE_STATUS.md) and [M7 team & Kanban evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) for proposed targets and current blockers.
