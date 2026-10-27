@@ -130,3 +130,8 @@ The previously linked 2-minute YouTube walkthrough is not a substitute for the m
 ---
 
 *Dashboard snapshot: October 23, 2026 · Source-of-truth files remain [README](README.md), [Proposal](Project_Description.md), [Brawl Backlog](BRAWL_BACKLOG.md), [Scrum Plan](MIDPOINT_SCRUM_PLAN.md), and [Supplemental README](Marvel_Clash_README.md). Those five were not edited to make this page.*
+
+
+## Live implementation-status correction — October 26, 2026
+
+The dashboard above is an October 23 **historical issue-label snapshot**, not a live status board. A Django backend and full 49-character roster were implemented in PR #58, but PR #59 reverted that merge from `main`. A separate recovery branch, `fix/restore-django-reviewed-midpoint`, preserves that implementation for new teammate review; it does not mean the backend is already on `main`. The standalone 12-character roster from PR #57 remains merged. Aryan's post-merge review of PR #58 flagged SQLite-generated ID stability, which has been documented. A GitHub Actions workflow is proposed on the recovery branch, but no passing run should be claimed until GitHub verifies it. The actual Projects board and other teammates' completed work must be confirmed separately from proposed assignments.
