@@ -2,7 +2,7 @@ name: Django tests
 
 on:
   push:
-    branches: [main, "fix/restore-django-reviewed-midpoint"]
+    branches: [main]
   pull_request:
     branches: [main]
 
@@ -37,6 +37,20 @@ jobs:
         working-directory: backend
         run: |
           python manage.py shell -c "from characters.models import Character; assert Character.objects.count() == 49, f'Expected 49 characters, got {Character.objects.count()}'"
+      - name: Import data again (idempotency smoke test)
+        working-directory: backend
+        run: |
+          python manage.py import_characters
+          python manage.py shell -c "from characters.models import Character; assert Character.objects.count() == 49"
+
+      - name: Set up Node.js for the standalone roster tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test standalone roster filtering
+        working-directory: frontend/roster
+        run: node --test roster.test.cjs
+
       - name: Run automated Django tests
         working-directory: backend
         run: python manage.py test --verbosity 2
