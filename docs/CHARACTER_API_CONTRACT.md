@@ -2,11 +2,11 @@
 
 **Issue:** #43  
 **Author:** Aryan Grewal  
-**Status:** Implemented in PR #58 (pending review and merge into `main`).
+**Status:** Proposed for teammate review; not an implemented endpoint.
 
 ## Scope and dependencies
 
-This document specifies the JSON interface for the Django character backend, CSV import, and roster frontend implemented on `feature/satya-django-backend` in PR #58. It is running and locally tested, but the PR remains unmerged and the application is not publicly deployed.
+This document specifies the JSON interface between the planned Django backend (#28), future character data import (#29), and frontend integration (#30). It does **not** claim the Django backend, database, API, or image hosting currently works.
 
 Source character descriptions and powers will come from the team's reviewed `Marvel.xlsx` dataset. Categories and image references must be reviewed during import; neither should be guessed or populated with unlicensed image URLs.
 
@@ -17,11 +17,11 @@ Source character descriptions and powers will come from the team's reviewed `Mar
 | `id` | string | Stable, unique identifier assigned during normalized import |
 | `name` | string | Character name from reviewed source data |
 | `description` | string | Description from reviewed source data |
-| `powers` | string | Source-backed powers; agree on one representation during implementation |
+| `powers` | string or array of strings | Source-backed powers; agree on one representation during implementation |
 | `image_ref` | string or null | Reviewed asset reference, or null when no cleared asset exists |
 | `category` | string or null | Team-reviewed category; null if unclassified |
 
-The current implementation stores `powers` as a string. The category taxonomy and licensed image assets are still pending team review. Do not infer battle damage, health, weaknesses, or other canonical facts from this contract.
+The two pending implementation decisions (`powers` format and category taxonomy) must be resolved before coding. Do not infer battle damage, health, weaknesses, or other canonical facts from this contract.
 
 ## Proposed REST routes
 
@@ -35,10 +35,10 @@ Illustrative response **shape only**, not a claim about a verified character row
 {
   "characters": [
     {
-      "id": "1",
-      "name": "Iron Man",
-      "description": "Smart inventor who battles in tough armor.",
-      "powers": "Smart mind. Powered suit. The ability to fly. Repulsor blasts. Missile volleys. Energy guns.",
+      "id": "source-reviewed-id",
+      "name": "Source-reviewed character name",
+      "description": "Description from reviewed source data",
+      "powers": ["Reviewed ability"],
       "image_ref": null,
       "category": null
     }
@@ -67,10 +67,10 @@ Invalid route/method behavior follows Django's routing conventions; unsupported 
 - [x] Specified empty-list and missing-character behavior.
 - [x] Distinguished sourced roster data from invented simulation attributes.
 - [ ] Salih/assigned importer confirms mapping to reviewed workbook and image manifest.
-- [x] Django roster frontend uses the `characters` response wrapper and agreed property names.
-- [x] Implementation uses a string for `powers`; category taxonomy remains unreviewed.
-- [x] Backend routes and automated tests implemented in PR #58 (not yet merged).
+- [ ] Satya/frontend integrator confirms response wrapper and property names.
+- [ ] Team resolves `powers` representation and category vocabulary.
+- [ ] Backend implements routes and automated tests in a separate PR.
 
-**Implemented contract tests:** list returns HTTP 200 and `characters` array; known detail returns fields with expected types; unknown ID returns JSON 404; empty catalog returns an empty array; unreviewed image/category values remain null.
+**Suggested contract tests once implemented:** list returns HTTP 200 and `characters` array; known detail returns fields with expected types; unknown ID returns JSON 404; empty catalog returns an empty array; unreviewed image/category values remain null.
 
-**Implementation status:** Character list and detail endpoints, CSV import, and the Django roster are implemented in PR #58. Eight Django tests are defined, including empty-list and null-field checks. All eight Django tests were run locally and passed after the branch updates; no automated GitHub CI run has been verified. Deployment, images, and battle simulation are outside this API implementation.
+This proposal is ready for review, **not** a completed API implementation.
