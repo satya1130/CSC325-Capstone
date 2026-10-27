@@ -73,4 +73,4 @@ Invalid route/method behavior follows Django's routing conventions; unsupported 
 
 **Implemented contract tests:** list returns HTTP 200 and `characters` array; known detail returns fields with expected types; unknown ID returns JSON 404; empty catalog returns an empty array; unreviewed image/category values remain null.
 
-**Implementation status:** Character list and detail endpoints, CSV import, and the Django roster are implemented in PR #58. Eight Django tests are defined, including empty-list and null-field checks. These two added tests need to be rerun locally after updating the branch. Deployment, images, and battle simulation are outside this API implementation.
+**Implementation status:** Character list and detail endpoints, CSV import, and the Django roster are implemented in PR #58. Eight Django tests are defined, including empty-list and null-field checks. All eight Django tests were run locally and passed after the branch updates; no automated GitHub CI run has been verified. Deployment, images, and battle simulation are outside this API implementation.
