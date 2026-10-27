@@ -1,0 +1,42 @@
+name: Django tests
+
+on:
+  push:
+    branches: [main, "fix/restore-django-reviewed-midpoint"]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  django-tests:
+    name: Django checks and tests (Python 3.14)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Django system checks
+        working-directory: backend
+        run: python manage.py check
+      - name: Apply schema migrations
+        working-directory: backend
+        run: python manage.py migrate --noinput
+      - name: Load character roster
+        working-directory: backend
+        run: python manage.py import_characters
+      - name: Verify 49 imported character records
+        working-directory: backend
+        run: |
+          python manage.py shell -c "from characters.models import Character; assert Character.objects.count() == 49, f'Expected 49 characters, got {Character.objects.count()}'"
+      - name: Run automated Django tests
+        working-directory: backend
+        run: python manage.py test --verbosity 2

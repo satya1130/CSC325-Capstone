@@ -92,3 +92,8 @@ Names below are *proposed task owners*, not historical credit. Team must confirm
 - Planned backend implementation and Brawl coding tasks remain **Ready** or **Product Backlog**, not Done.
 - Salih's GitHub username is **Justemre12** and existing repository permission was confirmed as **write**. GitHub write access does not automatically grant access to another person's ChatGPT connector.
 - Issue-label statuses are not the same thing as moving cards into GitHub Projects board columns. Confirm board status independently.
+
+
+## Implementation evidence update — October 26, 2026
+
+The original milestones and proposed ownership above are retained as planning history; the status snapshot dated October 22 is **not current**. Satya's PR #57 added a merged 12-character standalone frontend. PR #58 implemented a local Django roster, 49-character CSV import, read-only character API, frontend integration and eight locally passing Django tests; it was merged and then reverted by PR #59. The restoration branch `fix/restore-django-reviewed-midpoint` proposes those changes for fresh teammate review, includes automated GitHub Actions testing, and documents the database-generated ID limitation identified in Aryan's post-merge review. **This work remains unmerged until a new PR passes checks and receives teammate approval.** Real GitHub Projects card statuses must be checked separately; planned assignments do not prove completion. The Brawl flow remains Figma-only and the required midpoint recording must still be produced.
