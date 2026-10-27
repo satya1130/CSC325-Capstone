@@ -27,7 +27,7 @@ cd backend
 
 Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON list, or `/api/characters/1/` for one character. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
 
-**Tests:** Six tests passed locally before PR #58. Two more API edge-case tests have been added to the PR and should be run locally before merge. No GitHub CI check is currently reported for this PR.
+**Tests:** All eight Django tests passed locally after the two additional API edge-case tests were added (reported result: `Ran 8 tests` and `OK`). These cover the character list, details, missing characters, unsupported POST requests, homepage, empty roster, and null fields for unreviewed image/category data. No GitHub CI test check has been verified for this PR.
 
 **Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
 
