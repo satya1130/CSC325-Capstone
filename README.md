@@ -196,3 +196,39 @@ The [midpoint Scrum and Kanban plan](MIDPOINT_SCRUM_PLAN.md) maps the existing 1
 **Important:** Proposed owners are planning assignments to be confirmed by the actual team; they are not proof of prior contributions. The interactive Figma prototype is not the same as a working Python/Django application. GitHub Project card statuses, individual feature branches, reviews and merges must be verified from real artifacts before reporting them as complete.
 
 The previous prototype walkthrough's under-two-minute limit applies to that earlier deliverable. The **new midpoint assignment requires an 8–10-minute group presentation video**, with every actual group member participating.
+
+
+---
+
+## Verified Midpoint Implementation and Collaboration Update — October 26, 2026
+
+The sections above preserve the project's original Figma planning and development roadmap. This update records the **working local Django MVP** now available in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), which is still under review and not yet merged into `main`.
+
+### Completed implementation
+
+- **Backend and data:** Django project in `backend/marvelclash/`, character app in `backend/characters/`, SQLite `Character` model, 49-row CSV dataset and repeatable `import_characters` management command.
+- **API contract:** `GET /api/characters/` and `GET /api/characters/{id}/` implemented using JSON with stable string IDs; missing characters return a structured HTTP 404, and unsupported methods return HTTP 405. See [API contract](docs/CHARACTER_API_CONTRACT.md).
+- **Frontend integration:** The Django-served roster uses the character API rather than the original 12 hard-coded sample entries. Users can view the 49-character roster, search by name, clear filters, see no-match feedback, and open/close a character profile with description and powers. The earlier standalone preview in `frontend/roster/` is retained.
+- **Testing:** Eight Django tests passed locally (`python manage.py test`, result `OK`), and the running local site was checked for roster count, search, and profiles. A passing GitHub Actions run has **not** been verified.
+- **Local setup:** Follow the Windows PowerShell setup steps in the **Current Django MVP** section above; the SQLite database and Python virtual environment are intentionally ignored by Git.
+
+### GitHub collaboration evidence
+
+| Pull request | Contribution | Recorded status |
+| --- | --- | --- |
+| [#55](https://github.com/satya1130/CSC325-Capstone/pull/55) | Salih: project hub, issue templates, PR template | Merged |
+| [#56](https://github.com/satya1130/CSC325-Capstone/pull/56) | Aryan: character API contract | Merged |
+| [#57](https://github.com/satya1130/CSC325-Capstone/pull/57) | Satya: initial 12-character searchable frontend preview | Merged |
+| [#58](https://github.com/satya1130/CSC325-Capstone/pull/58) | Satya: Django backend, SQLite, full 49-character import, API, frontend integration and Django tests | Open; peer review pending |
+
+Contributor credit above is limited to the evidence in these pull requests. Proposed assignments elsewhere in the repo, including Kyle's responsive design/image tasks, are not completion evidence. The actual GitHub Projects Kanban board should be checked separately from issue labels.
+
+### Figma prototype versus coded application
+
+The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows. **These are currently prototype demonstrations, not coded Django functionality.** The implemented website covers character browsing, name search, profiles, and read-only API access. Real authentication, favorites, comparison/Brawl engines, AI-generated battle outcomes, licensed images, deployment, and more comprehensive accessibility testing remain future work.
+
+### AI assistance on implementation
+
+The AI-use statement above discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
+
+For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype, and show real PR status rather than assuming unmerged work is on `main`.
