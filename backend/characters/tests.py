@@ -1,5 +1,8 @@
 
 from django.test import TestCase
+from django.core.management import call_command
+from django.contrib import admin
+from io import StringIO
 from .models import Character
 
 
@@ -71,3 +74,17 @@ class CharacterAPITests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIsNone(response.json()["image_ref"])
         self.assertIsNone(response.json()["category"])
+
+    def test_import_is_idempotent(self):
+        output = StringIO()
+        call_command("import_characters", stdout=output)
+        self.assertEqual(Character.objects.count(), 49)
+        first_id = Character.objects.get(name="Iron Man").id
+
+        # Running the importer again updates existing characters, not duplicates.
+        call_command("import_characters", stdout=StringIO())
+        self.assertEqual(Character.objects.count(), 49)
+        self.assertEqual(Character.objects.get(name="Iron Man").id, first_id)
+
+    def test_character_registered_with_admin(self):
+        self.assertIn(Character, admin.site._registry)
