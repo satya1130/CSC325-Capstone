@@ -6,9 +6,9 @@
 
 | Actual GitHub identity | Recorded contribution(s) | PR and verification | Midpoint requirement |
 | --- | --- | --- | --- |
-| Satya `@satya1130` | Django backend, 49-row importer/API/frontend/CI; standalone roster | [#57](../pull/57), [#58](../pull/58), [#60](../pull/60) | Meaningful authored branch/PR evidenced |
-| Aryan `@AryanGrewal05` | Character API contract; PR #58 post-merge feedback; several merges | [#56](../pull/56), [#58](../pull/58) | Meaningful authored branch/PR evidenced |
-| Salih `@JustEmre12` | Project Hub, issue/PR templates; this M7 readiness branch | [#55](../pull/55), M7 readiness PR pending review | Meaningful authored branch/PR evidenced |
+| Satya `@satya1130` | Django backend, 49-row importer/API/frontend/CI; standalone roster | [#57](https://github.com/satya1130/CSC325-Capstone/pull/57), [#58](https://github.com/satya1130/CSC325-Capstone/pull/58), [#60](https://github.com/satya1130/CSC325-Capstone/pull/60) | Meaningful authored branch/PR evidenced |
+| Aryan `@AryanGrewal05` | Character API contract; PR #58 post-merge feedback; several merges | [#56](https://github.com/satya1130/CSC325-Capstone/pull/56), [#58](https://github.com/satya1130/CSC325-Capstone/pull/58) | Meaningful authored branch/PR evidenced |
+| Salih `@JustEmre12` | Project Hub, issue/PR templates; this M7 readiness branch | [#55](https://github.com/satya1130/CSC325-Capstone/pull/55), M7 readiness PR pending review | Meaningful authored branch/PR evidenced |
 | Kyle `@wilska1-stack` | README contribution and earlier repository commits | [commit evidence](https://github.com/satya1130/CSC325-Capstone/commits?author=wilska1-stack) | **No Kyle-authored PR verified as of snapshot — requires genuine branch + PR** |
 
 **Review warning:** #55 and #56 have submitted Satya approvals. #57 and #59 had no submitted review; #58 received an Aryan COMMENTED review *after* merge; #60 merged without a recorded submitted peer review. This M7 PR must be reviewed **before** merge. Do not forge approvals or claim reviewers were present.
@@ -17,21 +17,21 @@
 
 | Issue / objective | Proposed accountable owner | Priority | Proposed due date | Evidence-based current stage |
 | --- | --- | --- | --- | --- |
-| [#28](../issues/28) Django setup | Satya (author of actual MVP) | High | Oct 29, 2026 | In Review: code merged in #60, close after team acceptance |
-| [#29](../issues/29) Import 49 rows | Salih review + Satya importer | High | Oct 30, 2026 | In Review: importer + 49-row CI verified; editorial review pending |
-| [#30](../issues/30) Roster UI wired to API | Satya | High | Oct 29, 2026 | In Review: integrated; browser QA pending |
-| [#43](../issues/43) Character API contract | Aryan | High | Oct 29, 2026 | In Review: authored spec in #56; final contract signoff |
-| [#31](../issues/31) Configure real Projects board | Satya and Aryan | High | Oct 28, 2026 | In Progress: **live board setup not verified** |
-| [#32](../issues/32) Each member's branch and PR proof | Salih | High | Oct 29, 2026 | In Progress: Kyle PR missing |
-| [#33](../issues/33) 8–10 minute midpoint group video | Whole group | High | **Professor's actual deadline TBD** | In Progress: recording/upload not done |
-| [#38](../issues/38) Audit character names/image usage | Kyle + Salih (proposed) | High | Nov 5, 2026 | In Review: source corrections needed |
-| [#41](../issues/41) Figma-to-code handoff | Salih + Kyle (proposed) | High | Nov 5, 2026 | Ready |
-| [#52](../issues/52) Extend automated tests | Salih + Aryan (proposed) | Medium | Nov 5, 2026 | In Progress: importer/admin/Node tests on M7 PR |
-| [#53](../issues/53) Mobile/accessibility QA | Kyle (proposed) | Medium | Nov 12, 2026 | Backlog (candidate for Kyle's authentic PR) |
-| [#49](../issues/49) Deterministic Brawl engine | Aryan + Satya (proposed) | High for product goal | Nov 19, 2026 | Backlog |
-| [#50](../issues/50) Source-approved powers/moves/counters | Salih + Kyle (proposed) | Medium | Nov 12, 2026 | Backlog |
-| [#46](../issues/46) Real role permissions | Aryan + Satya (proposed) | Medium | Nov 26, 2026 | Backlog |
-| [#51](../issues/51) Replay/history | Satya (proposed) | Low | Dec 3, 2026 | Backlog |
+| [#28](https://github.com/satya1130/CSC325-Capstone/issues/28) Django setup | Satya (author of actual MVP) | High | Oct 29, 2026 | In Review: code merged in #60, close after team acceptance |
+| [#29](https://github.com/satya1130/CSC325-Capstone/issues/29) Import 49 rows | Salih review + Satya importer | High | Oct 30, 2026 | In Review: importer + 49-row CI verified; editorial review pending |
+| [#30](https://github.com/satya1130/CSC325-Capstone/issues/30) Roster UI wired to API | Satya | High | Oct 29, 2026 | In Review: integrated; browser QA pending |
+| [#43](https://github.com/satya1130/CSC325-Capstone/issues/43) Character API contract | Aryan | High | Oct 29, 2026 | In Review: authored spec in #56; final contract signoff |
+| [#31](https://github.com/satya1130/CSC325-Capstone/issues/31) Configure real Projects board | Satya and Aryan | High | Oct 28, 2026 | In Progress: **live board setup not verified** |
+| [#32](https://github.com/satya1130/CSC325-Capstone/issues/32) Each member's branch and PR proof | Salih | High | Oct 29, 2026 | In Progress: Kyle PR missing |
+| [#33](https://github.com/satya1130/CSC325-Capstone/issues/33) 8–10 minute midpoint group video | Whole group | High | **Professor's actual deadline TBD** | In Progress: recording/upload not done |
+| [#38](https://github.com/satya1130/CSC325-Capstone/issues/38) Audit character names/image usage | Kyle + Salih (proposed) | High | Nov 5, 2026 | In Review: source corrections needed |
+| [#41](https://github.com/satya1130/CSC325-Capstone/issues/41) Figma-to-code handoff | Salih + Kyle (proposed) | High | Nov 5, 2026 | Ready |
+| [#52](https://github.com/satya1130/CSC325-Capstone/issues/52) Extend automated tests | Salih + Aryan (proposed) | Medium | Nov 5, 2026 | In Progress: importer/admin/Node tests on M7 PR |
+| [#53](https://github.com/satya1130/CSC325-Capstone/issues/53) Mobile/accessibility QA | Kyle (proposed) | Medium | Nov 12, 2026 | Backlog (candidate for Kyle's authentic PR) |
+| [#49](https://github.com/satya1130/CSC325-Capstone/issues/49) Deterministic Brawl engine | Aryan + Satya (proposed) | High for product goal | Nov 19, 2026 | Backlog |
+| [#50](https://github.com/satya1130/CSC325-Capstone/issues/50) Source-approved powers/moves/counters | Salih + Kyle (proposed) | Medium | Nov 12, 2026 | Backlog |
+| [#46](https://github.com/satya1130/CSC325-Capstone/issues/46) Real role permissions | Aryan + Satya (proposed) | Medium | Nov 26, 2026 | Backlog |
+| [#51](https://github.com/satya1130/CSC325-Capstone/issues/51) Replay/history | Satya (proposed) | Low | Dec 3, 2026 | Backlog |
 
 **Note:** Dates are *planning targets*, not verified course due dates or agreements. Update live issues/Projects fields only after confirming with actual owners. The formal midpoint deadline must be copied from Brightspace.
 
