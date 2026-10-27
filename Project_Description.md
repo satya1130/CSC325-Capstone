@@ -1,4 +1,6 @@
-# Marvel Character Selection Project
+# Marvel Character Selection Project — Marvel Clash
+
+> **Current direction:** Marvel Clash is a fan-made character roster + explainable Brawl product. The Django 49-character searchable MVP is merged on `main` in [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60); advanced Brawl/AI and real accounts remain future implementation. The older proposal and user stories below are preserved for assignment history. See [Module 7 feature matrix](docs/M7_FEATURE_STATUS.md) and [presentation guide](docs/M7_MIDPOINT_PRESENTATION.md).
 
 ## Project Description
 
@@ -501,13 +503,13 @@ This section records work completed since the original proposal and Brawl-extens
 - **49-character dataset and import:** The team's reviewed source material was converted into `backend/characters/data/marvel_characters.csv` with 49 entries. The `python manage.py import_characters` management command loads or updates characters by name in SQLite. The local database itself is not checked into GitHub.
 - **Read-only character API:** `GET /api/characters/` returns the character list; `GET /api/characters/{id}/` returns an individual character. Unknown IDs receive a structured 404 error and unsupported methods return 405. These endpoints follow the team's [character API contract](docs/CHARACTER_API_CONTRACT.md), initially drafted in [PR #56](https://github.com/satya1130/CSC325-Capstone/pull/56).
 - **Working roster interface:** The HTML/CSS/JavaScript frontend uses Django templates and static assets. It fetches actual character data from `/api/characters/` and shows all 49 characters with search-as-you-type, clear search, match counts, no-match feedback, and clickable profiles displaying descriptions and powers. The earlier 12-record standalone frontend preview remains available in `frontend/roster/`; see merged [PR #57](https://github.com/satya1130/CSC325-Capstone/pull/57).
-- **Verification:** The website was run locally in VS Code, and search, profile opening/closing, and the full roster were checked manually. **All eight Django automated tests passed locally** with `python manage.py test`. Tests cover list/detail responses, nonexistent characters, unsupported POST requests, the homepage, an empty roster, and null image/category values. No GitHub Actions CI test result or public deployment has been verified.
+- **Verification:** The website was run locally in VS Code, and search, profile opening/closing, and the full roster were checked manually. **All eight Django automated tests passed locally** with `python manage.py test`. Tests cover list/detail responses, nonexistent characters, unsupported POST requests, the homepage, an empty roster, and null image/category values. GitHub Actions passed on `main` after PR #60; public deployment has not been verified.
 
 ### Project Design and Collaboration Artifacts
 
 The team has also prepared the [interactive Figma prototype](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15), [context diagram](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2), personas, a MarvelFan user journey, source character information, and a **scripted** example Brawl flow. The [Brawl backlog](BRAWL_BACKLOG.md) and [midpoint Scrum/Kanban plan](MIDPOINT_SCRUM_PLAN.md) describe additional user stories, priorities, proposed assignments, risks, and presentation milestones. Salih's merged [PR #55](https://github.com/satya1130/CSC325-Capstone/pull/55) added the project hub and standardized issue/PR templates. Aryan's merged PR #56 documented the character API contract. Satya's merged PR #57 introduced the standalone roster preview, followed by PR #58 for Django, SQLite, the 49-character import, API routes, and frontend integration.
 
-The GitHub Issue status labels and planning documents are **not automatically proof** that the GitHub Projects Kanban cards or assigned work have been completed. PR #58 is still awaiting team review/merge, and other members' intended work should not be reported as finished without a specific artifact or confirmation.
+The GitHub Issue status labels and planning documents are **not automatically proof** that the GitHub Projects Kanban cards or assigned work have been completed. PR #60 is merged and CI-tested, but its reviewer history should be checked and other members' intended work should not be reported as finished without a specific artifact or confirmation.
 
 ### Current Boundaries and Remaining Work
 
@@ -521,6 +523,10 @@ From the repository root, set up Python dependencies from `requirements.txt`; fr
 
 ChatGPT (OpenAI) assisted Satya with generating, explaining, and revising Django/Python model and API code, the character CSV importer, template and JavaScript API integration, automated tests, documentation, and Git/GitHub commands. Satya applied the changes in VS Code and tested the running application and eight Django tests locally. Figma and other AI-tool usage by team members are described in the README, and individual contributions should be confirmed before final submission. The project does **not** claim that a live AI Brawl engine exists.
 
-### Peer Review Follow-Up and Restoration Status
+### Peer Review Follow-Up (Historical, superseded by PR #60)
 
 Aryan reviewed PR #58 after its initial merge and identified that SQLite-generated character IDs can change after a database rebuild. The restoration branch documents this limitation in the API contract and README rather than changing the existing API without team agreement. A GitHub Actions workflow has also been added for the Django test suite. Because PR #59 reverted the earlier merge, the team must review and approve a fresh pull request before this code returns to `main`. The earlier Figma/Backlog portions of this document remain historical scope and are not claims of working AI features.
+
+
+### Module 7 current implementation and submission scope
+The full 49-row Django roster, JSON API and test workflow are on `main` following PR #60; [main CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711) passed the original eight tests and 49-record count. The separate Figma prototype demonstrates account roles, comparisons and scripted Brawls; none of those advanced features is a deployed Django capability. The professor's midpoint presentation requires an actual 8–10-minute recording involving all group members, a demonstrably configured shared Kanban board with owners/priorities/dates, and each member's own authentic feature PR. See [M7 evidence tracker](docs/M7_TEAM_KANBAN_EVIDENCE.md).
