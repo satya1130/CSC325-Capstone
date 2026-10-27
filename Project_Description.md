@@ -487,3 +487,36 @@ MarvelFan demonstrates the main workflow: signing in, discovering characters, re
 The existing character-search and discovery work supports the newer Brawl features by helping users learn about characters before selecting a matchup.
 
 Features that require a real database, server, or AI engine remain planned development, not completed functionality.
+
+
+---
+
+## Development Progress Update — October 26, 2026
+
+This section records work completed since the original proposal and Brawl-extension sections above. The earlier requirements, five epics, fifteen user stories, and proposed future features are preserved as project history. **Implemented features below are a local Django MVP on the `feature/satya-django-backend` branch in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), pending peer review and merge into `main`.** Figma demonstration features are distinct from executable Django features.
+
+### Working Character-Roster MVP
+
+- **Django application and SQLite model:** Created the `backend/marvelclash` project and `backend/characters` application. The `Character` model stores each character's name, description, powers, optional image reference, and optional category.
+- **49-character dataset and import:** The team's reviewed source material was converted into `backend/characters/data/marvel_characters.csv` with 49 entries. The `python manage.py import_characters` management command loads or updates characters by name in SQLite. The local database itself is not checked into GitHub.
+- **Read-only character API:** `GET /api/characters/` returns the character list; `GET /api/characters/{id}/` returns an individual character. Unknown IDs receive a structured 404 error and unsupported methods return 405. These endpoints follow the team's [character API contract](docs/CHARACTER_API_CONTRACT.md), initially drafted in [PR #56](https://github.com/satya1130/CSC325-Capstone/pull/56).
+- **Working roster interface:** The HTML/CSS/JavaScript frontend uses Django templates and static assets. It fetches actual character data from `/api/characters/` and shows all 49 characters with search-as-you-type, clear search, match counts, no-match feedback, and clickable profiles displaying descriptions and powers. The earlier 12-record standalone frontend preview remains available in `frontend/roster/`; see merged [PR #57](https://github.com/satya1130/CSC325-Capstone/pull/57).
+- **Verification:** The website was run locally in VS Code, and search, profile opening/closing, and the full roster were checked manually. **All eight Django automated tests passed locally** with `python manage.py test`. Tests cover list/detail responses, nonexistent characters, unsupported POST requests, the homepage, an empty roster, and null image/category values. No GitHub Actions CI test result or public deployment has been verified.
+
+### Project Design and Collaboration Artifacts
+
+The team has also prepared the [interactive Figma prototype](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15), [context diagram](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2), personas, a MarvelFan user journey, source character information, and a **scripted** example Brawl flow. The [Brawl backlog](BRAWL_BACKLOG.md) and [midpoint Scrum/Kanban plan](MIDPOINT_SCRUM_PLAN.md) describe additional user stories, priorities, proposed assignments, risks, and presentation milestones. Salih's merged [PR #55](https://github.com/satya1130/CSC325-Capstone/pull/55) added the project hub and standardized issue/PR templates. Aryan's merged PR #56 documented the character API contract. Satya's merged PR #57 introduced the standalone roster preview, followed by PR #58 for Django, SQLite, the 49-character import, API routes, and frontend integration.
+
+The GitHub Issue status labels and planning documents are **not automatically proof** that the GitHub Projects Kanban cards or assigned work have been completed. PR #58 is still awaiting team review/merge, and other members' intended work should not be reported as finished without a specific artifact or confirmation.
+
+### Current Boundaries and Remaining Work
+
+The runnable website currently provides **character discovery, search, and profiles**. The current Django application does **not** yet implement persistent accounts, favorites, a functional comparison or fighter-selection workflow, real character images, calculated Brawl matches, persistent match history, or AI-generated Brawl results. Some of those screens and interactions exist only in Figma as a demonstration. Character categories and cleared image references remain unpopulated pending team review. Public deployment, accessible responsive testing across devices, peer review, and full Brawl functionality are future work.
+
+### Development Setup and Evidence
+
+From the repository root, set up Python dependencies from `requirements.txt`; from `backend/`, run `python manage.py migrate`, `python manage.py import_characters`, `python manage.py test`, and `python manage.py runserver`. The local site is available at `http://127.0.0.1:8000/` while the server is running. For full Windows commands, see the main [README](README.md). [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58) is the implementation evidence; merging it into `main` requires teammate review.
+
+### AI-Use Disclosure for Implemented Code
+
+ChatGPT (OpenAI) assisted Satya with generating, explaining, and revising Django/Python model and API code, the character CSV importer, template and JavaScript API integration, automated tests, documentation, and Git/GitHub commands. Satya applied the changes in VS Code and tested the running application and eight Django tests locally. Figma and other AI-tool usage by team members are described in the README, and individual contributions should be confirmed before final submission. The project does **not** claim that a live AI Brawl engine exists.
