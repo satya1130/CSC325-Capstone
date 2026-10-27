@@ -2,11 +2,11 @@
 
 **Issue:** #43  
 **Author:** Aryan Grewal  
-**Status:** Character endpoints implemented on the recovery branch for a new team-reviewed PR. PR #58 was merged and then reverted by PR #59; current `main` does not contain the Django backend.
+**Status:** Character list/detail endpoints and 49-character roster **merged into `main` in PR #60**. First `main` GitHub Actions run passed. This is a local Django MVP, not a deployed API.
 
 ## Scope and dependencies
 
-This document specifies the JSON interface for the Django character backend, CSV import, and roster frontend preserved from PR #58 and proposed for restoration on `fix/restore-django-reviewed-midpoint`. The team previously ran and tested this locally, but the restored changes need review and a new CI result; the application is not publicly deployed.
+This document specifies the current JSON interface on `main` for the Django character backend, CSV importer and roster frontend. PR #60 restored the code after PR #59 reverted the original PR #58. [GitHub CI passed](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711); the application is not publicly deployed.
 
 Source character descriptions and powers will come from the team's reviewed `Marvel.xlsx` dataset. Categories and image references must be reviewed during import; neither should be guessed or populated with unlicensed image URLs.
 
@@ -71,9 +71,9 @@ Invalid route/method behavior follows Django's routing conventions; unsupported 
 - [ ] Salih/assigned importer confirms mapping to reviewed workbook and image manifest.
 - [x] Django roster frontend uses the `characters` response wrapper and agreed property names.
 - [x] Implementation uses a string for `powers`; category taxonomy remains unreviewed.
-- [x] Backend routes and automated tests implemented in PR #58; later reverted from `main` by PR #59 and included in the new restoration proposal.
+- [x] Backend routes and original eight tests are on `main` following merged PR #60.
 - [ ] Decide with the team whether to introduce source-backed persistent character IDs.
 
 **Implemented contract tests:** list returns HTTP 200 and `characters` array; known detail returns fields with expected types; unknown ID returns JSON 404; empty catalog returns an empty array; unreviewed image/category values remain null.
 
-**Implementation status:** Character list and detail endpoints, CSV import, and the Django roster are developed in PR #58 and re-proposed for review. Eight Django tests are defined, including empty-list and null-field checks. All eight Django tests were run locally and passed after the branch updates; GitHub Actions has been added to the restoration branch; its passing status must be checked on the new PR before merge. Deployment, images, and battle simulation are outside this API implementation.
+**Implementation status:** List and detail endpoints, CSV importer and full 49-character roster are on `main` following PR #60. The [successful CI run](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711) completed migrations, verified 49 imported records and passed the eight existing tests. This does not prove stable cross-database IDs, image/category completeness, public deployment or battle simulation.
