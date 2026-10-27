@@ -7,9 +7,12 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
-## Local Django MVP (restoration proposed after PR #59)
+**Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
 
-The team developed and locally tested a **Django character-roster MVP** in PR #58, but the merge was reverted by PR #59. This recovery branch contains the implementation for fresh team review and automated testing. **The default `main` branch does not currently contain this Django backend.** The Django app supports a searchable roster, profiles and read-only APIs backed by SQLite. The CSV source contains 49 characters; the local database is intentionally not committed. Brawl simulation, accounts, favorites, images and public deployment remain future work.
+
+## Current local Django MVP — merged in PR #60
+
+The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. The current `main` branch contains this tested Django MVP and a passing GitHub Actions workflow. The Django app supports a searchable roster, profiles and read-only APIs backed by SQLite. The CSV source contains 49 characters; the local database is intentionally not committed. Brawl simulation, accounts, favorites, images and public deployment remain future work.
 
 ### Run locally (Windows PowerShell)
 
@@ -27,7 +30,7 @@ cd backend
 
 Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON list, or `/api/characters/1/` for one character. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
 
-**Tests:** All eight Django tests passed locally after the two additional API edge-case tests were added (reported result: `Ran 8 tests` and `OK`). These cover the character list, details, missing characters, unsupported POST requests, homepage, empty roster, and null fields for unreviewed image/category data. An automated GitHub Actions test workflow has been added to the restoration branch; verify its result on the new PR before claiming CI passes.
+**Tests:** All eight Django tests passed locally after the two additional API edge-case tests were added (reported result: `Ran 8 tests` and `OK`). These cover the character list, details, missing characters, unsupported POST requests, homepage, empty roster, and null fields for unreviewed image/category data. GitHub Actions on `main` passed the 49-record import and eight Django tests: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
 
 **Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
 
@@ -48,7 +51,7 @@ A possible future deployment would use a web client, a character-data service an
 
 The planned AI-assisted battle service would generate varied explanations and battle sequences grounded in that data. Animation and replay capabilities could be added later.
 
-**The character roster, SQLite data layer and read-only API were implemented locally in PR #58 and are included on the restoration branch, not current `main`.** Accounts and battle simulation are still planned.
+**The character roster, SQLite data layer and read-only API are implemented on `main` following PR #60.** Accounts and battle simulation are still planned.
 
 ## Prototype
 
@@ -179,13 +182,13 @@ The original backlog and project details are in [Project_Description.md](Project
 
 The additional Brawl-focused user stories are documented in [BRAWL_BACKLOG.md](BRAWL_BACKLOG.md).
 
-Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The local Django roster frontend and character APIs were included in PR #58 and are proposed again on the restoration branch.
+Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The local Django roster frontend and character APIs are merged in PR #60; the full fighter-selection/AI Brawl experience is still planned.
 
 ## Submission Checklist
 
 - [ ] Confirm that the root README and primary Figma link can be viewed by the professor.
 - [ ] Confirm the Figma screens, personas, context diagram and UX journey follow the Product Goal.
-- [ ] Confirm that the YouTube link is unlisted and the video runs for **less than two minutes**.
+- [ ] For the **earlier** prototype assignment, confirm the short video is unlisted and under two minutes. For **Module 7**, separately record an 8–10-minute video with **all group members participating**.
 - [ ] Demonstrate MarvelFan's complete Figma workflow, from sign-in to the Brawl result.
 - [ ] Confirm that the AI-use statement and team contribution information are accurate.
 
@@ -200,7 +203,7 @@ The previous prototype walkthrough's under-two-minute limit applies to that earl
 
 ---
 
-## Midpoint Implementation and Collaboration Update — October 26, 2026 (recovery branch)
+## Historical midpoint recovery notes (October 26, 2026 — superseded by PR #60)
 
 The sections above preserve the project's original Figma planning and development roadmap. This update records the **working local Django MVP** originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), subsequently reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and included on this recovery branch for renewed review.
 
@@ -231,9 +234,9 @@ The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains
 
 The AI-use statement above discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
 
-For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype, and show real PR status rather than assuming unmerged work is on `main`.
+For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** PR #60 restored Django on `main` with passing CI; historical recovery-branch descriptions above are superseded.
 
-### Additional review notes for the restoration branch
+### Historical restoration review notes — current implementation is in PR #60
 
 - **Character IDs:** API `id` values are string-encoded SQLite primary keys; they are stable only within a single database. Recreating/importing a database may change IDs. This limitation addresses Aryan's PR #58 review and is recorded in the API contract; source-backed permanent IDs remain a future compatibility decision.
 - **Automated CI:** `.github/workflows/django-tests.yml` creates a clean SQLite test database and runs `python manage.py check`, migrations, the 49-character CSV importer and all Django tests for PRs and pushes to `main`. Confirm green results on GitHub before merging.

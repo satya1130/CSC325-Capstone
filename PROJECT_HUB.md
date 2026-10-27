@@ -3,12 +3,20 @@
 [![Project status](https://img.shields.io/badge/STATUS-MIDPOINT%20BUILD-ef4444?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone)
 [![Figma](https://img.shields.io/badge/FIGMA-INTERACTIVE%20PROTOTYPE-a259ff?style=for-the-badge)](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15)
 [![Character roster](https://img.shields.io/badge/CHARACTERS-49-22c55e?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone/issues/34)
-[![Backend](https://img.shields.io/badge/DJANGO-NOT%20YET%20IMPLEMENTED-f59e0b?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone/issues/28)
+[![Backend](https://img.shields.io/badge/DJANGO-MVP%20ON%20MAIN-22c55e?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone/issues/28)
 
 > **One project. One product goal. Clear evidence.**
 > Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
-**This is an additional visual project dashboard; it does not replace or change the five original project documents.** Counts below are a checked snapshot of GitHub **Issue labels** on **October 23, 2026**. They are not proof that the separate GitHub Projects board cards have been moved.
+### Verified current implementation (Oct 27, 2026 UTC)
+- **Django MVP on `main`** via [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60): SQLite-backed 49-character roster, search, basic profiles and JSON API.
+- **Successful GitHub CI**: [workflow run on `main`](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711) imported 49 records and ran all eight original Django tests.
+- **Module 7 midpoint hub:** [rubric / speaker run of show](docs/M7_MIDPOINT_PRESENTATION.md) · [features / architecture](docs/M7_FEATURE_STATUS.md) · [live evidence / proposed Kanban fields](docs/M7_TEAM_KANBAN_EVIDENCE.md).
+- **Still missing:** a Kyle-authored PR, proof that actual GitHub Projects cards contain assignments/priorities/due dates, teammate approval on the new readiness PR, and the 8–10 minute group-recorded unlisted video. Accounts and Brawl combat are still Figma-only.
+
+> The status counts and Mermaid chart below are retained as an **Oct 23 historical snapshot**; do not describe them as today's implemented-code status.
+
+**This is an additional visual project dashboard; it does not replace the project's source documents.** Counts below are a checked snapshot of GitHub **Issue labels** on **October 23, 2026**. They are not proof that the separate GitHub Projects board cards have been moved.
 
 ## 🧭 Jump to the right place
 
@@ -94,11 +102,11 @@ flowchart LR
 
 | Workstream | Verified now | Not yet evidenced in GitHub |
 | --- | --- | --- |
-| Character content | 49 records + source slides; one 'Valkryie'/'Valkyrie' spelling issue flagged | Database models, import, API-backed profiles |
-| UX/design | Figma light/dark, desktop/mobile, personas, context, scripted Brawl | Real responsive HTML app and full device tests |
+| Character content | 49-row CSV and Django SQLite import; source name issue 'Valkryie' flagged | Cleared image mapping and final editorial review |
+| UX/design | Figma layouts and basic Django responsive roster | Full Figma-to-code UI and device/browser tests |
 | Accounts | Figma demo account states and navigation | Real account security, guest/member/admin permissions, persistence |
 | Brawls | Figma scripted example and results | Rules-based computed fights, validated moves, AI integration |
-| Testing | Four planned categories in README | Runnable automated test suite and verifiable results |
+| Testing | Eight Django tests and green GitHub CI on main | Browser tests, importer regression tests and Brawl rules tests |
 | Collaboration | Documentation commits, Issues and proposed tasks | Each person's actual feature branch, PR, peer review and merge |
 
 ## 👥 Team planning, not historical credit
@@ -132,6 +140,10 @@ The previously linked 2-minute YouTube walkthrough is not a substitute for the m
 *Dashboard snapshot: October 23, 2026 · Source-of-truth files remain [README](README.md), [Proposal](Project_Description.md), [Brawl Backlog](BRAWL_BACKLOG.md), [Scrum Plan](MIDPOINT_SCRUM_PLAN.md), and [Supplemental README](Marvel_Clash_README.md). Those five were not edited to make this page.*
 
 
-## Live implementation-status correction — October 26, 2026
+## Historical implementation-status correction — October 26, 2026 (superseded by PR #60)
 
 The dashboard above is an October 23 **historical issue-label snapshot**, not a live status board. A Django backend and full 49-character roster were implemented in PR #58, but PR #59 reverted that merge from `main`. A separate recovery branch, `fix/restore-django-reviewed-midpoint`, preserves that implementation for new teammate review; it does not mean the backend is already on `main`. The standalone 12-character roster from PR #57 remains merged. Aryan's post-merge review of PR #58 flagged SQLite-generated ID stability, which has been documented. A GitHub Actions workflow is proposed on the recovery branch, but no passing run should be claimed until GitHub verifies it. The actual Projects board and other teammates' completed work must be confirmed separately from proposed assignments.
+
+
+## Latest Module 7 update
+PR #60 has **merged** the Django roster/API back into `main` and its first `main` CI run succeeded. The earlier recovery-branch paragraph and older badges/charts are historical. The real presentation evidence and outstanding process blockers are maintained in [M7 midpoint guide](docs/M7_MIDPOINT_PRESENTATION.md) and [M7 team/Kanban tracker](docs/M7_TEAM_KANBAN_EVIDENCE.md).
