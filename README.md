@@ -242,3 +242,61 @@ For the formal 8–10 minute midpoint group presentation, demonstrate the live l
 - **Automated CI:** `.github/workflows/django-tests.yml` creates a clean SQLite test database and runs `python manage.py check`, migrations, the 49-character CSV importer and all Django tests for PRs and pushes to `main`. Confirm green results on GitHub before merging.
 - **Review workflow:** PR #58 was merged before a submitted teammate review and subsequently reverted by PR #59. Request teammate review on the replacement PR *before* merging. A COMMENTED review is not the same as an APPROVED review.
 - **Document scope:** Existing Figma, proposals, epics and Brawl plans remain unchanged; executable Brawl, production authentication, images and deployment are not claimed.
+
+
+---
+
+## CSC 325 Module: Four-Stage CI/CD and Branch Protection (November 8 deliverable)
+
+### Current status and source of truth
+
+- The proposed four-job workflow is `.github/workflows/marvel-clash-cicd.yml`: **Setup**, **Dependencies**, **Test**, **Deploy**. It triggers on pushes and pull requests targeting `main`.
+- `Setup` verifies checkout, Python 3.14, and required project files. `Dependencies` installs `requirements.txt`. `Test` runs Django checks, migrations, the 49-character import/count check, Django tests, and the standalone Node roster test.
+- **Deployment is not yet configured or verified.** `Deploy` requires a real hosting service, repository secret `RENDER_DEPLOY_HOOK`, and repository variable `RENDER_DEPLOY_ENABLED=true`. It runs only after a successful Test on a push to `main`; it is intentionally skipped on pull requests. A skipped Deploy job is **not** deployment evidence. Confirm live URL, deployment completion, and application health separately.
+- The older `django-tests.yml` remains as existing test evidence; the four-stage workflow adds the explicitly named grading stages. A green old workflow alone does not prove four-stage completion.
+
+### Setup for a new contributor
+
+1. Clone `https://github.com/satya1130/CSC325-Capstone.git` and enter the repository.
+2. Install Python 3.14 and Node.js 22; create a virtual environment: `py -3.14 -m venv .venv` on Windows, or `python3.14 -m venv .venv` on Unix.
+3. Activate the venv, install dependencies with `python -m pip install -r requirements.txt`, then `cd backend`.
+4. Run `python manage.py migrate`, `python manage.py import_characters`, `python manage.py test`, and `python manage.py runserver`.
+5. Return to the repository root, create `feature/<issue-short-name>` from the latest `main`, implement one issue with at least one acceptance-criteria test, push the branch and open a PR referencing the Kanban issue.
+6. Wait for the named `Test` check to pass and for at least one **other teammate** to approve the PR before merging. Only mark the issue Done once the required check and review evidence exists.
+7. After merge, verify `Deploy` and the live site if deployment has been configured; otherwise report deployment as pending.
+
+### Required repository administration (not yet verified complete)
+
+A repository administrator should create a ruleset under **Settings → Rules → Rulesets** targeting `main`, with:
+- Block direct pushes / require pull requests before merging, with no unnecessary bypass.
+- Require **one approval** from a teammate who did not author the PR.
+- Require the exact CI status check **Test** for merges. After the first workflow run, select the published check from GitHub's available check names. Ensure the selected check reports success on pull requests.
+- Test the rules with a small, real feature PR before relying on them for assessment.
+
+### Deployment and secrets
+
+Create a real hosted Django service before activating deployment. Review production settings (separate `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_DEBUG=false`, database persistence, static files, HTTPS, and migrations). Add the provider-issued deploy hook as an encrypted **GitHub Actions repository secret** named `RENDER_DEPLOY_HOOK`; add a repository **Actions variable** `RENDER_DEPLOY_ENABLED` with value `true` only when the hosted application is ready. Never commit a deploy URL containing a token, password, API key, `.env` file, or GitHub secret value. Other application API keys and passwords belong in provider environment variables / GitHub Secrets as appropriate. Check past commits for accidental secrets and rotate exposed keys if necessary.
+
+The Deploy stage requests a Render deployment, but the CI run alone does not prove it finished successfully. Review the host's deployment status and test the live Django endpoint before calling the deployment successful.
+
+### Feature/epic evidence for grading
+
+The project backlog is tracked in [GitHub Issues](https://github.com/satya1130/CSC325-Capstone/issues), the [original user stories](Project_Description.md), and [Brawl backlog](BRAWL_BACKLOG.md). For **two epics and about six to ten user stories**, provide a per-story record of: issue URL and Kanban card, branch, implementation commit, acceptance criterion and test, PR, teammate approval, passing Test check, and merged commit. Existing features do not retroactively establish a reviewed-PR workflow for each story. Confirm actual board status, priority, owner, and due dates rather than inferring them from planning documents.
+
+### Sanity check and submission evidence
+
+Before submitting, have a teammate use only these instructions to clone the repository, implement a small change, submit a PR, see automated Test success, receive teammate approval, merge, and verify an actual deployment. Record one end-to-end example in an **unlisted YouTube video under 3 minutes**. Supply the repository/README URL, green four-stage workflow run, one merged PR with a real approval and passing Test, actual Kanban board URL, and video URL. Links are not filled until those artifacts exist.
+
+### AI-use disclosure for this CI/CD update
+
+ChatGPT assisted with designing the proposed four-job GitHub Actions YAML, arranging test commands for the existing Django and Node projects, adding deployment-secret handling, and drafting these setup and evidence instructions. AI-generated pipeline text must be checked against actual Actions results and deployment logs. **No specific AI error or correction is claimed yet**, since a new four-stage execution and hosted deployment have not been verified. After running CI, document any real error (for example, dependency, missing secret, incorrect job name, or host configuration), the failing log, the correction, and the passing rerun. Do not invent test or deployment results.
+
+
+### Verified CI and team evidence (October 31, 2026)
+
+- [Four-stage run #41263298970](https://github.com/satya1130/CSC325-Capstone/actions/runs/41263298970) finished **successfully** on the PR: Setup, Dependencies, and Test succeeded; Deploy was **skipped** because pull requests do not deploy. This is valid CI/test evidence, **not** evidence of actual deployment.
+- [PR #62](https://github.com/satya1130/CSC325-Capstone/pull/62) for US-13 responsive design was merged with a formal **APPROVED** teammate review by Satya. Check and document the acceptance-criteria test and board linkage separately.
+- The planned **six-story / two-epic matrix**, real evidence gaps, and PR workflow are in [docs/NOV8_STORY_EVIDENCE.md](docs/NOV8_STORY_EVIDENCE.md). This does **not** certify six completed stories.
+- The ruleset query returned no rulesets during this audit. A repository administrator still needs to configure and verify the required `main` protection.
+- Any final AI-use description must name errors **actually found** in GitHub logs, not hypothetical ones.
+
