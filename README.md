@@ -290,3 +290,13 @@ Before submitting, have a teammate use only these instructions to clone the repo
 ### AI-use disclosure for this CI/CD update
 
 ChatGPT assisted with designing the proposed four-job GitHub Actions YAML, arranging test commands for the existing Django and Node projects, adding deployment-secret handling, and drafting these setup and evidence instructions. AI-generated pipeline text must be checked against actual Actions results and deployment logs. **No specific AI error or correction is claimed yet**, since a new four-stage execution and hosted deployment have not been verified. After running CI, document any real error (for example, dependency, missing secret, incorrect job name, or host configuration), the failing log, the correction, and the passing rerun. Do not invent test or deployment results.
+
+
+### Verified CI and team evidence (October 31, 2026)
+
+- [Four-stage run #41263298970](https://github.com/satya1130/CSC325-Capstone/actions/runs/41263298970) finished **successfully** on the PR: Setup, Dependencies, and Test succeeded; Deploy was **skipped** because pull requests do not deploy. This is valid CI/test evidence, **not** evidence of actual deployment.
+- [PR #62](https://github.com/satya1130/CSC325-Capstone/pull/62) for US-13 responsive design was merged with a formal **APPROVED** teammate review by Satya. Check and document the acceptance-criteria test and board linkage separately.
+- The planned **six-story / two-epic matrix**, real evidence gaps, and PR workflow are in [docs/NOV8_STORY_EVIDENCE.md](docs/NOV8_STORY_EVIDENCE.md). This does **not** certify six completed stories.
+- The ruleset query returned no rulesets during this audit. A repository administrator still needs to configure and verify the required `main` protection.
+- Any final AI-use description must name errors **actually found** in GitHub logs, not hypothetical ones.
+
