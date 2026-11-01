@@ -1,0 +1,94 @@
+name: Marvel Clash CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.14
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: Verify Python and repository
+        run: |
+          python --version
+          test -f requirements.txt
+          test -f backend/manage.py
+
+  dependencies:
+    name: Dependencies
+    needs: [setup]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Verify Django installation
+        run: python -m django --version
+
+  test:
+    name: Test
+    needs: [dependencies]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+          cache: pip
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Check Django configuration
+        working-directory: backend
+        run: python manage.py check
+      - name: Migrate development database
+        working-directory: backend
+        run: python manage.py migrate --noinput
+      - name: Import all 49 character records
+        working-directory: backend
+        run: python manage.py import_characters
+      - name: Verify character count
+        working-directory: backend
+        run: |
+          python manage.py shell -c "from characters.models import Character; assert Character.objects.count() == 49, '49 characters required'"
+      - name: Run Django acceptance and API tests
+        working-directory: backend
+        run: python manage.py test --verbosity 2
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Test standalone roster filtering
+        working-directory: frontend/roster
+        run: node --test roster.test.cjs
+
+  deploy:
+    name: Deploy
+    needs: [test]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.RENDER_DEPLOY_ENABLED == 'true'
+    steps:
+      - name: Trigger Render deployment
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+            echo "::error::Configure RENDER_DEPLOY_HOOK in repository secrets before enabling deployment."
+            exit 1
+          fi
+          curl --fail --show-error --silent --retry 3 --request POST "$RENDER_DEPLOY_HOOK"
