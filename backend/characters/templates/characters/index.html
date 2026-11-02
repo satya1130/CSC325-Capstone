@@ -25,7 +25,11 @@
         <section aria-label="Character search" class="controls">
             <label for="search">Search Marvel characters</label>
             <input id="search" type="search" placeholder="Try Spider-Man, Thor, or Iron Man…" autocomplete="off">
-            <button id="clear" type="button">Clear search</button>
+            <label for="powers-filter">Filter by power or ability</label>
+            <input id="powers-filter" type="search" placeholder="Try flight or magic…" autocomplete="off">
+            <label for="category-filter">Filter by available category</label>
+            <select id="category-filter"><option value="">All categories</option></select>
+            <button id="clear" type="button">Clear filters</button>
             <p id="count" role="status" aria-live="polite"></p>
         </section>
 
@@ -33,7 +37,7 @@
 
         <section id="empty" class="empty" hidden>
             <h2>No characters found</h2>
-            <p>Try a different name or clear your search.</p>
+            <p>Try changing your filters or clearing them.</p>
         </section>
     </main>
 
