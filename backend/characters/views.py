@@ -11,7 +11,18 @@ def character_list(request):
             status=405
         )
 
-    characters = Character.objects.all().order_by("name")
+    characters = Character.objects.all()
+    name_query = request.GET.get("q", "").strip()
+    powers_query = request.GET.get("powers", "").strip()
+    category_query = request.GET.get("category", "").strip()
+
+    if name_query:
+        characters = characters.filter(name__icontains=name_query)
+    if powers_query:
+        characters = characters.filter(powers__icontains=powers_query)
+    if category_query:
+        characters = characters.filter(category__iexact=category_query)
+    characters = characters.order_by("name")
 
     data = [
         {
