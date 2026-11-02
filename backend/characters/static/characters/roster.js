@@ -8,11 +8,14 @@ function normalize(value) {
   return String(value ?? "").normalize("NFKC").trim().toLocaleLowerCase();
 }
 
-function filterCharacters(characters, query) {
+function filterCharacters(characters, query, powers = "", category = "") {
   const q = normalize(query);
-
+  const powerQuery = normalize(powers);
+  const categoryQuery = normalize(category);
   return characters.filter(character =>
-    normalize(character.name).includes(q)
+    normalize(character.name).includes(q) &&
+    normalize(character.powers).includes(powerQuery) &&
+    (!categoryQuery || normalize(character.category) === categoryQuery)
   );
 }
 
@@ -21,8 +24,10 @@ function renderRoster(doc, characters) {
   const count = doc.getElementById("count");
   const empty = doc.getElementById("empty");
   const query = doc.getElementById("search").value;
+  const powers = doc.getElementById("powers-filter").value;
+  const category = doc.getElementById("category-filter").value;
 
-  const matches = filterCharacters(characters, query);
+  const matches = filterCharacters(characters, query, powers, category);
 
   roster.replaceChildren();
 
@@ -77,12 +82,19 @@ async function init(doc) {
   const search = doc.getElementById("search");
   const count = doc.getElementById("count");
 
+  const powersFilter = doc.getElementById("powers-filter");
+  const categoryFilter = doc.getElementById("category-filter");
+  powersFilter.addEventListener("input", () => renderRoster(doc, characters));
+  categoryFilter.addEventListener("change", () => renderRoster(doc, characters));
+
   search.addEventListener("input", () => {
     renderRoster(doc, characters);
   });
 
   doc.getElementById("clear").addEventListener("click", () => {
     search.value = "";
+    powersFilter.value = "";
+    categoryFilter.value = "";
     renderRoster(doc, characters);
     search.focus();
   });
@@ -103,7 +115,14 @@ async function init(doc) {
     const data = await response.json();
 
     characters = data.characters;
-
+    const categories = [...new Set(characters.map(c => c.category).filter(Boolean))].sort();
+    for (const category of categories) {
+      const option = doc.createElement("option");
+      option.value = category;
+      option.textContent = category;
+      categoryFilter.append(option);
+    }
+    categoryFilter.disabled = categories.length === 0;
     renderRoster(doc, characters);
 
   } catch (error) {
