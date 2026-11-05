@@ -1,18 +1,32 @@
 # ⚔️ MARVEL CLASH — PROJECT HQ
 
-[![Project status](https://img.shields.io/badge/STATUS-MIDPOINT%20BUILD-ef4444?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone)
+[![Project status](https://img.shields.io/badge/STATUS-ACTIVE%20DEVELOPMENT-ef4444?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone)
 [![Figma](https://img.shields.io/badge/FIGMA-INTERACTIVE%20PROTOTYPE-a259ff?style=for-the-badge)](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15)
-[![Character roster](https://img.shields.io/badge/CHARACTERS-49-22c55e?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone/issues/34)
-[![Backend](https://img.shields.io/badge/DJANGO-MVP%20ON%20MAIN-22c55e?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone/issues/28)
+[![Character roster](https://img.shields.io/badge/CHARACTERS-49-22c55e?style=for-the-badge)](backend/characters/data/marvel_characters.csv)
+[![Backend](https://img.shields.io/badge/DJANGO-MVP%20ON%20MAIN-22c55e?style=for-the-badge)](backend/)
+
+> **Current navigation — November 5, 2026:** use the [main README](README.md) and [Repository Map](docs/REPOSITORY_MAP.md) for the current source-of-truth links. Older dashboard counts/diagrams below are preserved as dated course evidence.
+>
+> **Current code:** Django + SQLite development model + 49-character CSV importer + roster/profile UI + read-only API are on `main`. PR #65 added combined name/powers/category filters and acceptance tests.
+>
+> **Current workflow:** PR #62 (Kyle responsive work), PR #63 (four-stage CI/CD), and PR #65 (Aryan US-03 filters) are merged. PR #64 (Nov. 8 scope/docs) and PR #66 (Render static-file production fix) are currently open and require real teammate review/verification.
 
 > **One project. One product goal. Clear evidence.**
 > Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
-### Verified current implementation (Oct 27, 2026 UTC)
-- **Django MVP on `main`** via [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60): SQLite-backed 49-character roster, search, basic profiles and JSON API.
-- **Successful GitHub CI**: [workflow run on `main`](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711) imported 49 records and ran all eight original Django tests.
-- **Module 7 midpoint hub:** [rubric / speaker run of show](docs/M7_MIDPOINT_PRESENTATION.md) · [features / architecture](docs/M7_FEATURE_STATUS.md) · [live evidence / proposed Kanban fields](docs/M7_TEAM_KANBAN_EVIDENCE.md).
-- **Still missing:** a Kyle-authored PR, proof that actual GitHub Projects cards contain assignments/priorities/due dates, teammate approval on the new readiness PR, and the 8–10 minute group-recorded unlisted video. Accounts and Brawl combat are still Figma-only.
+## 🧭 Current repository navigation
+
+| Area | Current link |
+| --- | --- |
+| Repository map | [docs/REPOSITORY_MAP.md](docs/REPOSITORY_MAP.md) |
+| Primary Figma | [Marvel Clash design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) |
+| Context diagram | [Updated system context](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2) |
+| Django backend | [backend/](backend/) |
+| Data / database source | [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) |
+| API | [API contract](docs/CHARACTER_API_CONTRACT.md) · [views.py](backend/characters/views.py) |
+| Kanban / work tracking | [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects](https://github.com/satya1130/CSC325-Capstone/projects) |
+| Reviews / merges | [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls) |
+| CI/CD | [Four-stage workflow](.github/workflows/marvel-clash-cicd.yml) · [Django tests](.github/workflows/django-tests.yml) |
 
 > The status counts and Mermaid chart below are retained as an **Oct 23 historical snapshot**; do not describe them as today's implemented-code status.
 
@@ -115,8 +129,8 @@ flowchart LR
 | --- | --- | --- |
 | **Satya** | Frontend/API integration, project coordination, Brawl result/replay | Verified handle: [@satya1130](https://github.com/satya1130) |
 | **Salih** | Source data import support, proposal, test/process evidence | Verified handle: [@JustEmre12](https://github.com/JustEmre12) |
-| **Aryan** | Django backend, fighter/rules logic, API design | GitHub handle unconfirmed |
-| **Kyle** | Character artwork manifest, responsive UI and accessibility | GitHub handle unconfirmed |
+| **Aryan** | API/filtering and future combat rules | Verified handle: [@AryanGrewal05](https://github.com/AryanGrewal05); merged PR #65 |
+| **Kyle** | Character artwork, responsive UI and accessibility | Verified handle: [@wilska1-stack](https://github.com/wilska1-stack); merged PR #62 |
 
 New Issues rotate **proposed** tasks among the four people, but this is **not** credit for work already completed. Confirm workload and account handles at [#44](https://github.com/satya1130/CSC325-Capstone/issues/44). Never list an AI assistant as a GitHub author/co-author.
 
