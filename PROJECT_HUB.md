@@ -9,7 +9,7 @@
 >
 > **Current code:** Django + SQLite development model + 49-character CSV importer + roster/profile UI + read-only API are on `main`. PR #65 added combined name/powers/category filters and acceptance tests.
 >
-> **Current workflow:** PR #62 (Kyle responsive work), PR #63 (four-stage CI/CD), and PR #65 (Aryan US-03 filters) are merged. PR #64 (Nov. 8 scope/docs) and PR #66 (Render static-file production fix) are currently open and require real teammate review/verification.
+> **Current workflow:** PR #62 (Kyle responsive work), PR #63 (four-stage CI/CD), and PR #65 (Aryan US-03 filters) are merged. PR #64 (Nov. 8 scope/docs) and PR #66 is merged with green CI for the Render static-file production fix, but it has no submitted teammate review and the live deployment still needs verification.
 
 > **One project. One product goal. Clear evidence.**
 > Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
