@@ -7,12 +7,37 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
+
+## 🧭 Project Hub — Important Links
+
+> **Use this section first.** It is the front-door index for the current Marvel Clash project.
+>
+> **🎨 Design:** [Primary Figma](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) · [Personas](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-20) · [Context Diagram](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2) · [Primary UX Journey](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-66)
+>
+> **🐍 Django / Backend:** [Backend folder](backend/) · [Django project](backend/marvelclash/) · [Character app](backend/characters/) · [API contract](docs/CHARACTER_API_CONTRACT.md)
+>
+> **🗄️ Data / Database:** [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **local SQLite DB is generated and intentionally not committed**
+>
+> **📋 Project Management:** [Repository Map](docs/REPOSITORY_MAP.md) · [Project Description](Project_Description.md) · [Brawl Backlog](BRAWL_BACKLOG.md) · [Scrum/Kanban Plan](MIDPOINT_SCRUM_PLAN.md) · [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects/Kanban](https://github.com/satya1130/CSC325-Capstone/projects) · [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls)
+>
+> **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Feature Status](docs/M7_FEATURE_STATUS.md) · [Kanban/PR Evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Nov. 8 Story Evidence](docs/NOV8_STORY_EVIDENCE.md)
+
+### Current implementation snapshot — November 5, 2026
+
+- **Working Django MVP:** 49-character CSV import, SQLite-backed character model, roster/profile UI, read-only JSON API, and automated tests.
+- **Merged US-03 filtering (PR #65):** case-insensitive name and powers filters plus optional reviewed category filtering and reset/no-match coverage.
+- **Responsive work (PR #62):** merged Kyle-authored responsive-layout contribution with teammate approval.
+- **CI/CD (PR #63):** merged Setup → Dependencies → Test → Deploy workflow; deployment still requires verified hosting/configuration.
+- **Open work:** [PR #64](https://github.com/satya1130/CSC325-Capstone/pull/64) documentation/epic-scope update and [PR #66](https://github.com/satya1130/CSC325-Capstone/pull/66) merged Render static-file/WhiteNoise production fix.
+- **Prototype-only today:** secure accounts/roles, persistent favorites, computed Brawls, dynamic AI battle generation, and final character image mapping.
+
+
 **Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
 
 
-## Current local Django MVP — merged in PR #60
+## Current Django MVP — expanded through PR #65
 
-The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. The current `main` branch contains this tested Django MVP and a passing GitHub Actions workflow. The Django app supports a searchable roster, profiles and read-only APIs backed by SQLite. The CSV source contains 49 characters; the local database is intentionally not committed. Brawl simulation, accounts, favorites, images and public deployment remain future work.
+The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles, filtered read-only APIs and a local SQLite data layer. The CSV source is committed; the generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, persistent favorites and final image mapping remain future work.
 
 ### Run locally (Windows PowerShell)
 
@@ -30,7 +55,7 @@ cd backend
 
 Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON list, or `/api/characters/1/` for one character. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
 
-**Tests:** All eight Django tests passed locally after the two additional API edge-case tests were added (reported result: `Ran 8 tests` and `OK`). These cover the character list, details, missing characters, unsupported POST requests, homepage, empty roster, and null fields for unreviewed image/category data. GitHub Actions on `main` passed the 49-record import and eight Django tests: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
+**Tests:** The current test module contains **14 Django tests**, covering the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. PR #65 completed with both the `Django tests` and `Marvel Clash CI/CD` checks successful. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
 
 **Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
 
@@ -67,12 +92,12 @@ The planned AI-assisted battle service would generate varied explanations and ba
 
 ### Personas
 
-- **Aryan — primary:** A normal member who is not necessarily a Marvel fan, but wants to log in, discover characters and use the main features.
-- **MarvelFan — primary:** A registered fan persona with a no-password demonstration sign-in. This differs from an anonymous Guest and can explore profiles, comparisons and Brawls.
-- **Guest — secondary:** An unsigned visitor who can explore some content, with advanced features requiring login or registration in the prototype.
-- **Salih (Admin) — secondary:** A member with additional restricted Control Room, project-review, legacy-screen and testing options.
+- **Jordan — primary user / Marvel fan and matchup strategist:** Uses the full discovery-to-result journey. Jordan wants to find characters, inspect powers, compare opponents, choose two fighters, and understand the displayed Brawl result.
+- **Alex — secondary user / casual new visitor:** Uses a phone, recognizes familiar Marvel characters, and needs simple descriptions, clear portraits, readable controls, and easy discovery before attempting a matchup.
 
-These are personas and simulated prototype roles, not verified production account permissions.
+### Prototype access roles
+
+The Figma prototype also demonstrates **Guest**, normal-member examples such as **MarvelFan/Aryan**, and **Salih (Admin)**. These are access states used to show UI permissions; they are not a replacement for the Jordan/Alex user-centered personas, and they are not secure production accounts.
 
 ### Context Diagram
 
@@ -88,16 +113,16 @@ Discover/Home, categorized Roster, individual profiles, powers and abilities, Co
 
 Account and project-support screens include light/dark and desktop/mobile versions.
 
-### UX Flow — Primary MarvelFan Persona
+### UX Flow — Primary Jordan Persona
 
-1. Open the prototype and sign in as **MarvelFan** without a password.
-2. Browse Discover and Roster.
-3. Read profiles and compare character powers.
-4. Select two fighters for Brawl.
-5. Confirm and begin the simulated matchup.
-6. Follow the scripted moves, health bars and commentary.
-7. Review the winner and explanation; replay or select different fighters.
-8. If a fighter is missing, return to selection and correct it.
+1. Open Discover and move to the Roster.
+2. Search or filter characters and open a character profile.
+3. Read powers/abilities and compare possible opponents.
+4. Choose two different fighters for Brawl.
+5. Confirm the matchup and begin the simulated fight.
+6. Follow the example moves, health bars and commentary.
+7. Review the winner and explanation, then replay or choose different fighters.
+8. If a selection is missing or invalid, return to fighter selection and correct it.
 
 ### Sanity Check
 
