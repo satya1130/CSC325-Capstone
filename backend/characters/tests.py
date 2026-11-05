@@ -2,6 +2,7 @@
 from django.test import TestCase
 from django.core.management import call_command
 from django.contrib import admin
+from django.contrib.staticfiles import finders
 from io import StringIO
 from .models import Character
 
@@ -114,3 +115,11 @@ class CharacterAPITests(TestCase):
         self.assertEqual(len(response.json()["characters"]), 2)
         response = self.client.get("/api/characters/", {"category": "hero"})
         self.assertEqual([c["name"] for c in response.json()["characters"]], ["Thor"])
+
+
+class RenderStaticAssetsTests(TestCase):
+    """Assets must be discoverable for Render collectstatic with DEBUG=False."""
+
+    def test_roster_css_and_javascript_exist(self):
+        self.assertIsNotNone(finders.find('characters/style.css'))
+        self.assertIsNotNone(finders.find('characters/roster.js'))
