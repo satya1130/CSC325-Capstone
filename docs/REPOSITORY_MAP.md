@@ -86,7 +86,7 @@ The local SQLite file is **generated**, not committed: `backend/db.sqlite3` is i
 - PR #62 (Kyle) is merged responsive-layout evidence.
 - PR #63 (Satya) is merged four-stage CI/CD work.
 - PR #64 is still open and proposes changing the November 8 tracked scope to Epic 1 + Epic 2. Do not treat that scope as final until the team reviews/merges it.
-- PR #66 is open for Render static-file/production fixes. A live deployment URL is not documented here as verified yet.
+- PR #66 is merged with green CI for Render static-file/production fixes. It has no submitted teammate review recorded, and a live deployment URL is not documented here as verified yet.
 
 ## Organization Rules
 
