@@ -88,3 +88,29 @@ class CharacterAPITests(TestCase):
 
     def test_character_registered_with_admin(self):
         self.assertIn(Character, admin.site._registry)
+
+    def test_us03_name_filter(self):
+        Character.objects.create(name="Thor", description="Thunder", powers="Lightning")
+        response = self.client.get("/api/characters/", {"q": "IRON"})
+        self.assertEqual([c["name"] for c in response.json()["characters"]], ["Iron Man"])
+
+    def test_us03_powers_filter(self):
+        Character.objects.create(name="Thor", description="Thunder", powers="Lightning")
+        response = self.client.get("/api/characters/", {"powers": "REPULSOR"})
+        self.assertEqual([c["name"] for c in response.json()["characters"]], ["Iron Man"])
+
+    def test_us03_combined_filters_and_empty_results(self):
+        self.character.category = "Hero"
+        self.character.save()
+        Character.objects.create(name="Thor", description="Thunder", powers="Lightning", category="Hero")
+        response = self.client.get("/api/characters/", {"q": "iron", "powers": "repulsor", "category": "hero"})
+        self.assertEqual([c["name"] for c in response.json()["characters"]], ["Iron Man"])
+        response = self.client.get("/api/characters/", {"q": "iron", "powers": "lightning"})
+        self.assertEqual(response.json(), {"characters": []})
+
+    def test_us03_reset_and_missing_categories(self):
+        Character.objects.create(name="Thor", description="Thunder", powers="Lightning", category="Hero")
+        response = self.client.get("/api/characters/", {"q": "", "powers": "", "category": ""})
+        self.assertEqual(len(response.json()["characters"]), 2)
+        response = self.client.get("/api/characters/", {"category": "hero"})
+        self.assertEqual([c["name"] for c in response.json()["characters"]], ["Thor"])
