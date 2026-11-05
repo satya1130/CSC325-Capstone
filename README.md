@@ -16,7 +16,7 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 >
 > **🐍 Django / Backend:** [Backend folder](backend/) · [Django project](backend/marvelclash/) · [Character app](backend/characters/) · [API contract](docs/CHARACTER_API_CONTRACT.md)
 >
-> **🗄️ Data / Database:** [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **local SQLite DB is generated and intentionally not committed**
+> **🗄️ Data / Database:** [Django import CSV](backend/characters/data/marvel_characters.csv) · [Full 49-character master](backend/characters/data/marvel_character_master.csv) · [Combat index](backend/characters/data/marvel_combat_index.csv) · [Data guide](docs/CHARACTER_DATA_GUIDE.md) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **local SQLite DB is generated and intentionally not committed**
 >
 > **📋 Project Management:** [Repository Map](docs/REPOSITORY_MAP.md) · [Project Description](Project_Description.md) · [Brawl Backlog](BRAWL_BACKLOG.md) · [Scrum/Kanban Plan](MIDPOINT_SCRUM_PLAN.md) · [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects/Kanban](https://github.com/satya1130/CSC325-Capstone/projects) · [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls)
 >
