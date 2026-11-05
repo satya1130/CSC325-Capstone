@@ -28,7 +28,7 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 - **Merged US-03 filtering (PR #65):** case-insensitive name and powers filters plus optional reviewed category filtering and reset/no-match coverage.
 - **Responsive work (PR #62):** merged Kyle-authored responsive-layout contribution with teammate approval.
 - **CI/CD (PR #63):** merged Setup → Dependencies → Test → Deploy workflow; deployment still requires verified hosting/configuration.
-- **Open work:** [PR #64](https://github.com/satya1130/CSC325-Capstone/pull/64) documentation/epic-scope update and [PR #66](https://github.com/satya1130/CSC325-Capstone/pull/66) Render static-file production fix.
+- **Open work:** [PR #64](https://github.com/satya1130/CSC325-Capstone/pull/64) documentation/epic-scope update and [PR #66](https://github.com/satya1130/CSC325-Capstone/pull/66) merged Render static-file/WhiteNoise production fix.
 - **Prototype-only today:** secure accounts/roles, persistent favorites, computed Brawls, dynamic AI battle generation, and final character image mapping.
 
 
