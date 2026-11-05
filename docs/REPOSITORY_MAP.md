@@ -42,12 +42,15 @@
 
 ### Database and source data
 
-The committed source of truth for the current 49-character import is [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv).
+The current Django importer continues to use [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv). The expanded 49-character reference data is stored separately in [`marvel_character_master.csv`](../backend/characters/data/marvel_character_master.csv), with a battle-oriented view in [`marvel_combat_index.csv`](../backend/characters/data/marvel_combat_index.csv). See [`CHARACTER_DATA_GUIDE.md`](CHARACTER_DATA_GUIDE.md) for compatibility notes.
 
 The local SQLite file is **generated**, not committed: `backend/db.sqlite3` is intentionally ignored by `.gitignore`. Create it with migrations, then populate it using the importer:
 
 - Database model: [`backend/characters/models.py`](../backend/characters/models.py)
-- CSV source: [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv)
+- Django import CSV: [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv)
+- Full character master: [`backend/characters/data/marvel_character_master.csv`](../backend/characters/data/marvel_character_master.csv)
+- Combat/Brawl index: [`backend/characters/data/marvel_combat_index.csv`](../backend/characters/data/marvel_combat_index.csv)
+- Data guide: [`docs/CHARACTER_DATA_GUIDE.md`](CHARACTER_DATA_GUIDE.md)
 - Import command: [`backend/characters/management/commands/import_characters.py`](../backend/characters/management/commands/import_characters.py)
 
 ## Frontend / Roster
