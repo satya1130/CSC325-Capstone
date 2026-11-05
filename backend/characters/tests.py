@@ -117,6 +117,38 @@ class CharacterAPITests(TestCase):
         self.assertEqual([c["name"] for c in response.json()["characters"]], ["Thor"])
 
 
+    def test_us01_case_insensitive_partial_name_search(self):
+        Character.objects.create(
+            name="Iron Patriot",
+            description="Armored hero",
+            powers="Powered armor"
+        )
+        Character.objects.create(
+            name="Thor",
+            description="Asgardian hero",
+            powers="Lightning"
+        )
+        response = self.client.get("/api/characters/", {"q": "iRoN"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [entry["name"] for entry in response.json()["characters"]],
+            ["Iron Man", "Iron Patriot"],
+        )
+
+    def test_us01_no_match_returns_empty_results(self):
+        response = self.client.get("/api/characters/", {"q": "not-a-marvel-character"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"characters": []})
+
+    def test_us01_search_interface_includes_results_and_empty_message(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="search"')
+        self.assertContains(response, 'id="roster"')
+        self.assertContains(response, 'id="empty"')
+        self.assertContains(response, "No characters found")
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
