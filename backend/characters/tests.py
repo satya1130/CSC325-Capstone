@@ -149,6 +149,36 @@ class CharacterAPITests(TestCase):
         self.assertContains(response, "No characters found")
 
 
+    def test_us02_browse_all_imported_characters(self):
+        call_command("import_characters", stdout=StringIO())
+        response = self.client.get("/api/characters/")
+        self.assertEqual(response.status_code, 200)
+        names = [entry["name"] for entry in response.json()["characters"]]
+        self.assertEqual(len(names), 49)
+        self.assertEqual(names, sorted(names))
+
+    def test_us02_browse_includes_names_and_optional_image_references(self):
+        self.character.image_ref = "characters/iron-man.png"
+        self.character.save()
+        Character.objects.create(
+            name="Thor",
+            description="Thunder hero",
+            powers="Lightning",
+        )
+        response = self.client.get("/api/characters/")
+        entries = response.json()["characters"]
+        self.assertEqual([entry["name"] for entry in entries], ["Iron Man", "Thor"])
+        self.assertEqual(entries[0]["image_ref"], "characters/iron-man.png")
+        self.assertIsNone(entries[1]["image_ref"])
+
+    def test_us02_browse_page_renders_full_roster_container(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="roster"')
+        self.assertContains(response, 'id="count"')
+        self.assertContains(response, "characters/roster.js")
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
