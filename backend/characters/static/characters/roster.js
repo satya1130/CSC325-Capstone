@@ -38,10 +38,26 @@ function renderRoster(doc, characters) {
     const article = doc.createElement("article");
     article.className = "card";
 
+    // Display each character's checked-in portrait on the roster instead of initials.
     const avatar = doc.createElement("div");
-    avatar.className = "initial";
-    avatar.setAttribute("aria-hidden", "true");
-    avatar.textContent = character.name.slice(0, 1);
+    avatar.className = "card-portrait";
+    const imagePath = String(character.image_ref ?? "");
+    const fallback = doc.createElement("span");
+    fallback.className = "card-portrait-fallback";
+    fallback.textContent = "Image unavailable";
+    fallback.setAttribute("role", "img");
+    fallback.setAttribute("aria-label", `Image unavailable for ${character.name}`);
+    avatar.append(fallback);
+    if (/^characters\\/images\\/[a-z0-9-]+\\.jpg$/.test(imagePath)) {
+      const picture = doc.createElement("img");
+      picture.alt = `Portrait of ${character.name}`;
+      picture.loading = "lazy";
+      picture.decoding = "async";
+      picture.onload = () => { fallback.hidden = true; };
+      picture.onerror = () => { picture.remove(); fallback.hidden = false; };
+      picture.src = `${doc.getElementById("profile").dataset.staticBase || "/static/"}${imagePath}`;
+      avatar.append(picture);
+    }
 
     const title = doc.createElement("h2");
     title.textContent = character.name;
