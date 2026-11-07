@@ -179,6 +179,49 @@ class CharacterAPITests(TestCase):
         self.assertContains(response, "characters/roster.js")
 
 
+    def test_us03_imports_all_49_character_categories(self):
+        call_command("import_characters", stdout=StringIO())
+        self.assertEqual(Character.objects.count(), 49)
+        self.assertEqual(
+            Character.objects.filter(category="Hero").count(), 36
+        )
+        self.assertEqual(
+            Character.objects.filter(category="Villain").count(), 6
+        )
+        self.assertEqual(
+            Character.objects.filter(category="Antihero").count(), 7
+        )
+
+    def test_us03_dropdown_has_all_character_types(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="category-filter"')
+        for value in ("Hero", "Villain", "Antihero"):
+            self.assertContains(response, f'<option value="{value}">')
+
+    def test_us03_filter_imported_heroes_villains_and_antiheroes(self):
+        call_command("import_characters", stdout=StringIO())
+        expected = {
+            "Hero": "Iron Man",
+            "Villain": "Hela",
+            "Antihero": "Deadpool",
+        }
+        for category, expected_character in expected.items():
+            response = self.client.get("/api/characters/", {"category": category})
+            self.assertEqual(response.status_code, 200)
+            names = [character["name"] for character in response.json()["characters"]]
+            self.assertIn(expected_character, names)
+            self.assertTrue(all(character["category"] == category
+                                for character in response.json()["characters"]))
+
+    def test_us03_reimport_preserves_category_values(self):
+        call_command("import_characters", stdout=StringIO())
+        call_command("import_characters", stdout=StringIO())
+        self.assertEqual(Character.objects.count(), 49)
+        self.assertEqual(Character.objects.get(name="Hela").category, "Villain")
+        self.assertEqual(Character.objects.get(name="Deadpool").category, "Antihero")
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
