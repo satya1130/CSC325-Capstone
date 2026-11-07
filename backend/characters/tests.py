@@ -232,6 +232,31 @@ class CharacterAPITests(TestCase):
         self.assertIn('<p id="profile-description"></p>', content)
 
 
+    def test_us05_profile_has_accessible_powers_list(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Powers &amp; abilities")
+        self.assertContains(
+            response,
+            '<ul id="profile-powers" aria-label="Character powers and abilities"></ul>',
+        )
+
+    def test_us05_api_returns_complete_character_powers(self):
+        response = self.client.get(f"/api/characters/{self.character.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["powers"],
+            "Powered suit, flight, and repulsor blasts.",
+        )
+
+    def test_us05_api_supports_missing_power_information(self):
+        self.character.powers = ""
+        self.character.save()
+        response = self.client.get(f"/api/characters/{self.character.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["powers"], "")
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
