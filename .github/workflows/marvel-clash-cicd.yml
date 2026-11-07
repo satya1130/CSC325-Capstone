@@ -76,6 +76,9 @@ jobs:
       - name: Test standalone roster filtering
         working-directory: frontend/roster
         run: node --test roster.test.cjs
+      - name: Test character image loading and missing-image fallback
+        working-directory: backend/characters/static/characters
+        run: node --test roster-image.test.cjs
 
   deploy:
     name: Deploy
