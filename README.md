@@ -22,22 +22,21 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 >
 > **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Feature Status](docs/M7_FEATURE_STATUS.md) · [Kanban/PR Evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Nov. 8 Story Evidence](docs/NOV8_STORY_EVIDENCE.md)
 
-### Current implementation snapshot — November 5, 2026
+### Current implementation snapshot — November 7, 2026
 
-- **Working Django MVP:** 49-character CSV import, SQLite-backed character model, roster/profile UI, read-only JSON API, and automated tests.
-- **Merged US-03 filtering (PR #65):** case-insensitive name and powers filters plus optional reviewed category filtering and reset/no-match coverage.
-- **Responsive work (PR #62):** merged Kyle-authored responsive-layout contribution with teammate approval.
-- **CI/CD (PR #63):** merged Setup → Dependencies → Test → Deploy workflow; deployment still requires verified hosting/configuration.
-- **Open work:** [PR #64](https://github.com/satya1130/CSC325-Capstone/pull/64) documentation/epic-scope update and [PR #66](https://github.com/satya1130/CSC325-Capstone/pull/66) merged Render static-file/WhiteNoise production fix.
-- **Prototype-only today:** secure accounts/roles, persistent favorites, computed Brawls, dynamic AI battle generation, and final character image mapping.
-
+- **Working Django roster:** 49 imported Marvel characters with name search, power search, Hero/Villain/Antihero filtering, profile descriptions, organized powers, and 49 uploaded local JPG portraits in the profile and roster cards. The original Figma Brawl remains a design prototype; an executable AI Brawl engine and real member sign-in have not been implemented.
+- **Six selected user stories, two epics:** US-01 through US-06 all have dedicated branches, acceptance tests, successful CI, formal teammate approval, and merged PRs #70, #71, #73, #74, #75 and #76. Additional visual improvements: #77 (profile layout) and #78 (roster images), both merged.
+- **Four-stage CI/CD:** Setup → Dependencies → Test → Deploy triggers on pull requests and pushes to `main`; only successful `main` pushes with the deployment variable enabled trigger the Render deployment hook.
+- **Protected branch:** Active **Protect Main Branch** ruleset requires pull requests, one teammate approval, and a passing `Test` check. No bypass actors.
+- **Production configuration:** Render service and GitHub deployment secret/variable were configured and deployment was previously demonstrated. A green Deploy job proves the hook request succeeded, **not by itself that Render finished serving the new version**; verify live functionality after changes.
+- **November 8 submission:** See the definitive evidence and AI-use section below. Teammate clean-clone sanity check and a **new** under-three-minute unlisted submission video still need verification.
 
 **Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
 
 
-## Current Django MVP — expanded through PR #65
+## Current Django MVP — roster and profile implementation
 
-The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles, filtered read-only APIs and a local SQLite data layer. The CSV source is committed; the generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, persistent favorites and final image mapping remain future work.
+The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles, filtered read-only APIs and a local SQLite data layer. The CSV source is committed; the generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in PRs #76 and #78.
 
 ### Run locally (Windows PowerShell)
 
@@ -55,7 +54,7 @@ cd backend
 
 Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON list, or `/api/characters/1/` for one character. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
 
-**Tests:** The current test module contains **14 Django tests**, covering the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. PR #65 completed with both the `Django tests` and `Marvel Clash CI/CD` checks successful. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
+**Tests:** The Django test suite (expanded after the original midpoint) covers the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. The November 8 feature PRs each have successful `Marvel Clash CI/CD` runs; see the verified per-story matrix below. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
 
 **Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
 
@@ -63,7 +62,7 @@ Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON li
 
 ### Current architecture: Interactive prototype
 
-This section documents the original Figma prototype. A working local Django roster is now included in PR #58, as described above; the app is not deployed. The prototype uses these conceptual layers:
+This section documents the original Figma prototype. The working Django roster originated in PR #58, was restored in PR #60, and has since been deployed to Render. The prototype uses these conceptual layers:
 
 - **Presentation:** Figma desktop/mobile and dark/light screens for Discover, Roster, character profiles, Compare, Favorites, Brawl and results, with Guest, member and admin demonstrations.
 - **Character content:** A curated set of 49 character profiles and illustrations based on the team's spreadsheet and presentation, represented as static prototype content. The original Figma prototype does not call the API; the new local Django roster does.
@@ -271,57 +270,102 @@ For the formal 8–10 minute midpoint group presentation, demonstrate the live l
 
 ---
 
-## CSC 325 Module: Four-Stage CI/CD and Branch Protection (November 8 deliverable)
+## CSC 325 — November 8, 2026 final delivery evidence (current)
 
-### Current status and source of truth
+This section supersedes older pre-deployment and planning-status statements elsewhere in this historical README. The selected scope is **Epic 1: Character Search & Discovery** and **Epic 2: Character Profiles & Information**, with six stories total. **Login / US-21 is not part of this six-story submission.**
 
-- The proposed four-job workflow is `.github/workflows/marvel-clash-cicd.yml`: **Setup**, **Dependencies**, **Test**, **Deploy**. It triggers on pushes and pull requests targeting `main`.
-- `Setup` verifies checkout, Python 3.14, and required project files. `Dependencies` installs `requirements.txt`. `Test` runs Django checks, migrations, the 49-character import/count check, Django tests, and the standalone Node roster test.
-- **Deployment is not yet configured or verified.** `Deploy` requires a real hosting service, repository secret `RENDER_DEPLOY_HOOK`, and repository variable `RENDER_DEPLOY_ENABLED=true`. It runs only after a successful Test on a push to `main`; it is intentionally skipped on pull requests. A skipped Deploy job is **not** deployment evidence. Confirm live URL, deployment completion, and application health separately.
-- The older `django-tests.yml` remains as existing test evidence; the four-stage workflow adds the explicitly named grading stages. A green old workflow alone does not prove four-stage completion.
+### A. Four-stage CI/CD
 
-### Setup for a new contributor
+Workflow: [`.github/workflows/marvel-clash-cicd.yml`](.github/workflows/marvel-clash-cicd.yml). It runs on pull requests targeting `main` and pushes to `main`.
 
-1. Clone `https://github.com/satya1130/CSC325-Capstone.git` and enter the repository.
-2. Install Python 3.14 and Node.js 22; create a virtual environment: `py -3.14 -m venv .venv` on Windows, or `python3.14 -m venv .venv` on Unix.
-3. Activate the venv, install dependencies with `python -m pip install -r requirements.txt`, then `cd backend`.
-4. Run `python manage.py migrate`, `python manage.py import_characters`, `python manage.py test`, and `python manage.py runserver`.
-5. Return to the repository root, create `feature/<issue-short-name>` from the latest `main`, implement one issue with at least one acceptance-criteria test, push the branch and open a PR referencing the Kanban issue.
-6. Wait for the named `Test` check to pass and for at least one **other teammate** to approve the PR before merging. Only mark the issue Done once the required check and review evidence exists.
-7. After merge, verify `Deploy` and the live site if deployment has been configured; otherwise report deployment as pending.
+| Job | Responsibility |
+| --- | --- |
+| **Setup** | Checkout, Python 3.14, validate required files |
+| **Dependencies** | Install Python requirements and verify Django |
+| **Test** | Django system checks, migrations, import/count of 49 characters, Django acceptance/API tests, Node roster tests |
+| **Deploy** | After Test, call Render deploy hook for eligible pushes to `main` |
 
-### Required repository administration (not yet verified complete)
+**Why Deploy shows skipped on PRs:** the deploy job condition explicitly requires a `push` to `refs/heads/main` and repository Actions variable `RENDER_DEPLOY_ENABLED == 'true'`. It is intentionally skipped during PR validation, while the required **Test** check runs.
 
-A repository administrator should create a ruleset under **Settings → Rules → Rulesets** targeting `main`, with:
-- Block direct pushes / require pull requests before merging, with no unnecessary bypass.
-- Require **one approval** from a teammate who did not author the PR.
-- Require the exact CI status check **Test** for merges. After the first workflow run, select the published check from GitHub's available check names. Ensure the selected check reports success on pull requests.
-- Test the rules with a small, real feature PR before relying on them for assessment.
+- [Verified successful four-stage main workflow run (Nov. 7)](https://github.com/satya1130/CSC325-Capstone/actions/runs/42400002283).
+- [Four-stage workflow file](.github/workflows/marvel-clash-cicd.yml).
+- [Original standalone Django tests workflow](.github/workflows/django-tests.yml).
+- Deployment is via Render using encrypted **GitHub Actions secret** `RENDER_DEPLOY_HOOK` and repository variable `RENDER_DEPLOY_ENABLED=true`. Never copy their values into commits, screenshots, README or logs.
+- CI's Deploy success shows the hook returned successfully. Render's final deploy health and the current live images/filters should be manually checked at the hosted site; the hook alone is not a health check.
+- Render's ephemeral filesystem and SQLite startup import are **not durable user-data storage**; adding accounts or persistent favorites requires a persistent production database. The current roster is source-CSV backed.
 
-### Deployment and secrets
+### B. Protected `main` branch
 
-Create a real hosted Django service before activating deployment. Review production settings (separate `DJANGO_SECRET_KEY`, `DJANGO_ALLOWED_HOSTS`, `DJANGO_DEBUG=false`, database persistence, static files, HTTPS, and migrations). Add the provider-issued deploy hook as an encrypted **GitHub Actions repository secret** named `RENDER_DEPLOY_HOOK`; add a repository **Actions variable** `RENDER_DEPLOY_ENABLED` with value `true` only when the hosted application is ready. Never commit a deploy URL containing a token, password, API key, `.env` file, or GitHub secret value. Other application API keys and passwords belong in provider environment variables / GitHub Secrets as appropriate. Check past commits for accidental secrets and rotate exposed keys if necessary.
+The repository's [**Protect Main Branch** ruleset](https://github.com/satya1130/CSC325-Capstone/rules/26650396) is **active**. It targets the default branch (`main`) and has **no bypass actors**. Verified configured rules:
 
-The Deploy stage requests a Render deployment, but the CI run alone does not prove it finished successfully. Review the host's deployment status and test the live Django endpoint before calling the deployment successful.
+- Pull request required before merging.
+- **One submitted teammate APPROVED review** required; COMMENTED does not qualify.
+- Previously submitted approval is dismissed on a subsequent push.
+- GitHub Actions **Test** status check must pass.
+- Force pushes and branch deletions blocked.
 
-### Feature/epic evidence for grading
+A real instance is [US-01 PR #70](https://github.com/satya1130/CSC325-Capstone/pull/70): Kyle (`wilska1-stack`) submitted **APPROVED** before the PR was merged.
 
-The project backlog is tracked in [GitHub Issues](https://github.com/satya1130/CSC325-Capstone/issues), the [original user stories](Project_Description.md), and [Brawl backlog](BRAWL_BACKLOG.md). For **two epics and about six to ten user stories**, provide a per-story record of: issue URL and Kanban card, branch, implementation commit, acceptance criterion and test, PR, teammate approval, passing Test check, and merged commit. Existing features do not retroactively establish a reviewed-PR workflow for each story. Confirm actual board status, priority, owner, and due dates rather than inferring them from planning documents.
+### C. Six-story evidence: two selected epics
 
-### Sanity check and submission evidence
+Each linked PR is a distinct branch contribution, has recorded teammate APPROVED review, was merged into `main`, and ran the `Marvel Clash CI/CD` workflow successfully. Feature implementations sometimes predated these acceptance-test PRs; the story PRs add or improve implementation and regression coverage rather than claiming each feature was first invented in its listed PR.
 
-Before submitting, have a teammate use only these instructions to clone the repository, implement a small change, submit a PR, see automated Test success, receive teammate approval, merge, and verify an actual deployment. Record one end-to-end example in an **unlisted YouTube video under 3 minutes**. Supply the repository/README URL, green four-stage workflow run, one merged PR with a real approval and passing Test, actual Kanban board URL, and video URL. Links are not filled until those artifacts exist.
+| Epic / story | Issue and acceptance focus | Feature branch | Approved merged PR | Passing workflow |
+| --- | --- | --- | --- | --- |
+| **Epic 1 / US-01 Search** | [#4](https://github.com/satya1130/CSC325-Capstone/issues/4): partial, case-insensitive, multi-result and no-match search | `feature/us01-search-acceptance` | [#70](https://github.com/satya1130/CSC325-Capstone/pull/70) — Kyle | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42111610364) |
+| **Epic 1 / US-02 Browse** | [#5](https://github.com/satya1130/CSC325-Capstone/issues/5): all 49 character records, ordering and optional image references | `feature/us02-browse-acceptance` | [#71](https://github.com/satya1130/CSC325-Capstone/pull/71) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42264142738) |
+| **Epic 1 / US-03 Filter** | [#6](https://github.com/satya1130/CSC325-Capstone/issues/6): Hero/Villain/Antihero, 49 imported categories, combined filters | `feature/aryan-us03-character-filters` | [#73](https://github.com/satya1130/CSC325-Capstone/pull/73) — Aryan; earlier [#65](https://github.com/satya1130/CSC325-Capstone/pull/65) | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42390325040) |
+| **Epic 2 / US-04 Description** | [#7](https://github.com/satya1130/CSC325-Capstone/issues/7): labeled character name and description | `feature/us04-profile-description-label` | [#74](https://github.com/satya1130/CSC325-Capstone/pull/74) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42392662214) |
+| **Epic 2 / US-05 Powers** | [#8](https://github.com/satya1130/CSC325-Capstone/issues/8): readable powers, API data and missing-information fallback | `feature/us05-readable-powers` | [#75](https://github.com/satya1130/CSC325-Capstone/pull/75) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42395973186) |
+| **Epic 2 / US-06 Images** | [#9](https://github.com/satya1130/CSC325-Capstone/issues/9): 49 character JPGs, responsive profile portrait, unavailable-image fallback | `feature/us06-character-profile-images` | [#76](https://github.com/satya1130/CSC325-Capstone/pull/76) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42397587339) |
 
-### AI-use disclosure for this CI/CD update
+**Additional enhancements (not additional required stories):** [PR #77](https://github.com/satya1130/CSC325-Capstone/pull/77) makes profile details more consistent; [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78) replaces roster initials with the 49 images. Both are merged. The 49 static JPGs are at [`backend/characters/static/characters/images/`](backend/characters/static/characters/images/) and sourced from a team-supplied slides PDF. Note: Hero/Villain/Antihero classifications are team-proposed editorial choices where fictional character alignment is ambiguous.
 
-ChatGPT assisted with designing the proposed four-job GitHub Actions YAML, arranging test commands for the existing Django and Node projects, adding deployment-secret handling, and drafting these setup and evidence instructions. AI-generated pipeline text must be checked against actual Actions results and deployment logs. **No specific AI error or correction is claimed yet**, since a new four-stage execution and hosted deployment have not been verified. After running CI, document any real error (for example, dependency, missing secret, incorrect job name, or host configuration), the failing log, the correction, and the passing rerun. Do not invent test or deployment results.
+### D. Local onboarding and review-to-deploy walkthrough
 
+On **Windows PowerShell**, install Python 3.14, Node.js 22 and Git, then:
 
-### Verified CI and team evidence (October 31, 2026)
+```powershell
+git clone https://github.com/satya1130/CSC325-Capstone.git
+cd CSC325-Capstone
+py -3.14 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+cd backend
+..\.venv\Scripts\python.exe manage.py migrate --noinput
+..\.venv\Scripts\python.exe manage.py import_characters
+..\.venv\Scripts\python.exe manage.py test
+..\.venv\Scripts\python.exe manage.py runserver
+```
 
-- [Four-stage run #41263298970](https://github.com/satya1130/CSC325-Capstone/actions/runs/41263298970) finished **successfully** on the PR: Setup, Dependencies, and Test succeeded; Deploy was **skipped** because pull requests do not deploy. This is valid CI/test evidence, **not** evidence of actual deployment.
-- [PR #62](https://github.com/satya1130/CSC325-Capstone/pull/62) for US-13 responsive design was merged with a formal **APPROVED** teammate review by Satya. Check and document the acceptance-criteria test and board linkage separately.
-- The planned **six-story / two-epic matrix**, real evidence gaps, and PR workflow are in [docs/NOV8_STORY_EVIDENCE.md](docs/NOV8_STORY_EVIDENCE.md). This does **not** certify six completed stories.
-- The ruleset query returned no rulesets during this audit. A repository administrator still needs to configure and verify the required `main` protection.
-- Any final AI-use description must name errors **actually found** in GitHub logs, not hypothetical ones.
+Open `http://127.0.0.1:8000/` for the roster and `http://127.0.0.1:8000/api/characters/` for the API. In a new terminal from repo root, run the original frontend tests with `cd frontend/roster; node --test roster.test.cjs`. The importer uses `update_or_create` and can run repeatedly without duplicate character names.
 
+For a new story or fix, branch from updated `main` with `git checkout -b feature/<issue-name>`, implement code and an acceptance test, then push `git push -u origin <branch-name>`. Open a PR into `main`, reference its issue, request a real teammate **Approve**, wait for green **Test**, and merge. The new `main` workflow starts Deploy only under its conditional hook configuration. Check the host's actual deployment and the live UI after merging. Protected `main` intentionally disallows bypassing approval/CI.
+
+Do **not** commit local SQLite files, `.env`, secret tokens, deployment hook URLs or API keys. The repo's standard Django read-only character endpoints do not require external AI keys.
+
+### E. AI-use disclosure and actual corrections
+
+ChatGPT was used to assist with the four-stage GitHub Actions workflow, Django/JS changes and acceptance tests for the selected user stories, CSS/profile/roster presentation, 49-image integration instructions, branch and PR creation, and README/evidence writing. The team's own character data, images and Figma design were used as inputs. Every change was submitted to GitHub with a visible diff and required a real teammate review and successful CI before merge. AI-generated outputs were **not treated as independently verified facts**.
+
+Recorded issues and corrections from actual work (not invented examples):
+
+1. **Render static assets:** Initial production CSS/JS did not load. PR [#66](https://github.com/satya1130/CSC325-Capstone/pull/66) added WhiteNoise/static file and startup support; a production-storage/test-mode issue was then corrected before tests passed. The site was visually checked after deployment.
+2. **US-03 wrong branch / conflicts:** The category dropdown changes were initially submitted on a newly created branch as PR [#72](https://github.com/satya1130/CSC325-Capstone/pull/72). After a request to use the original filtering branch, the changes were transferred, the old branch/main divergence was reconciled, the duplicate PR closed, and [#73](https://github.com/satya1130/CSC325-Capstone/pull/73) reviewed and merged.
+3. **US-04 wording and failing test:** The first version used 'Description'; it was changed to the requested **'Character Description'** label and its acceptance test updated on the same PR [#74](https://github.com/satya1130/CSC325-Capstone/pull/74). An earlier test run failed; a later run passed before review and merge.
+4. **US-06 image delivery:** The team provided a PDF slide deck with one character image per page. A ZIP was first committed in the image folder, but the application required individual JPEG static assets; all 49 JPGs were then uploaded and verified. [#76](https://github.com/satya1130/CSC325-Capstone/pull/76) merged with those files, and [#78](https://github.com/satya1130/CSC325-Capstone/pull/78) added roster-card portraits.
+
+Limitations: the images are third-party Marvel film visuals supplied for an **unofficial student fan prototype**; no commercial rights are claimed. The Figma Brawl engine and true login remain conceptual, and Render's hook success is not an automatic end-to-end live health assertion.
+
+### F. Final team sanity check and five submission links
+
+**Teammate sanity check: PENDING independent verification.** Have a teammate who did not perform the setup follow Section D using a clean clone, run the tests, open a small feature PR, get another teammate's approval, confirm Test passes, and verify the live post-merge site. Record any onboarding issues honestly.
+
+| Required link | Current evidence |
+| --- | --- |
+| 1. Repository and README | https://github.com/satya1130/CSC325-Capstone |
+| 2. Successful four-stage GitHub Actions run | https://github.com/satya1130/CSC325-Capstone/actions/runs/42400002283 |
+| 3. One approved, merged PR with passing Test | https://github.com/satya1130/CSC325-Capstone/pull/76 |
+| 4. Actual GitHub Projects Kanban board | https://github.com/users/satya1130/projects/2/views/1 |
+| 5. **New unlisted video under three minutes** showing one story's PR → approval → green Test → merge and deploy evidence | **PENDING: record, upload unlisted, and insert real YouTube link** |
+
+The older 8–10 minute midpoint presentation and its separate video are **not** substitutes for the November 8 submission's ≤3-minute recorded story walkthrough.
