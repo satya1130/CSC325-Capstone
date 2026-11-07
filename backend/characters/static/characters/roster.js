@@ -115,14 +115,8 @@ async function init(doc) {
     const data = await response.json();
 
     characters = data.characters;
-    const categories = [...new Set(characters.map(c => c.category).filter(Boolean))].sort();
-    for (const category of categories) {
-      const option = doc.createElement("option");
-      option.value = category;
-      option.textContent = category;
-      categoryFilter.append(option);
-    }
-    categoryFilter.disabled = categories.length === 0;
+    // Fixed character types are defined in the HTML dropdown.
+    // The selected value is applied by renderRoster through filterCharacters.
     renderRoster(doc, characters);
 
   } catch (error) {
