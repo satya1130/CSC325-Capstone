@@ -324,6 +324,19 @@ class CharacterAPITests(TestCase):
                 self.assertIsNotNone(finders.find(character.image_ref))
 
 
+    def test_all_49_character_descriptions_and_powers_are_present(self):
+        call_command("import_characters", stdout=StringIO())
+        characters = Character.objects.all()
+        self.assertEqual(characters.count(), 49)
+        for character in characters:
+            with self.subTest(character=character.name):
+                self.assertTrue(character.description.strip())
+                self.assertTrue(character.powers.strip())
+                self.assertLessEqual(len(character.description), 150)
+                self.assertNotIn("He train hard", character.powers)
+                self.assertNotIn("trhe", character.powers)
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
