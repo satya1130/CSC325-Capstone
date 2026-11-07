@@ -304,6 +304,26 @@ class CharacterAPITests(TestCase):
         )
 
 
+    def test_roster_card_uses_character_images_instead_of_initials(self):
+        from pathlib import Path
+        js_path = Path(__file__).resolve().parent / "static" / "characters" / "roster.js"
+        source = js_path.read_text(encoding="utf-8")
+        self.assertIn('avatar.className = "card-portrait"', source)
+        self.assertIn('picture.alt = `Portrait of ${character.name}`', source)
+        self.assertIn('picture.loading = "lazy"', source)
+        self.assertIn('fallback.textContent = "Image unavailable"', source)
+        self.assertNotIn('avatar.className = "initial"', source)
+
+    def test_all_49_roster_images_are_available_after_import(self):
+        call_command("import_characters", stdout=StringIO())
+        characters = Character.objects.all()
+        self.assertEqual(characters.count(), 49)
+        for character in characters:
+            with self.subTest(name=character.name):
+                self.assertIsNotNone(character.image_ref)
+                self.assertIsNotNone(finders.find(character.image_ref))
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
