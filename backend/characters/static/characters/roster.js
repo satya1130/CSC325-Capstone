@@ -66,8 +66,35 @@ function renderRoster(doc, characters) {
   }
 }
 
+function showCharacterImage(doc, character) {
+  const dialog = doc.getElementById("profile");
+  const image = doc.getElementById("profile-image");
+  const placeholder = doc.getElementById("profile-image-placeholder");
+  const path = String(character.image_ref ?? "");
+  image.hidden = true;
+  image.removeAttribute("src");
+  placeholder.hidden = false;
+  placeholder.textContent = character.name
+    ? `No image available for ${character.name}`
+    : "Character image unavailable";
+
+  // Only images checked into our project may be loaded.
+  if (!/^characters\/images\/[a-z0-9-]+\.jpg$/.test(path)) return;
+  image.alt = `Portrait of ${character.name}`;
+  image.onload = () => {
+    image.hidden = false;
+    placeholder.hidden = true;
+  };
+  image.onerror = () => {
+    image.hidden = true;
+    placeholder.hidden = false;
+  };
+  image.src = `${dialog.dataset.staticBase || "/static/"}${path}`;
+}
+
 function openProfile(doc, character) {
   doc.getElementById("profile-name").textContent = character.name;
+  showCharacterImage(doc, character);
 
   doc.getElementById("profile-description").textContent =
     character.description;

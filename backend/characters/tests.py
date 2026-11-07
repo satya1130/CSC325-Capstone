@@ -257,6 +257,33 @@ class CharacterAPITests(TestCase):
         self.assertEqual(response.json()["powers"], "")
 
 
+    def test_us06_profile_has_image_and_placeholder(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="profile-image"')
+        self.assertContains(response, 'id="profile-image-placeholder"')
+        self.assertContains(response, 'data-static-base=')
+
+    def test_us06_importer_sets_reference_only_for_available_images(self):
+        call_command("import_characters", stdout=StringIO())
+        from pathlib import Path
+        image_path = (
+            Path(__file__).resolve().parent / "static"
+            / "characters" / "images" / "iron-man.jpg"
+        )
+        expected = "characters/images/iron-man.jpg" if image_path.is_file() else None
+        self.assertEqual(Character.objects.get(name="Iron Man").image_ref, expected)
+
+    def test_us06_api_returns_checked_in_image_reference(self):
+        self.character.image_ref = "characters/images/iron-man.jpg"
+        self.character.save()
+        response = self.client.get(f"/api/characters/{self.character.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["image_ref"], "characters/images/iron-man.jpg"
+        )
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 

@@ -2,6 +2,7 @@ import csv
 from pathlib import Path
 
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
 from characters.models import Character
 
 
@@ -29,12 +30,16 @@ class Command(BaseCommand):
                 if not name:
                     continue
 
+                image_ref = f"characters/images/{slugify(name)}.jpg"
+                image_path = csv_path.parents[1] / "static" / image_ref
+
                 Character.objects.update_or_create(
                     name=name,
                     defaults={
                         "description": row["description"].strip(),
                         "powers": row["powers"].strip(),
                         "category": row.get("category", "").strip() or None,
+                        "image_ref": image_ref if image_path.is_file() else None,
                     }
                 )
 

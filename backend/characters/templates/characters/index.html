@@ -46,10 +46,14 @@
         </section>
     </main>
 
-    <dialog id="profile">
+    <dialog id="profile" data-static-base="{% get_static_prefix %}">
         <div class="dialog-inner">
             <button type="button" id="close" class="close" aria-label="Close character profile">×</button>
             <p class="eyebrow">CHARACTER PROFILE</p>
+            <div class="profile-art" id="profile-art">
+                <img id="profile-image" alt="" hidden>
+                <div id="profile-image-placeholder" class="profile-art-placeholder" role="img" aria-label="Character portrait unavailable">Character image unavailable</div>
+            </div>
             <p class="profile-description-label">Character Description</p>
             <h2 id="profile-name"></h2>
             <p id="profile-description"></p>
