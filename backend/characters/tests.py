@@ -226,7 +226,7 @@ class CharacterAPITests(TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         content = response.content.decode("utf-8")
-        label = '<p class="profile-description-label">Description</p>'
+        label = '<p class="profile-description-label">Character Description</p>'
         self.assertIn(label, content)
         self.assertLess(content.index(label), content.index('<h2 id="profile-name"></h2>'))
         self.assertIn('<p id="profile-description"></p>', content)
