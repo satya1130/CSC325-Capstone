@@ -40,3 +40,8 @@ footer{padding-inline:16px;line-height:1.6}
 /* US-04: readable section label under the character profile heading. */
 .profile-description-label{margin:14px 0 2px;color:#d7dfea;font-size:14px;font-weight:700;letter-spacing:.02em}
 .profile-description-label + #profile-name{margin-top:2px}
+
+/* US-05: readable powers in profile dialog */
+#profile-powers{margin:8px 0 12px;padding-left:22px;color:#e0e8f6;line-height:1.65}
+#profile-powers li{margin:6px 0;padding-left:3px}
+#profile-powers li::marker{color:#ff7777}
