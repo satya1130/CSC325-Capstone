@@ -72,8 +72,18 @@ function openProfile(doc, character) {
   doc.getElementById("profile-description").textContent =
     character.description;
 
-  doc.getElementById("profile-powers").textContent =
-    character.powers || "Not available in the source data.";
+  // Preserve each power as its own readable, accessible list item.
+  const powersList = doc.getElementById("profile-powers");
+  powersList.replaceChildren();
+  const powers = String(character.powers ?? "")
+    .split(/[.;\n]+/)
+    .map(power => power.trim())
+    .filter(Boolean);
+  for (const power of (powers.length ? powers : ["Not available in the source data."])) {
+    const item = doc.createElement("li");
+    item.textContent = power;
+    powersList.append(item);
+  }
 
   doc.getElementById("profile").showModal();
 }
