@@ -74,3 +74,10 @@ dialog#profile{width:min(94vw,820px)}
   .profile-details{gap:18px}
   #profile #profile-powers li{font-size:13px}
 }
+
+/* Roster character portraits replace the original initial tiles. */
+.card .card-portrait{position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:12px;background:#263149;display:grid;place-items:center}
+.card .card-portrait img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.card .card-portrait-fallback{padding:12px;color:#c2cbdd;font-size:13px;text-align:center}
+.card .card-portrait-fallback[hidden]{display:none}
+.card:has(.card-portrait) h2{margin-top:16px}
