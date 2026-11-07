@@ -264,10 +264,15 @@ class CharacterAPITests(TestCase):
         self.assertContains(response, 'id="profile-image-placeholder"')
         self.assertContains(response, 'data-static-base=')
 
-    def test_us06_missing_images_keep_empty_reference(self):
-        # A new character without a checked-in asset has no image URL.
+    def test_us06_importer_sets_reference_only_for_available_images(self):
         call_command("import_characters", stdout=StringIO())
-        self.assertIsNone(Character.objects.get(name="Iron Man").image_ref)
+        from pathlib import Path
+        image_path = (
+            Path(__file__).resolve().parent / "static"
+            / "characters" / "images" / "iron-man.jpg"
+        )
+        expected = "characters/images/iron-man.jpg" if image_path.is_file() else None
+        self.assertEqual(Character.objects.get(name="Iron Man").image_ref, expected)
 
     def test_us06_api_returns_checked_in_image_reference(self):
         self.character.image_ref = "characters/images/iron-man.jpg"
