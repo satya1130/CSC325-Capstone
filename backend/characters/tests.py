@@ -257,6 +257,28 @@ class CharacterAPITests(TestCase):
         self.assertEqual(response.json()["powers"], "")
 
 
+    def test_us06_profile_has_image_and_placeholder(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="profile-image"')
+        self.assertContains(response, 'id="profile-image-placeholder"')
+        self.assertContains(response, 'data-static-base=')
+
+    def test_us06_missing_images_keep_empty_reference(self):
+        # A new character without a checked-in asset has no image URL.
+        call_command("import_characters", stdout=StringIO())
+        self.assertIsNone(Character.objects.get(name="Iron Man").image_ref)
+
+    def test_us06_api_returns_checked_in_image_reference(self):
+        self.character.image_ref = "characters/images/iron-man.jpg"
+        self.character.save()
+        response = self.client.get(f"/api/characters/{self.character.id}/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["image_ref"], "characters/images/iron-man.jpg"
+        )
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
