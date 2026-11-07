@@ -34,6 +34,7 @@ class Command(BaseCommand):
                     defaults={
                         "description": row["description"].strip(),
                         "powers": row["powers"].strip(),
+                        "category": row.get("category", "").strip() or None,
                     }
                 )
 
