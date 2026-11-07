@@ -2,6 +2,7 @@
 from django.test import TestCase
 from django.core.management import call_command
 from django.contrib import admin
+from django.contrib.staticfiles import finders
 from io import StringIO
 from .models import Character
 
@@ -115,6 +116,69 @@ class CharacterAPITests(TestCase):
         response = self.client.get("/api/characters/", {"category": "hero"})
         self.assertEqual([c["name"] for c in response.json()["characters"]], ["Thor"])
 
+
+    def test_us01_case_insensitive_partial_name_search(self):
+        Character.objects.create(
+            name="Iron Patriot",
+            description="Armored hero",
+            powers="Powered armor"
+        )
+        Character.objects.create(
+            name="Thor",
+            description="Asgardian hero",
+            powers="Lightning"
+        )
+        response = self.client.get("/api/characters/", {"q": "iRoN"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            [entry["name"] for entry in response.json()["characters"]],
+            ["Iron Man", "Iron Patriot"],
+        )
+
+    def test_us01_no_match_returns_empty_results(self):
+        response = self.client.get("/api/characters/", {"q": "not-a-marvel-character"})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"characters": []})
+
+    def test_us01_search_interface_includes_results_and_empty_message(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="search"')
+        self.assertContains(response, 'id="roster"')
+        self.assertContains(response, 'id="empty"')
+        self.assertContains(response, "No characters found")
+
+
+    def test_us02_browse_all_imported_characters(self):
+        call_command("import_characters", stdout=StringIO())
+        response = self.client.get("/api/characters/")
+        self.assertEqual(response.status_code, 200)
+        names = [entry["name"] for entry in response.json()["characters"]]
+        self.assertEqual(len(names), 49)
+        self.assertEqual(names, sorted(names))
+
+    def test_us02_browse_includes_names_and_optional_image_references(self):
+        self.character.image_ref = "characters/iron-man.png"
+        self.character.save()
+        Character.objects.create(
+            name="Thor",
+            description="Thunder hero",
+            powers="Lightning",
+        )
+        response = self.client.get("/api/characters/")
+        entries = response.json()["characters"]
+        self.assertEqual([entry["name"] for entry in entries], ["Iron Man", "Thor"])
+        self.assertEqual(entries[0]["image_ref"], "characters/iron-man.png")
+        self.assertIsNone(entries[1]["image_ref"])
+
+    def test_us02_browse_page_renders_full_roster_container(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="roster"')
+        self.assertContains(response, 'id="count"')
+        self.assertContains(response, "characters/roster.js")
+
+
     def test_us03_imports_all_49_character_categories(self):
         call_command("import_characters", stdout=StringIO())
         self.assertEqual(Character.objects.count(), 49)
@@ -157,3 +221,10 @@ class CharacterAPITests(TestCase):
         self.assertEqual(Character.objects.get(name="Hela").category, "Villain")
         self.assertEqual(Character.objects.get(name="Deadpool").category, "Antihero")
 
+
+class RenderStaticAssetsTests(TestCase):
+    """Assets must be discoverable for Render collectstatic with DEBUG=False."""
+
+    def test_roster_css_and_javascript_exist(self):
+        self.assertIsNotNone(finders.find('characters/style.css'))
+        self.assertIsNotNone(finders.find('characters/roster.js'))
