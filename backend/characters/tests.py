@@ -226,7 +226,7 @@ class CharacterAPITests(TestCase):
         response = self.client.get("/")
         self.assertEqual(response.status_code, 200)
         content = response.content.decode("utf-8")
-        label = '<p class="profile-description-label">Character Description</p>'
+        label = '<p id="profile-description-heading" class="profile-description-label">Character Description</p>'
         self.assertIn(label, content)
         self.assertLess(content.index(label), content.index('<h2 id="profile-name"></h2>'))
         self.assertIn('<p id="profile-description"></p>', content)
@@ -281,6 +281,26 @@ class CharacterAPITests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json()["image_ref"], "characters/images/iron-man.jpg"
+        )
+
+
+    def test_profile_layout_groups_image_description_and_powers(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'class="profile-layout"')
+        self.assertContains(response, 'class="profile-details"')
+        self.assertContains(response, 'class="profile-section"')
+        self.assertContains(response, 'id="profile-image"')
+        self.assertContains(response, 'id="profile-description"')
+        self.assertContains(response, 'id="profile-powers"')
+        markup = response.content.decode("utf-8")
+        self.assertLess(
+            markup.index('id="profile-image"'),
+            markup.index('id="profile-description"'),
+        )
+        self.assertLess(
+            markup.index('id="profile-description"'),
+            markup.index('id="profile-powers"'),
         )
 
 
