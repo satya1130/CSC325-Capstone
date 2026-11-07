@@ -48,7 +48,7 @@ function renderRoster(doc, characters) {
     fallback.setAttribute("role", "img");
     fallback.setAttribute("aria-label", `Image unavailable for ${character.name}`);
     avatar.append(fallback);
-    if (/^characters\\/images\\/[a-z0-9-]+\\.jpg$/.test(imagePath)) {
+    if (/^characters\/images\/[a-z0-9-]+\.jpg$/.test(imagePath)) {
       const picture = doc.createElement("img");
       picture.alt = `Portrait of ${character.name}`;
       picture.loading = "lazy";
