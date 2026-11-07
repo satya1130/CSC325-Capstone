@@ -76,7 +76,7 @@ function openProfile(doc, character) {
   const powersList = doc.getElementById("profile-powers");
   powersList.replaceChildren();
   const powers = String(character.powers ?? "")
-    .split(/[.;\\n]+/)
+    .split(/[.;\n]+/)
     .map(power => power.trim())
     .filter(Boolean);
   for (const power of (powers.length ? powers : ["Not available in the source data."])) {
