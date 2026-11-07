@@ -37,3 +37,6 @@ footer{padding-inline:16px;line-height:1.6}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
 }
+/* US-04: readable section label under the character profile heading. */
+.profile-description-label{margin:14px 0 2px;color:#d7dfea;font-size:14px;font-weight:700;letter-spacing:.02em}
+.profile-description-label + #profile-name{margin-top:2px}
