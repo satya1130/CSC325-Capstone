@@ -222,6 +222,16 @@ class CharacterAPITests(TestCase):
         self.assertEqual(Character.objects.get(name="Deadpool").category, "Antihero")
 
 
+    def test_us04_profile_shows_description_label_before_character_name(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode("utf-8")
+        label = '<p class="profile-description-label">Character Description</p>'
+        self.assertIn(label, content)
+        self.assertLess(content.index(label), content.index('<h2 id="profile-name"></h2>'))
+        self.assertIn('<p id="profile-description"></p>', content)
+
+
 class RenderStaticAssetsTests(TestCase):
     """Assets must be discoverable for Render collectstatic with DEBUG=False."""
 
