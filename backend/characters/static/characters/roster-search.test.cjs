@@ -21,15 +21,15 @@ const sample = [
 ];
 const names = (results) => Array.from(results, character => character.name);
 
-test("US-01: searches first-letter matches before other partial matches", () => {
-  assert.deepEqual(names(filterCharacters(sample, "s")), [
-    "Spider-Man", "Scarlet Witch", "Doctor Strange", "Thanos",
-  ]);
+test("US-01: first letters match only names that start with the query", () => {
+  assert.deepEqual(names(filterCharacters(sample, "s")), ["Spider-Man", "Scarlet Witch"]);
+  assert.deepEqual(names(filterCharacters(sample, "Th")), ["Thanos"]);
 });
 
-test("US-01: partial names still work regardless of case", () => {
-  assert.deepEqual(names(filterCharacters(sample, "  pIDer ")), ["Spider-Man"]);
-  assert.deepEqual(names(filterCharacters(sample, "MAN")), ["Spider-Man", "Iron Man"]);
+test("US-01: name prefixes work regardless of case or surrounding spaces", () => {
+  assert.deepEqual(names(filterCharacters(sample, "  spID  ")), ["Spider-Man"]);
+  assert.deepEqual(names(filterCharacters(sample, "IRON")), ["Iron Man"]);
+  assert.deepEqual(names(filterCharacters(sample, "man")), []);
 });
 
 test("US-01: empty search preserves original roster order", () => {
@@ -40,9 +40,9 @@ test("US-01: unmatched search returns no characters", () => {
   assert.deepEqual(names(filterCharacters(sample, "not-a-character")), []);
 });
 
-test("US-03: power and category filters continue to work with smart search", () => {
+test("US-03: power and category filters continue to work with prefix search", () => {
   assert.deepEqual(names(filterCharacters(sample, "s", "magic", "hero")), [
-    "Scarlet Witch", "Doctor Strange",
+    "Scarlet Witch",
   ]);
   assert.deepEqual(names(filterCharacters(sample, "", "", "villain")), ["Thanos"]);
 });
