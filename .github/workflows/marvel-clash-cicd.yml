@@ -76,6 +76,9 @@ jobs:
       - name: Test standalone roster filtering
         working-directory: frontend/roster
         run: node --test roster.test.cjs
+      - name: Test alphabetical power dropdown and filter behavior
+        working-directory: backend/characters/static/characters
+        run: node --test roster-powers-dropdown.test.cjs
 
   deploy:
     name: Deploy
