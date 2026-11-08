@@ -12,18 +12,12 @@ function filterCharacters(characters, query, powers = "", category = "") {
   const q = normalize(query);
   const powerQuery = normalize(powers);
   const categoryQuery = normalize(category);
-  const matches = characters.filter(character =>
-    normalize(character.name).includes(q) &&
+  // Match names from the beginning only; keep case-insensitive search
+  // and the existing power/category filters.
+  return characters.filter(character =>
+    normalize(character.name).startsWith(q) &&
     normalize(character.powers).includes(powerQuery) &&
     (!categoryQuery || normalize(character.category) === categoryQuery)
-  );
-
-  // Prioritize names starting with the search without excluding partial matches.
-  // When the search is empty, preserve the original alphabetical roster order.
-  if (!q) return matches;
-  return matches.sort((a, b) =>
-    Number(normalize(b.name).startsWith(q)) -
-    Number(normalize(a.name).startsWith(q))
   );
 }
 
