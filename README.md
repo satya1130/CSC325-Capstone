@@ -356,18 +356,10 @@ Recorded issues and corrections from actual work (not invented examples):
 
 Limitations: the images are third-party Marvel film visuals supplied for an **unofficial student fan prototype**; no commercial rights are claimed. The Figma Brawl engine and true login remain conceptual, and Render's hook success is not an automatic end-to-end live health assertion.
 
-### F. Final team sanity check and five submission links
+### F. Final teammate sanity check
 
 **Teammate sanity check: COMPLETE (November 7, 2026).** Kyle independently cloned the latest `main` repository on macOS, installed dependencies, applied migrations, imported 49 Marvel characters, and launched the local Django website. He reported **36 Django tests passing**, confirmed 49 character images and descriptions, and checked search, filters, and the character API. See his written findings in [`docs/sanity-check-kyle.md`](docs/sanity-check-kyle.md) and his [merged PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), which Satya formally approved.
 
 Kyle also documented three honest follow-ups: searching `spiderman` without a hyphen returns no results, a local missing `staticfiles` directory warning appears, and `/favicon.ico` returns 404. None prevented the tests from passing. After PR #81 merged, the [main-branch four-stage workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/42417364258) completed successfully, including the Render deployment-hook step. **The successful hook does not independently prove the live site is healthy; live deployment verification remains a separate check.**
-
-| Required link | Current evidence |
-| --- | --- |
-| 1. Repository and README | https://github.com/satya1130/CSC325-Capstone |
-| 2. Successful four-stage GitHub Actions run | https://github.com/satya1130/CSC325-Capstone/actions/runs/42417364258 |
-| 3. One approved, merged PR with passing Test | https://github.com/satya1130/CSC325-Capstone/pull/76 |
-| 4. Actual GitHub Projects Kanban board | https://github.com/users/satya1130/projects/2/views/1 |
-| 5. **New unlisted video under three minutes** showing one story's PR → approval → green Test → merge and deploy evidence | **PENDING: record, upload unlisted, and insert real YouTube link** |
 
 The older 8–10 minute midpoint presentation and its separate video are **not** substitutes for the November 8 submission's ≤3-minute recorded story walkthrough.
