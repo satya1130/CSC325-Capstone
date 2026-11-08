@@ -29,7 +29,7 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 - **Four-stage CI/CD:** Setup → Dependencies → Test → Deploy triggers on pull requests and pushes to `main`; only successful `main` pushes with the deployment variable enabled trigger the Render deployment hook.
 - **Protected branch:** Active **Protect Main Branch** ruleset requires pull requests, one teammate approval, and a passing `Test` check. No bypass actors.
 - **Production configuration:** Render service and GitHub deployment secret/variable were configured and deployment was previously demonstrated. A green Deploy job proves the hook request succeeded, **not by itself that Render finished serving the new version**; verify live functionality after changes.
-- **November 8 submission:** See the definitive evidence and AI-use section below. Teammate clean-clone sanity check and a **new** under-three-minute unlisted submission video still need verification.
+- **November 8 submission:** Kyle's independent clean-clone sanity check is complete in [PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), with 36 passing Django tests and documented minor findings. The **new** unlisted video under three minutes remains to be recorded and linked.
 
 **Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
 
@@ -358,12 +358,14 @@ Limitations: the images are third-party Marvel film visuals supplied for an **un
 
 ### F. Final team sanity check and five submission links
 
-**Teammate sanity check: PENDING independent verification.** Have a teammate who did not perform the setup follow Section D using a clean clone, run the tests, open a small feature PR, get another teammate's approval, confirm Test passes, and verify the live post-merge site. Record any onboarding issues honestly.
+**Teammate sanity check: COMPLETE (November 7, 2026).** Kyle independently cloned the latest `main` repository on macOS, installed dependencies, applied migrations, imported 49 Marvel characters, and launched the local Django website. He reported **36 Django tests passing**, confirmed 49 character images and descriptions, and checked search, filters, and the character API. See his written findings in [`docs/sanity-check-kyle.md`](docs/sanity-check-kyle.md) and his [merged PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), which Satya formally approved.
+
+Kyle also documented three honest follow-ups: searching `spiderman` without a hyphen returns no results, a local missing `staticfiles` directory warning appears, and `/favicon.ico` returns 404. None prevented the tests from passing. After PR #81 merged, the [main-branch four-stage workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/42417364258) completed successfully, including the Render deployment-hook step. **The successful hook does not independently prove the live site is healthy; live deployment verification remains a separate check.**
 
 | Required link | Current evidence |
 | --- | --- |
 | 1. Repository and README | https://github.com/satya1130/CSC325-Capstone |
-| 2. Successful four-stage GitHub Actions run | https://github.com/satya1130/CSC325-Capstone/actions/runs/42400002283 |
+| 2. Successful four-stage GitHub Actions run | https://github.com/satya1130/CSC325-Capstone/actions/runs/42417364258 |
 | 3. One approved, merged PR with passing Test | https://github.com/satya1130/CSC325-Capstone/pull/76 |
 | 4. Actual GitHub Projects Kanban board | https://github.com/users/satya1130/projects/2/views/1 |
 | 5. **New unlisted video under three minutes** showing one story's PR → approval → green Test → merge and deploy evidence | **PENDING: record, upload unlisted, and insert real YouTube link** |
