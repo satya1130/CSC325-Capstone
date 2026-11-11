@@ -1,79 +1,73 @@
-# Marvel Clash — Proposed Character API Contract
+# Marvel Clash — Character API Contract
 
-**Issue:** #43  
-**Author:** Aryan Grewal  
-**Status:** Character list/detail endpoints and 49-character roster **merged into `main` in PR #60**. First `main` GitHub Actions run passed. This is a local Django MVP, not a deployed API.
+**Original author:** Aryan Grewal · **Issue:** #43 · **Updated:** November 10, 2026
 
-## Scope and dependencies
+> This document reflects the **MongoDB Atlas-backed Django application** on `main` after [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88). The first version described the earlier SQLite prototype restored in PR #60. The roster is now deployed on Render; the Figma Brawl is still a prototype.
 
-This document specifies the current JSON interface on `main` for the Django character backend, CSV importer and roster frontend. PR #60 restored the code after PR #59 reverted the original PR #58. [GitHub CI passed](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711); the application is not publicly deployed.
+## Architecture and source data
 
-Source character descriptions and powers will come from the team's reviewed `Marvel.xlsx` dataset. Categories and image references must be reviewed during import; neither should be guessed or populated with unlicensed image URLs.
+The Django `characters` model stores 49 Marvel characters in **MongoDB Atlas**, configured with `django_mongodb_backend`. The repeatable [CSV importer](../backend/characters/management/commands/import_characters.py) reads the checked-in [49-character CSV](../backend/characters/data/marvel_characters.csv) and uses `update_or_create(name=...)` to avoid duplicates. JPG portraits are checked into [static assets](../backend/characters/static/characters/images/). The data and use of third-party artwork still need editorial/licensing review.
 
-## Character object
+The backend uses Django's **`JsonResponse`**, not Django REST Framework viewsets. The API is read-only, unauthenticated character browsing; it is **not** an account or Brawl service.
 
-| Field | JSON type | Meaning and source |
+## Character representation
+
+| Field | JSON type | Current meaning |
 | --- | --- | --- |
-| `id` | string | SQLite auto-increment primary key, exposed as a string; stable within one database only |
-| `name` | string | Character name from reviewed source data |
-| `description` | string | Description from reviewed source data |
-| `powers` | string | Source-backed powers; agree on one representation during implementation |
-| `image_ref` | string or null | Reviewed asset reference, or null when no cleared asset exists |
-| `category` | string or null | Team-reviewed category; null if unclassified |
+| `id` | string | MongoDB ObjectId, serialized as a **24-character hexadecimal string** |
+| `name` | string | Unique Marvel character name |
+| `description` | string | Character description |
+| `powers` | string | Period-separated or otherwise textual abilities |
+| `image_ref` | string or null | Relative local static JPG reference, when available |
+| `category` | string or null | Team-assigned Hero, Villain, or Antihero category |
 
-**ID stability limitation:** The existing API uses SQLite-generated primary keys. An ID remains fixed while its record stays in the same database, but may change if a database is recreated or records are imported in a different order. Clients must not treat these IDs as globally permanent. A source-backed unique slug/ID and migration are possible follow-up work, requiring team API-contract agreement (Aryan's review of PR #58).
+ObjectIds remain stable for existing documents, including repeat imports by name, but clients should not assume the same ID survives deleting and recreating the database. An independently sourced permanent identifier could be added later with team agreement.
 
-The current implementation stores `powers` as a string. The category taxonomy and licensed image assets are still pending team review. Do not infer battle damage, health, weaknesses, or other canonical facts from this contract.
+## HTTP endpoints
 
-## Proposed REST routes
+### `GET /api/characters/`
 
-### GET /api/characters/
+Returns HTTP **200** and an alphabetically sorted `{"characters":[...]}` object. Optional case-insensitive query parameters can be combined:
 
-Returns HTTP **200** and a JSON object with `characters`, an array of character objects. An empty catalogue returns `{"characters": []}` with HTTP 200.
+- `q`: partial match within the character name
+- `powers`: partial match within the powers text
+- `category`: exact category match, ignoring case
 
-Illustrative response **shape only**, not a claim about a verified character row:
+No matches returns `{"characters":[]}`. Example **illustrative structure** (not a claim about an actual database record):
 
 ```json
 {
   "characters": [
     {
-      "id": "1",
+      "id": "507f1f77bcf86cd799439011",
       "name": "Iron Man",
-      "description": "Smart inventor who battles in tough armor.",
-      "powers": "Smart mind. Powered suit. The ability to fly. Repulsor blasts. Missile volleys. Energy guns.",
-      "image_ref": null,
-      "category": null
+      "description": "Example character description.",
+      "powers": "Powered suit. Flight.",
+      "image_ref": "characters/images/iron-man.jpg",
+      "category": "Hero"
     }
   ]
 }
 ```
 
-### GET /api/characters/{id}/
+### `GET /api/characters/{objectid}/`
 
-Returns HTTP **200** and one character object for a known ID. Unknown IDs return HTTP **404**:
+Returns one character object with the same six fields. The URL parameter must represent a MongoDB ObjectId, **not** the old numeric SQLite ID. Both a malformed ID and an unknown valid ObjectId return HTTP **404**:
 
 ```json
-{
-  "error": {
-    "code": "character_not_found",
-    "message": "Character not found."
-  }
-}
+{"error":{"code":"character_not_found","message":"Character not found."}}
 ```
 
-Invalid route/method behavior follows Django's routing conventions; unsupported methods should return HTTP **405** if the route matches. No authentication requirement is proposed for read-only character browsing.
+The list and detail views reject unsupported methods, including POST, with HTTP **405** and `{"error":"Method not allowed"}`.
 
-## Acceptance and review checklist
+## Tests and implementation evidence
 
-- [x] Drafted required fields, list/detail routes, and example JSON.
-- [x] Specified empty-list and missing-character behavior.
-- [x] Distinguished sourced roster data from invented simulation attributes.
-- [ ] Salih/assigned importer confirms mapping to reviewed workbook and image manifest.
-- [x] Django roster frontend uses the `characters` response wrapper and agreed property names.
-- [x] Implementation uses a string for `powers`; category taxonomy remains unreviewed.
-- [x] Backend routes and original eight tests are on `main` following merged PR #60.
-- [ ] Decide with the team whether to introduce source-backed persistent character IDs.
+The [Django tests](../backend/characters/tests.py) cover the list/detail JSON API, missing and malformed IDs, method restrictions, search/category/power filtering, importer idempotency, profile/roster rendering, and character imagery. The [Django tests workflow](../.github/workflows/django-tests.yml) and [four-stage CI/CD workflow](../.github/workflows/marvel-clash-cicd.yml) run against a temporary **MongoDB 7** service, not production Atlas. The November 10 `main` CI runs passed, and the deployed site was manually reported working.
 
-**Implemented contract tests:** list returns HTTP 200 and `characters` array; known detail returns fields with expected types; unknown ID returns JSON 404; empty catalog returns an empty array; unreviewed image/category values remain null.
+## Outstanding decisions
 
-**Implementation status:** List and detail endpoints, CSV importer and full 49-character roster are on `main` following PR #60. The [successful CI run](https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711) completed migrations, verified 49 imported records and passed the eight existing tests. This does not prove stable cross-database IDs, image/category completeness, public deployment or battle simulation.
+- [ ] Confirm editorial accuracy and use rights for all character artwork and descriptions.
+- [ ] Determine whether a source-backed permanent character identifier is needed beyond MongoDB ObjectIds.
+- [ ] Add automated browser end-to-end tests; current unit/API/Node tests are not complete browser E2E coverage.
+
+**History:** [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58) first implemented Django; [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60) restored the MVP; [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated it to MongoDB. The October SQLite contract and eight-test snapshots are historical.

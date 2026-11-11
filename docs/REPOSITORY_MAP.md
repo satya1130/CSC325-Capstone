@@ -2,7 +2,7 @@
 
 > **Purpose:** one place to find the project’s current code, data, design, documentation, workflow, and assignment evidence.
 >
-> **Current snapshot:** November 5, 2026. Historical planning documents are preserved for course evidence; use `README.md` and this map for current navigation.
+> **Current snapshot:** November 10, 2026. The running character roster uses **MongoDB Atlas** and is deployed on **Render** following [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88). Historical planning documents are preserved for course evidence; use [README.md](../README.md) for setup and the full migration log.
 
 ## Start Here
 
@@ -35,7 +35,7 @@
 | Django entry point | [`backend/manage.py`](../backend/manage.py) | Local commands, migrations, tests, runserver |
 | Project configuration | [`backend/marvelclash/`](../backend/marvelclash/) | Settings, root URLs, WSGI/ASGI |
 | Character app | [`backend/characters/`](../backend/characters/) | Model, API views, templates, static files, tests, importer |
-| Character model / database schema | [`models.py`](../backend/characters/models.py) | SQLite-backed `Character` model |
+| Character model / database schema | [`models.py`](../backend/characters/models.py) | MongoDB Atlas-backed `Character` model with ObjectId IDs |
 | Character API views | [`views.py`](../backend/characters/views.py) | List/detail JSON endpoints and filters |
 | API contract | [`CHARACTER_API_CONTRACT.md`](CHARACTER_API_CONTRACT.md) | Fields, endpoints, limitations, and expected behavior |
 | Automated Django tests | [`tests.py`](../backend/characters/tests.py) | API, importer/admin, and US-03 filter coverage |
@@ -44,7 +44,7 @@
 
 The committed source of truth for the current 49-character import is [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv).
 
-The local SQLite file is **generated**, not committed: `backend/db.sqlite3` is intentionally ignored by `.gitignore`. Create it with migrations, then populate it using the importer:
+**Active database:** MongoDB Atlas, configured with the `MONGODB_URI` environment variable in [Django settings](../backend/marvelclash/settings.py). The old generated `backend/db.sqlite3` is ignored and **not used by the current app**. Apply MongoDB migrations and populate with the repeatable importer as documented in [README.md](../README.md):
 
 - Database model: [`backend/characters/models.py`](../backend/characters/models.py)
 - CSV source: [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv)
@@ -77,7 +77,9 @@ The local SQLite file is **generated**, not committed: `backend/db.sqlite3` is i
 | Team / Kanban / PR evidence | [`M7_TEAM_KANBAN_EVIDENCE.md`](M7_TEAM_KANBAN_EVIDENCE.md) |
 | November 8 story evidence | [`NOV8_STORY_EVIDENCE.md`](NOV8_STORY_EVIDENCE.md) |
 
-## Current Organizational Status — Nov. 5, 2026
+## Historical Organizational Status — Nov. 5, 2026
+
+> This section is an archived November 5 status snapshot, not the latest PR or issue status. As of November 10, the MongoDB migration [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) is merged and the README documentation is being reviewed in [PR #89](https://github.com/satya1130/CSC325-Capstone/pull/89). Check [open pull requests](https://github.com/satya1130/CSC325-Capstone/pulls) and [issues](https://github.com/satya1130/CSC325-Capstone/issues) for live status.
 
 - All **46 currently open issues** have both a `kanban:*` status and a `priority:*` label.
 - Current open-issue status spread: **24 Backlog, 8 Ready, 5 In Progress, 9 In Review**.
@@ -95,7 +97,7 @@ The local SQLite file is **generated**, not committed: `backend/db.sqlite3` is i
 3. Every active issue should keep one `kanban:*` label and one `priority:*` label.
 4. Move an issue to Done only after its acceptance criteria are supported by a reviewed/merged artifact or code change.
 5. Use a feature/docs branch and pull request for meaningful repository changes; do not silently overwrite teammate work on `main`.
-6. Keep secrets, local SQLite databases, virtual environments, and `.env` files out of Git.
+6. Keep MongoDB Atlas credentials, deployment secrets, local SQLite archives, virtual environments, and `.env` files out of Git.
 7. Do not claim Figma-only features (accounts, dynamic Brawl/AI, favorites) are working Django features until they are actually implemented and tested.
 
 ---
