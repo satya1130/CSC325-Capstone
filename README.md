@@ -330,25 +330,33 @@ Results would represent fan-made game simulations rather than official Marvel ca
 
 ## AI-Use Statement
 
+The team used AI assistance during planning, development, troubleshooting, and documentation. The following disclosure distinguishes **AI-assisted suggestions and drafts** from the changes that team members applied, tested, reviewed, and deployed. AI output was not treated as automatically correct.
+
 ### AI Tools Used
 
-**ChatGPT (OpenAI):** Used to help plan and revise prototype flows, the context diagram, written explanations and some Figma interactions. For the Django MVP in PR #58, Satya also used ChatGPT to generate and revise Python/Django backend code, the character model and API views, the CSV import command, HTML template and JavaScript API integration, Django automated tests, setup documentation, and Git/GitHub instructions. Satya copied the code into VS Code, ran the application locally, verified the 49-character roster and search/profile features, and ran the Django tests (8 passed). The AI-assisted code remains subject to team code review.
+**ChatGPT (OpenAI):** Helped plan and revise prototype user flows, the context diagram, written explanations, and some Figma interactions. For the initial Django MVP in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), Satya used ChatGPT to help draft and revise Python/Django code, character models and API views, the CSV import command, HTML templates, JavaScript API integration, automated tests, local setup instructions, and Git/GitHub steps. Satya applied the proposed code in VS Code and checked the working 49-character roster, search, profiles, and Django tests.
 
-**Claude (Anthropic):** A group contributor reported using Claude to assist with README drafting and a separate Figma prototype.
+**ChatGPT for the SQLite-to-MongoDB migration and Render deployment ([PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), November 2026):** Satya used ChatGPT for guided migration planning and troubleshooting. Assistance included MongoDB Atlas connection setup, configuring `django-mongodb-backend` and migrations, transferring the existing 49 character records, correcting image references, updating character API routes for MongoDB ObjectIds, diagnosing CI dependency/service/test failures, revising GitHub Actions, and troubleshooting the Render-to-Atlas TLS connection failure. ChatGPT also helped draft GitHub PR changes and update this README. These were **AI-assisted development and documentation tasks**, not a claim that AI independently verified the software.
 
-**Figma:** Used for user interface design, interactive screens, personas, context diagrams and the user journey.
+**Claude (Anthropic):** A group contributor reported using Claude to assist with README drafting and a separate Figma prototype. The other contributor's exact prompts, outputs, and edits should be confirmed with that person before final submission.
 
-**GitHub:** Used by the group for documentation, user stories and project organization.
+**Figma:** Used for the team's interface design, interactive prototypes, personas, context diagram, and user journey. **GitHub/GitHub Actions:** Used for source control, pull requests, peer review, automated checks, and project management. Figma and GitHub are listed here as project tools, **not represented as generative AI models**.
 
-### AI Outputs Accepted, Edited or Rejected
+### How AI-Assisted Work Was Reviewed
 
-**Accepted:** Useful interface ideas, navigation layouts, a structured primary user journey, and a README architecture and testing outline. The Django MVP also incorporated AI-generated starter code for the model, APIs, import, frontend integration, and tests, which was checked by running the application and local tests.
+**Accepted and implemented:** Useful interface concepts and documentation outlines, along with reviewed suggestions for Django models, API endpoints, import scripts, frontend integration, tests, MongoDB configuration, GitHub Actions, and Render deployment instructions.
 
-**Edited:** Persona identities, account-access differences, context flows, navigation hit areas, mobile layouts and wording about current versus planned functionality.
+**Edited and adapted:** Persona details, access-state descriptions, design flows, wording about existing versus planned features, MongoDB/ObjectId route handling, image references, workflow configuration, test environments, and deployment setup. Proposed instructions and code were changed when they did not match the actual environment or tests.
 
-**Rejected or corrected:** Incorrect personas, statements suggesting secure persistent accounts or live AI fights already exist, and confusing or overlapping interactions.
+**Rejected or corrected:** Confusing prototype navigation and account claims; suggestions implying secure production accounts or a live AI battle engine existed; and technical approaches that failed real checks, such as incomplete CI requirements, a missing MongoDB test service, incompatible MongoDB runner setup, and integer-only character detail routes after adopting ObjectIds.
 
-The Figma design, documentation and GitHub updates were worked on by different group members at different times. Members should confirm individual tool use and contributions before submission.
+### Human Implementation, Verification, and Accountability
+
+Satya worked in VS Code, configured MongoDB Atlas and Render settings, ran the migrations/imports, checked the transferred 49 character records and corresponding images, examined GitHub Actions/Render failures, and verified the deployed roster, character profiles, name search, and category/power filters. The MongoDB integration went through the team's GitHub pull-request and code-review process; the detailed sequence and source links are in the **Database migration and deployment journal** above.
+
+AI assistance was used to help write and revise the README itself. Screens, integration behavior, automated check outcomes, and deployment results are described as verified **only where they were actually tested or reported as working**. The team remains responsible for reviewing AI-assisted code, protecting credentials, and accurately reporting each person's contribution.
+
+The Figma prototype's Brawl flow is separate from the deployed Django roster: **a live AI combat engine, production member login, and persistent favorites have not been implemented**. Team members should confirm their individual AI-tool use and contributions before submission.
 
 ## Project Backlog and Next Steps
 
