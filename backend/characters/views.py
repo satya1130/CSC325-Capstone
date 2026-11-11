@@ -1,4 +1,5 @@
 
+from bson import ObjectId
 from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Character
@@ -46,9 +47,13 @@ def character_detail(request, character_id):
             status=405
         )
 
-    character = Character.objects.filter(
-        id=character_id
-    ).first()
+    # MongoDB uses 24-character ObjectIds, not SQLite integer IDs.
+    # Return the existing API 404 response for malformed or unknown IDs.
+    character = (
+        Character.objects.filter(id=ObjectId(character_id)).first()
+        if ObjectId.is_valid(character_id)
+        else None
+    )
 
     if character is None:
         return JsonResponse({
