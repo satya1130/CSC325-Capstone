@@ -1,5 +1,7 @@
 # CSC325 Marvel Clash — Module 7 Midpoint Presentation Package
 
+> **HISTORICAL OCTOBER 27 PRESENTATION PLAN.** The scripts, SQLite architecture references, open-PR comments, and pending milestones below belong to the original midpoint snapshot. They do **not** describe the current Django/MongoDB Atlas deployment. For current features and database architecture, see the [main README](../README.md), [updated feature status](M7_FEATURE_STATUS.md), and [API contract](CHARACTER_API_CONTRACT.md). Keep this file as presentation-planning evidence, not a current setup guide.
+
 > **Status:** READY TO RECORD, NOT SUBMITTED. Current code and records verified on October 27, 2026 UTC. This is preparation material, not proof of a submitted video or of teammates' individual participation.
 
 ## Deliverables and authoritative links
