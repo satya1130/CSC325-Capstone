@@ -51,7 +51,340 @@ The verified live functionality is the **character roster**, not a playable Braw
 
 ---
 
-## Database migration and deployment journal — November 10, 2026
+---
+
+## 🧭 Project Hub — Important Links
+
+> **Use this section first.** It is the front-door index for the current Marvel Clash project.
+>
+> **🎨 Design:** [Primary Figma](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) · [Personas](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-20) · [Context Diagram](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2) · [Primary UX Journey](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-66)
+>
+> **🐍 Django / Backend:** [Backend folder](backend/) · [Django project](backend/marvelclash/) · [Character app](backend/characters/) · [API contract](docs/CHARACTER_API_CONTRACT.md)
+>
+> **🗄️ Data / Database:** [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **MongoDB Atlas is the active database; the legacy SQLite DB is not committed**
+>
+> **📋 Project Management:** [Repository Map](docs/REPOSITORY_MAP.md) · [Project Description](Project_Description.md) · [Brawl Backlog](BRAWL_BACKLOG.md) · [Scrum/Kanban Plan](MIDPOINT_SCRUM_PLAN.md) · [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects/Kanban](https://github.com/satya1130/CSC325-Capstone/projects) · [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls)
+>
+> **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Feature Status](docs/M7_FEATURE_STATUS.md) · [Kanban/PR Evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Nov. 8 Story Evidence](docs/NOV8_STORY_EVIDENCE.md)
+
+---
+
+## Development timeline — oldest to newest
+
+The sections below follow the order in which the project evolved. The **current production status and important links remain above** for quick reference; older sections are explicitly historical and do not override the current MongoDB configuration.
+
+| Period | Milestone | What changed |
+| --- | --- | --- |
+| **October 2026** | Figma concept and planning | Defined the product goal, personas, UI screens, prototype Brawl journey, Scrum/Kanban process and initial architecture |
+| **October 26** | Early Django MVP and recovery | Built/restored character APIs and the 49-character CSV-backed roster; the original implementation used SQLite |
+| **November 7** | Feature completion and collaboration | Expanded search, category/power filters, profiles, 49 portraits, automated tests and reviewed story pull requests |
+| **November 8** | Six-story delivery evidence | Recorded the two selected epics, four-stage GitHub Actions pipeline, protected-branch review and team sanity checks |
+| **November 10** | MongoDB migration and deployment | Transferred the roster from SQLite to MongoDB Atlas, repaired images and ObjectId APIs, fixed CI/Render errors, and verified the deployed roster |
+| **After the migration** | Documentation and follow-up | Updated README, API contract, repository map, feature status and AI-use disclosures; further Brawl/account features remain planned |
+
+**Reading guide:** Start with the October prototype, then follow the dated implementation sections through November 10. Finish with the **Implementation reference**, **AI-Use Statement**, and **Next Steps**. Historic submission requirements are retained for coursework and may no longer describe the latest assignment.
+
+---
+
+## October 2026 — Figma prototype and user journeys
+
+**Primary Marvel Clash Figma design:** https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15
+
+**Updated context diagram:** https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2
+
+**Additional group-created Figma design (supplementary):** https://www.figma.com/design/rjq4hv5d0kOMdmc7z41K5j
+
+**YouTube walkthrough:** https://youtu.be/8gb0xLyrx2o
+
+**Before submission:** The group must confirm the primary design is publicly viewable and the video is unlisted, accessible, **under two minutes**, and demonstrates the same Figma design and user journey.
+
+### Personas
+
+- **Jordan — primary user / Marvel fan and matchup strategist:** Uses the full discovery-to-result journey. Jordan wants to find characters, inspect powers, compare opponents, choose two fighters, and understand the displayed Brawl result.
+- **Alex — secondary user / casual new visitor:** Uses a phone, recognizes familiar Marvel characters, and needs simple descriptions, clear portraits, readable controls, and easy discovery before attempting a matchup.
+
+### Prototype access roles
+
+The Figma prototype also demonstrates **Guest**, normal-member examples such as **MarvelFan/Aryan**, and **Salih (Admin)**. These are access states used to show UI permissions; they are not a replacement for the Jordan/Alex user-centered personas, and they are not secure production accounts.
+
+### Context Diagram
+
+The single Marvel Clash system exchanges information with Aryan, MarvelFan, Guest and Admin Salih.
+
+Its external prototype inputs include curated team character content and temporary Figma interaction state.
+
+Planned connections to a grounded AI Brawl service and secure persistent accounts are explicitly marked **future**, not live.
+
+### Key UI Screens
+
+Discover/Home, categorized Roster, individual profiles, powers and abilities, Compare, Favorites, two-fighter selection, Brawl setup, scripted battle/health indicators, winner/result explanations and replay or correction routes.
+
+Account and project-support screens include light/dark and desktop/mobile versions.
+
+### UX Flow — Primary Jordan Persona
+
+1. Open Discover and move to the Roster.
+2. Search or filter characters and open a character profile.
+3. Read powers/abilities and compare possible opponents.
+4. Choose two different fighters for Brawl.
+5. Confirm the matchup and begin the simulated fight.
+6. Follow the example moves, health bars and commentary.
+7. Review the winner and explanation, then replay or choose different fighters.
+8. If a selection is missing or invalid, return to fighter selection and correct it.
+
+### Sanity Check
+
+The personas reflect who uses Marvel Clash, including a primary member who completes character discovery and Brawl.
+
+The context diagram shows the same system and actors; the key UI screens support its character-to-Brawl Product Goal; and the UX flow follows MarvelFan from browsing to an explained result.
+
+The prototype is illustrative: it does not implement permanent login sessions, persistent favorites or dynamic AI fights.
+
+---
+
+## October 2026 — Original architecture and planned web application
+
+### Current architecture: Interactive prototype
+
+This section documents the original Figma prototype. The working Django roster originated in PR #58, was restored in PR #60, and has since been deployed to Render. The prototype uses these conceptual layers:
+
+- **Presentation:** Figma desktop/mobile and dark/light screens for Discover, Roster, character profiles, Compare, Favorites, Brawl and results, with Guest, member and admin demonstrations.
+- **Character content:** A curated set of 49 character profiles and illustrations based on the team's spreadsheet and presentation, represented as static prototype content. The original Figma prototype does not call the API; the new local Django roster does.
+- **Prototype interaction/state:** Figma navigation and variables demonstrate the selected persona, fighter choices and screen transitions. These are not secure, persistent accounts or a browser database.
+- **Illustrative simulation:** Pre-authored battle actions, commentary, health changes and results. Fights are **not** computed by a running AI or combat engine.
+
+### Planned architecture: Web application
+
+A possible future deployment would use a web client, a character-data service and database, authenticated account services with server-side authorization, and a battle engine that uses reviewed powers, moves, strengths, weaknesses and counters.
+
+The planned AI-assisted battle service would generate varied explanations and battle sequences grounded in that data. Animation and replay capabilities could be added later.
+
+**The roster and read-only API are implemented on `main`; PR #88 subsequently replaced the SQLite data layer with MongoDB Atlas.** Accounts and battle simulation are still planned.
+
+---
+
+## October 2026 — Original test plan and quality goals
+
+The following are **test plans**, not a claim that tests have been implemented or executed in a working application.
+
+### 1. Unit Testing (Future Implementation)
+
+- Check required fields in the 49-character dataset.
+- Verify comparison rules use the correct character attributes.
+- Verify that fighter selection requires two distinct characters.
+- Test health and damage calculations when a working battle engine exists.
+
+### 2. Integration Testing
+
+- Manually verify Figma transitions between Discover, Roster, Profile, Compare, Brawl and Result.
+- Verify that the selected fighters carry through the intended prototype workflow.
+- Verify the correction path when a fighter is missing.
+- Later, test connections between the client, character service, account service and battle engine.
+
+### 3. System / End-to-End Testing
+
+- Walk through MarvelFan's full eight-step user journey.
+- Verify Aryan's normal-member experience.
+- Verify that Guest has limited access.
+- Verify Salih's admin-only navigation in the prototype.
+- Check both desktop/mobile and light/dark screen variants.
+
+### 4. Usability Testing
+
+- Observe Marvel fans and non-fans using the prototype without instructions.
+- Check text contrast, mobile tap targets, navigation and readability.
+- Look for overlapping clickable areas or confusing interactions.
+- Confirm that a non-fan can understand the Brawl result and explanation.
+
+After implementation, add automated browser tests, persistence and authorization tests, and checks that generated battle events stay consistent with reviewed character powers.
+
+---
+
+## October 2026 — Planned Brawl AI features (not implemented)
+
+The main planned AI feature is a grounded **Brawl engine**.
+
+The engine would receive selected fighters and reviewed character moves, abilities, strengths, weaknesses and counter relationships.
+
+It would generate varied battle actions, damage and health changes, turn events and understandable explanations.
+
+Older project-backlog ideas—AI character summaries, recommendations and character Q&A—can remain as **additional future features**, but are not the current priority or a working integration.
+
+Results would represent fan-made game simulations rather than official Marvel canon.
+
+---
+
+## October 2026 — Midpoint Scrum and Kanban planning
+
+The [midpoint Scrum and Kanban plan](MIDPOINT_SCRUM_PLAN.md) maps the existing 15 issues and five new Brawl user stories to the current product goal, with proposed owners, priority, dates, workflow rules, architecture milestones and presentation evidence requirements.
+
+**Important:** Proposed owners are planning assignments to be confirmed by the actual team; they are not proof of prior contributions. The interactive Figma prototype is not the same as a working Python/Django application. GitHub Project card statuses, individual feature branches, reviews and merges must be verified from real artifacts before reporting them as complete.
+
+The previous prototype walkthrough's under-two-minute limit applies to that earlier deliverable. The **new midpoint assignment requires an 8–10-minute group presentation video**, with every actual group member participating.
+
+
+---
+
+---
+
+## October 26, 2026 — Initial Django MVP and recovery history
+
+> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See **Current status** and **Database migration and deployment journal** above for the active MongoDB Atlas system.
+
+The sections above preserve the project's original Figma planning and development roadmap. This update records the **working local Django MVP** originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), subsequently reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and included on this recovery branch for renewed review.
+
+### Completed implementation
+
+- **Backend and data (October snapshot):** Django project in `backend/marvelclash/`, character app in `backend/characters/`, then-SQLite-backed `Character` model, 49-row CSV dataset and repeatable `import_characters` management command. **As of PR #88, MongoDB Atlas is the active database.**
+- **API contract:** `GET /api/characters/` and `GET /api/characters/{id}/` implemented using JSON with stable string IDs; missing characters return a structured HTTP 404, and unsupported methods return HTTP 405. See [API contract](docs/CHARACTER_API_CONTRACT.md).
+- **Frontend integration:** The Django-served roster uses the character API rather than the original 12 hard-coded sample entries. Users can view the 49-character roster, search by name, clear filters, see no-match feedback, and open/close a character profile with description and powers. The earlier standalone preview in `frontend/roster/` is retained.
+- **Testing (October snapshot):** Eight Django tests passed locally (`python manage.py test`, result `OK`), and the local site was checked for roster count, search, and profiles. Later GitHub Actions runs and expanded tests are described in the current migration and CI sections.
+- **Local setup (historical):** The earlier SQLite database and virtual environment were ignored by Git. **Do not use the old SQLite setup:** follow **Local development (Windows PowerShell)** at the top of this README and set `MONGODB_URI`.
+
+### GitHub collaboration evidence
+
+| Pull request | Contribution | Recorded status |
+| --- | --- | --- |
+| [#55](https://github.com/satya1130/CSC325-Capstone/pull/55) | Salih: project hub, issue templates, PR template | Merged |
+| [#56](https://github.com/satya1130/CSC325-Capstone/pull/56) | Aryan: character API contract | Merged |
+| [#57](https://github.com/satya1130/CSC325-Capstone/pull/57) | Satya: initial 12-character searchable frontend preview | Merged |
+| [#58](https://github.com/satya1130/CSC325-Capstone/pull/58) | Satya: Django backend, SQLite, full 49-character import, API, frontend integration and Django tests | Merged then reversed from `main` by [#59](https://github.com/satya1130/CSC325-Capstone/pull/59); Aryan commented on ID stability post-merge |
+
+Contributor credit above is limited to the evidence in these pull requests. Proposed assignments elsewhere in the repo, including Kyle's responsive design/image tasks, are not completion evidence. The actual GitHub Projects Kanban board should be checked separately from issue labels.
+
+### Figma prototype versus coded application
+
+The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains prototype screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows; these are not live Django Brawl or account functionality. **Since this October snapshot, the roster has been deployed to Render using MongoDB Atlas**. The live website supports character browsing, name search, category/power filtering, profiles, images, and read-only API access. Real authentication, persistent favorites, a working comparison/Brawl engine, AI-generated battle outcomes and more comprehensive accessibility testing remain future work.
+
+### AI assistance on implementation
+
+The AI-use statement above discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
+
+For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** PR #60 restored Django on `main`; PR #88 migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
+
+### Historical restoration review notes — SQLite-era implementation superseded by PR #88
+
+- **Character IDs (before MongoDB):** The October implementation returned string-encoded SQLite integer keys. **Current API IDs are string-encoded MongoDB ObjectIds** after PR #88; see the live API route documentation above.
+- **Automated CI (current):** `.github/workflows/django-tests.yml` starts a temporary **MongoDB 7** service, runs Django checks and migrations, imports and checks 49 records, and executes the automated tests. The four-stage workflow also uses MongoDB for its Test job. Confirm green results on GitHub before merging.
+- **Review workflow:** PR #58 was merged before a submitted teammate review and subsequently reverted by PR #59. Request teammate review on the replacement PR *before* merging. A COMMENTED review is not the same as an APPROVED review.
+- **Document scope (historical):** Existing Figma and Brawl plans were unchanged at that stage. **Images and Render deployment have since been implemented**, but executable Brawl and production authentication have not.
+
+
+---
+
+---
+
+## November 7, 2026 — Implemented roster, team stories and delivery checks
+
+- **Working Django roster:** 49 imported Marvel characters with name search, power search, Hero/Villain/Antihero filtering, profile descriptions, organized powers, and 49 uploaded local JPG portraits in the profile and roster cards. The original Figma Brawl remains a design prototype; an executable AI Brawl engine and real member sign-in have not been implemented.
+- **Six selected user stories, two epics:** US-01 through US-06 all have dedicated branches, acceptance tests, successful CI, formal teammate approval, and merged PRs #70, #71, #73, #74, #75 and #76. Additional visual improvements: #77 (profile layout) and #78 (roster images), both merged.
+- **Four-stage CI/CD:** Setup → Dependencies → Test → Deploy triggers on pull requests and pushes to `main`; only successful `main` pushes with the deployment variable enabled trigger the Render deployment hook.
+- **Protected branch:** Active **Protect Main Branch** ruleset requires pull requests, one teammate approval, and a passing `Test` check. No bypass actors.
+- **Production configuration:** Render service and GitHub deployment secret/variable were configured and deployment was previously demonstrated. A green Deploy job proves the hook request succeeded, **not by itself that Render finished serving the new version**; verify live functionality after changes.
+- **November 8 submission:** Kyle's independent clean-clone sanity check is complete in [PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), with 36 passing Django tests and documented minor findings. The **new** unlisted video under three minutes remains to be recorded and linked.
+
+**Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
+
+---
+
+## November 8, 2026 — Six-story delivery and CI/CD evidence
+
+This section supersedes older pre-deployment and planning-status statements elsewhere in this historical README. The selected scope is **Epic 1: Character Search & Discovery** and **Epic 2: Character Profiles & Information**, with six stories total. **Login / US-21 is not part of this six-story submission.**
+
+### A. Four-stage CI/CD
+
+Workflow: [`.github/workflows/marvel-clash-cicd.yml`](.github/workflows/marvel-clash-cicd.yml). It runs on pull requests targeting `main` and pushes to `main`.
+
+| Job | Responsibility |
+| --- | --- |
+| **Setup** | Checkout, Python 3.14, validate required files |
+| **Dependencies** | Install Python requirements and verify Django |
+| **Test** | Django system checks, migrations, import/count of 49 characters, Django acceptance/API tests, Node roster tests |
+| **Deploy** | After Test, call Render deploy hook for eligible pushes to `main` |
+
+**Why Deploy shows skipped on PRs:** the deploy job condition explicitly requires a `push` to `refs/heads/main` and repository Actions variable `RENDER_DEPLOY_ENABLED == 'true'`. It is intentionally skipped during PR validation, while the required **Test** check runs.
+
+- [Verified successful four-stage main workflow run (Nov. 7)](https://github.com/satya1130/CSC325-Capstone/actions/runs/42400002283).
+- [Four-stage workflow file](.github/workflows/marvel-clash-cicd.yml).
+- [Original standalone Django tests workflow](.github/workflows/django-tests.yml).
+- Deployment is via Render using encrypted **GitHub Actions secret** `RENDER_DEPLOY_HOOK` and repository variable `RENDER_DEPLOY_ENABLED=true`. Never copy their values into commits, screenshots, README or logs.
+- CI's Deploy success shows the hook returned successfully. Render's final deploy health and the current live images/filters should be manually checked at the hosted site; the hook alone is not a health check.
+- **Current persistence:** Render's filesystem is ephemeral, but the active application uses **MongoDB Atlas for durable database storage**, with a repeatable source-CSV roster import. Future accounts and persistent favorites require additional models, authorization, and implementation; they are not live features.
+
+### B. Protected `main` branch
+
+The repository's [**Protect Main Branch** ruleset](https://github.com/satya1130/CSC325-Capstone/rules/26650396) is **active**. It targets the default branch (`main`) and has **no bypass actors**. Verified configured rules:
+
+- Pull request required before merging.
+- **One submitted teammate APPROVED review** required; COMMENTED does not qualify.
+- Previously submitted approval is dismissed on a subsequent push.
+- GitHub Actions **Test** status check must pass.
+- Force pushes and branch deletions blocked.
+
+A real instance is [US-01 PR #70](https://github.com/satya1130/CSC325-Capstone/pull/70): Kyle (`wilska1-stack`) submitted **APPROVED** before the PR was merged.
+
+### C. Six-story evidence: two selected epics
+
+Each linked PR is a distinct branch contribution, has recorded teammate APPROVED review, was merged into `main`, and ran the `Marvel Clash CI/CD` workflow successfully. Feature implementations sometimes predated these acceptance-test PRs; the story PRs add or improve implementation and regression coverage rather than claiming each feature was first invented in its listed PR.
+
+| Epic / story | Issue and acceptance focus | Feature branch | Approved merged PR | Passing workflow |
+| --- | --- | --- | --- | --- |
+| **Epic 1 / US-01 Search** | [#4](https://github.com/satya1130/CSC325-Capstone/issues/4): partial, case-insensitive, multi-result and no-match search | `feature/us01-search-acceptance` | [#70](https://github.com/satya1130/CSC325-Capstone/pull/70) — Kyle | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42111610364) |
+| **Epic 1 / US-02 Browse** | [#5](https://github.com/satya1130/CSC325-Capstone/issues/5): all 49 character records, ordering and optional image references | `feature/us02-browse-acceptance` | [#71](https://github.com/satya1130/CSC325-Capstone/pull/71) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42264142738) |
+| **Epic 1 / US-03 Filter** | [#6](https://github.com/satya1130/CSC325-Capstone/issues/6): Hero/Villain/Antihero, 49 imported categories, combined filters | `feature/aryan-us03-character-filters` | [#73](https://github.com/satya1130/CSC325-Capstone/pull/73) — Aryan; earlier [#65](https://github.com/satya1130/CSC325-Capstone/pull/65) | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42390325040) |
+| **Epic 2 / US-04 Description** | [#7](https://github.com/satya1130/CSC325-Capstone/issues/7): labeled character name and description | `feature/us04-profile-description-label` | [#74](https://github.com/satya1130/CSC325-Capstone/pull/74) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42392662214) |
+| **Epic 2 / US-05 Powers** | [#8](https://github.com/satya1130/CSC325-Capstone/issues/8): readable powers, API data and missing-information fallback | `feature/us05-readable-powers` | [#75](https://github.com/satya1130/CSC325-Capstone/pull/75) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42395973186) |
+| **Epic 2 / US-06 Images** | [#9](https://github.com/satya1130/CSC325-Capstone/issues/9): 49 character JPGs, responsive profile portrait, unavailable-image fallback | `feature/us06-character-profile-images` | [#76](https://github.com/satya1130/CSC325-Capstone/pull/76) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42397587339) |
+
+**Additional enhancements (not additional required stories):** [PR #77](https://github.com/satya1130/CSC325-Capstone/pull/77) makes profile details more consistent; [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78) replaces roster initials with the 49 images. Both are merged. The 49 static JPGs are at [`backend/characters/static/characters/images/`](backend/characters/static/characters/images/) and sourced from a team-supplied slides PDF. Note: Hero/Villain/Antihero classifications are team-proposed editorial choices where fictional character alignment is ambiguous.
+
+### D. Local onboarding and review-to-deploy walkthrough
+
+On **Windows PowerShell**, install Python 3.14, Node.js 22 and Git, then:
+
+```powershell
+git clone https://github.com/satya1130/CSC325-Capstone.git
+cd CSC325-Capstone
+py -3.14 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+$env:MONGODB_URI = Read-Host "MongoDB connection URI"
+cd backend
+..\.venv\Scripts\python.exe manage.py migrate --noinput
+..\.venv\Scripts\python.exe manage.py import_characters
+..\.venv\Scripts\python.exe manage.py test
+..\.venv\Scripts\python.exe manage.py runserver
+```
+
+Open `http://127.0.0.1:8000/` for the roster and `http://127.0.0.1:8000/api/characters/` for the API. In a new terminal from repo root, run the original frontend tests with `cd frontend/roster; node --test roster.test.cjs`. The importer uses `update_or_create` and can run repeatedly without duplicate character names.
+
+For a new story or fix, branch from updated `main` with `git checkout -b feature/<issue-name>`, implement code and an acceptance test, then push `git push -u origin <branch-name>`. Open a PR into `main`, reference its issue, request a real teammate **Approve**, wait for green **Test**, and merge. The new `main` workflow starts Deploy only under its conditional hook configuration. Check the host's actual deployment and the live UI after merging. Protected `main` intentionally disallows bypassing approval/CI.
+
+Do **not** commit local SQLite files, `.env`, secret tokens, deployment hook URLs or API keys. The repo's standard Django read-only character endpoints do not require external AI keys.
+
+### E. AI-use disclosure and actual corrections
+
+ChatGPT was used to assist with the four-stage GitHub Actions workflow, Django/JS changes and acceptance tests for the selected user stories, CSS/profile/roster presentation, 49-image integration instructions, branch and PR creation, and README/evidence writing. The team's own character data, images and Figma design were used as inputs. Every change was submitted to GitHub with a visible diff and required a real teammate review and successful CI before merge. AI-generated outputs were **not treated as independently verified facts**.
+
+Recorded issues and corrections from actual work (not invented examples):
+
+1. **Render static assets:** Initial production CSS/JS did not load. PR [#66](https://github.com/satya1130/CSC325-Capstone/pull/66) added WhiteNoise/static file and startup support; a production-storage/test-mode issue was then corrected before tests passed. The site was visually checked after deployment.
+2. **US-03 wrong branch / conflicts:** The category dropdown changes were initially submitted on a newly created branch as PR [#72](https://github.com/satya1130/CSC325-Capstone/pull/72). After a request to use the original filtering branch, the changes were transferred, the old branch/main divergence was reconciled, the duplicate PR closed, and [#73](https://github.com/satya1130/CSC325-Capstone/pull/73) reviewed and merged.
+3. **US-04 wording and failing test:** The first version used 'Description'; it was changed to the requested **'Character Description'** label and its acceptance test updated on the same PR [#74](https://github.com/satya1130/CSC325-Capstone/pull/74). An earlier test run failed; a later run passed before review and merge.
+4. **US-06 image delivery:** The team provided a PDF slide deck with one character image per page. A ZIP was first committed in the image folder, but the application required individual JPEG static assets; all 49 JPGs were then uploaded and verified. [#76](https://github.com/satya1130/CSC325-Capstone/pull/76) merged with those files, and [#78](https://github.com/satya1130/CSC325-Capstone/pull/78) added roster-card portraits.
+
+Limitations: the images are third-party Marvel film visuals supplied for an **unofficial student fan prototype**; no commercial rights are claimed. The Figma Brawl engine and true login remain conceptual, and Render's hook success is not an automatic end-to-end live health assertion.
+
+### F. Final teammate sanity check
+
+**Teammate sanity check: COMPLETE (November 7, 2026).** Kyle independently cloned the latest `main` repository on macOS, installed dependencies, applied migrations, imported 49 Marvel characters, and launched the local Django website. He reported **36 Django tests passing**, confirmed 49 character images and descriptions, and checked search, filters, and the character API. See his written findings in [`docs/sanity-check-kyle.md`](docs/sanity-check-kyle.md) and his [merged PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), which Satya formally approved.
+
+Kyle also documented three honest follow-ups: searching `spiderman` without a hyphen returns no results, a local missing `staticfiles` directory warning appears, and `/favicon.ico` returns 404. None prevented the tests from passing. After PR #81 merged, the [main-branch four-stage workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/42417364258) completed successfully, including the Render deployment-hook step. **The successful hook does not independently prove the live site is healthy; live deployment verification remains a separate check.**
+
+The older 8–10 minute midpoint presentation and its separate video are **not** substitutes for the November 8 submission's ≤3-minute recorded story walkthrough.
+
+---
+
+## November 10, 2026 — SQLite-to-MongoDB migration and Render deployment
 
 This section records the work performed to move the **working 49-character Marvel Clash Django roster from local SQLite to MongoDB Atlas**, repair the character imagery, update GitHub Actions, and deploy the result on Render. It documents completed actions, errors encountered, and the fixes used. The Django roster was already part of the team repository; the playable Brawl engine shown in the Figma prototype is **not** part of the live Django implementation.
 
@@ -158,33 +491,9 @@ This is a **working, hosted character exploration application**, not merely a Fi
 
 ---
 
-## 🧭 Project Hub — Important Links
+---
 
-> **Use this section first.** It is the front-door index for the current Marvel Clash project.
->
-> **🎨 Design:** [Primary Figma](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) · [Personas](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-20) · [Context Diagram](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2) · [Primary UX Journey](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-66)
->
-> **🐍 Django / Backend:** [Backend folder](backend/) · [Django project](backend/marvelclash/) · [Character app](backend/characters/) · [API contract](docs/CHARACTER_API_CONTRACT.md)
->
-> **🗄️ Data / Database:** [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **MongoDB Atlas is the active database; the legacy SQLite DB is not committed**
->
-> **📋 Project Management:** [Repository Map](docs/REPOSITORY_MAP.md) · [Project Description](Project_Description.md) · [Brawl Backlog](BRAWL_BACKLOG.md) · [Scrum/Kanban Plan](MIDPOINT_SCRUM_PLAN.md) · [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects/Kanban](https://github.com/satya1130/CSC325-Capstone/projects) · [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls)
->
-> **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Feature Status](docs/M7_FEATURE_STATUS.md) · [Kanban/PR Evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Nov. 8 Story Evidence](docs/NOV8_STORY_EVIDENCE.md)
-
-### Historical implementation snapshot — November 7, 2026
-
-- **Working Django roster:** 49 imported Marvel characters with name search, power search, Hero/Villain/Antihero filtering, profile descriptions, organized powers, and 49 uploaded local JPG portraits in the profile and roster cards. The original Figma Brawl remains a design prototype; an executable AI Brawl engine and real member sign-in have not been implemented.
-- **Six selected user stories, two epics:** US-01 through US-06 all have dedicated branches, acceptance tests, successful CI, formal teammate approval, and merged PRs #70, #71, #73, #74, #75 and #76. Additional visual improvements: #77 (profile layout) and #78 (roster images), both merged.
-- **Four-stage CI/CD:** Setup → Dependencies → Test → Deploy triggers on pull requests and pushes to `main`; only successful `main` pushes with the deployment variable enabled trigger the Render deployment hook.
-- **Protected branch:** Active **Protect Main Branch** ruleset requires pull requests, one teammate approval, and a passing `Test` check. No bypass actors.
-- **Production configuration:** Render service and GitHub deployment secret/variable were configured and deployment was previously demonstrated. A green Deploy job proves the hook request succeeded, **not by itself that Render finished serving the new version**; verify live functionality after changes.
-- **November 8 submission:** Kyle's independent clean-clone sanity check is complete in [PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), with 36 passing Django tests and documented minor findings. The **new** unlisted video under three minutes remains to be recorded and linked.
-
-**Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
-
-
-## Current Django MVP — roster and profile implementation
+## Implementation reference — Django roster, API and local setup history
 
 The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles and filtered read-only APIs backed by MongoDB Atlas following PR #88. The CSV source is committed; the legacy generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in PRs #76 and #78.
 
@@ -208,125 +517,7 @@ Open `http://127.0.0.1:8000/` for the roster or `/api/characters/` for the JSON 
 
 **Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
 
-## Architecture
-
-### Current architecture: Interactive prototype
-
-This section documents the original Figma prototype. The working Django roster originated in PR #58, was restored in PR #60, and has since been deployed to Render. The prototype uses these conceptual layers:
-
-- **Presentation:** Figma desktop/mobile and dark/light screens for Discover, Roster, character profiles, Compare, Favorites, Brawl and results, with Guest, member and admin demonstrations.
-- **Character content:** A curated set of 49 character profiles and illustrations based on the team's spreadsheet and presentation, represented as static prototype content. The original Figma prototype does not call the API; the new local Django roster does.
-- **Prototype interaction/state:** Figma navigation and variables demonstrate the selected persona, fighter choices and screen transitions. These are not secure, persistent accounts or a browser database.
-- **Illustrative simulation:** Pre-authored battle actions, commentary, health changes and results. Fights are **not** computed by a running AI or combat engine.
-
-### Planned architecture: Web application
-
-A possible future deployment would use a web client, a character-data service and database, authenticated account services with server-side authorization, and a battle engine that uses reviewed powers, moves, strengths, weaknesses and counters.
-
-The planned AI-assisted battle service would generate varied explanations and battle sequences grounded in that data. Animation and replay capabilities could be added later.
-
-**The roster and read-only API are implemented on `main`; PR #88 subsequently replaced the SQLite data layer with MongoDB Atlas.** Accounts and battle simulation are still planned.
-
-## Prototype
-
-**Primary Marvel Clash Figma design:** https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15
-
-**Updated context diagram:** https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2
-
-**Additional group-created Figma design (supplementary):** https://www.figma.com/design/rjq4hv5d0kOMdmc7z41K5j
-
-**YouTube walkthrough:** https://youtu.be/8gb0xLyrx2o
-
-**Before submission:** The group must confirm the primary design is publicly viewable and the video is unlisted, accessible, **under two minutes**, and demonstrates the same Figma design and user journey.
-
-### Personas
-
-- **Jordan — primary user / Marvel fan and matchup strategist:** Uses the full discovery-to-result journey. Jordan wants to find characters, inspect powers, compare opponents, choose two fighters, and understand the displayed Brawl result.
-- **Alex — secondary user / casual new visitor:** Uses a phone, recognizes familiar Marvel characters, and needs simple descriptions, clear portraits, readable controls, and easy discovery before attempting a matchup.
-
-### Prototype access roles
-
-The Figma prototype also demonstrates **Guest**, normal-member examples such as **MarvelFan/Aryan**, and **Salih (Admin)**. These are access states used to show UI permissions; they are not a replacement for the Jordan/Alex user-centered personas, and they are not secure production accounts.
-
-### Context Diagram
-
-The single Marvel Clash system exchanges information with Aryan, MarvelFan, Guest and Admin Salih.
-
-Its external prototype inputs include curated team character content and temporary Figma interaction state.
-
-Planned connections to a grounded AI Brawl service and secure persistent accounts are explicitly marked **future**, not live.
-
-### Key UI Screens
-
-Discover/Home, categorized Roster, individual profiles, powers and abilities, Compare, Favorites, two-fighter selection, Brawl setup, scripted battle/health indicators, winner/result explanations and replay or correction routes.
-
-Account and project-support screens include light/dark and desktop/mobile versions.
-
-### UX Flow — Primary Jordan Persona
-
-1. Open Discover and move to the Roster.
-2. Search or filter characters and open a character profile.
-3. Read powers/abilities and compare possible opponents.
-4. Choose two different fighters for Brawl.
-5. Confirm the matchup and begin the simulated fight.
-6. Follow the example moves, health bars and commentary.
-7. Review the winner and explanation, then replay or choose different fighters.
-8. If a selection is missing or invalid, return to fighter selection and correct it.
-
-### Sanity Check
-
-The personas reflect who uses Marvel Clash, including a primary member who completes character discovery and Brawl.
-
-The context diagram shows the same system and actors; the key UI screens support its character-to-Brawl Product Goal; and the UX flow follows MarvelFan from browsing to an explained result.
-
-The prototype is illustrative: it does not implement permanent login sessions, persistent favorites or dynamic AI fights.
-
-## Test Plan Overview
-
-The following are **test plans**, not a claim that tests have been implemented or executed in a working application.
-
-### 1. Unit Testing (Future Implementation)
-
-- Check required fields in the 49-character dataset.
-- Verify comparison rules use the correct character attributes.
-- Verify that fighter selection requires two distinct characters.
-- Test health and damage calculations when a working battle engine exists.
-
-### 2. Integration Testing
-
-- Manually verify Figma transitions between Discover, Roster, Profile, Compare, Brawl and Result.
-- Verify that the selected fighters carry through the intended prototype workflow.
-- Verify the correction path when a fighter is missing.
-- Later, test connections between the client, character service, account service and battle engine.
-
-### 3. System / End-to-End Testing
-
-- Walk through MarvelFan's full eight-step user journey.
-- Verify Aryan's normal-member experience.
-- Verify that Guest has limited access.
-- Verify Salih's admin-only navigation in the prototype.
-- Check both desktop/mobile and light/dark screen variants.
-
-### 4. Usability Testing
-
-- Observe Marvel fans and non-fans using the prototype without instructions.
-- Check text contrast, mobile tap targets, navigation and readability.
-- Look for overlapping clickable areas or confusing interactions.
-- Confirm that a non-fan can understand the Brawl result and explanation.
-
-After implementation, add automated browser tests, persistence and authorization tests, and checks that generated battle events stay consistent with reviewed character powers.
-
-## Planned AI Features
-
-The main planned AI feature is a grounded **Brawl engine**.
-
-The engine would receive selected fighters and reviewed character moves, abilities, strengths, weaknesses and counter relationships.
-
-It would generate varied battle actions, damage and health changes, turn events and understandable explanations.
-
-Older project-backlog ideas—AI character summaries, recommendations and character Q&A—can remain as **additional future features**, but are not the current priority or a working integration.
-
-Results would represent fan-made game simulations rather than official Marvel canon.
+---
 
 ## AI-Use Statement
 
@@ -358,6 +549,8 @@ AI assistance was used to help write and revise the README itself. Screens, inte
 
 The Figma prototype's Brawl flow is separate from the deployed Django roster: **a live AI combat engine, production member login, and persistent favorites have not been implemented**. Team members should confirm their individual AI-tool use and contributions before submission.
 
+---
+
 ## Project Backlog and Next Steps
 
 The original backlog and project details are in [Project_Description.md](Project_Description.md) and the GitHub Issues tab.
@@ -366,6 +559,8 @@ The additional Brawl-focused user stories are documented in [BRAWL_BACKLOG.md](B
 
 Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The Django roster and APIs were restored by PR #60 and migrated to MongoDB Atlas in PR #88; the full fighter-selection/AI Brawl experience is still planned.
 
+---
+
 ## Submission Checklist
 
 - [ ] Confirm that the root README and primary Figma link can be viewed by the professor.
@@ -373,154 +568,3 @@ Remaining implementation work includes secure authenticated accounts, team revie
 - [ ] For the **earlier** prototype assignment, confirm the short video is unlisted and under two minutes. For **Module 7**, separately record an 8–10-minute video with **all group members participating**.
 - [ ] Demonstrate MarvelFan's complete Figma workflow, from sign-in to the Brawl result.
 - [ ] Confirm that the AI-use statement and team contribution information are accurate.
-
-## CSC 325 Midpoint Scrum / Kanban Plan
-
-The [midpoint Scrum and Kanban plan](MIDPOINT_SCRUM_PLAN.md) maps the existing 15 issues and five new Brawl user stories to the current product goal, with proposed owners, priority, dates, workflow rules, architecture milestones and presentation evidence requirements.
-
-**Important:** Proposed owners are planning assignments to be confirmed by the actual team; they are not proof of prior contributions. The interactive Figma prototype is not the same as a working Python/Django application. GitHub Project card statuses, individual feature branches, reviews and merges must be verified from real artifacts before reporting them as complete.
-
-The previous prototype walkthrough's under-two-minute limit applies to that earlier deliverable. The **new midpoint assignment requires an 8–10-minute group presentation video**, with every actual group member participating.
-
-
----
-
-## Historical midpoint recovery notes (October 26, 2026 — superseded by PRs #60 and #88)
-
-> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See **Current status** and **Database migration and deployment journal** above for the active MongoDB Atlas system.
-
-The sections above preserve the project's original Figma planning and development roadmap. This update records the **working local Django MVP** originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), subsequently reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and included on this recovery branch for renewed review.
-
-### Completed implementation
-
-- **Backend and data (October snapshot):** Django project in `backend/marvelclash/`, character app in `backend/characters/`, then-SQLite-backed `Character` model, 49-row CSV dataset and repeatable `import_characters` management command. **As of PR #88, MongoDB Atlas is the active database.**
-- **API contract:** `GET /api/characters/` and `GET /api/characters/{id}/` implemented using JSON with stable string IDs; missing characters return a structured HTTP 404, and unsupported methods return HTTP 405. See [API contract](docs/CHARACTER_API_CONTRACT.md).
-- **Frontend integration:** The Django-served roster uses the character API rather than the original 12 hard-coded sample entries. Users can view the 49-character roster, search by name, clear filters, see no-match feedback, and open/close a character profile with description and powers. The earlier standalone preview in `frontend/roster/` is retained.
-- **Testing (October snapshot):** Eight Django tests passed locally (`python manage.py test`, result `OK`), and the local site was checked for roster count, search, and profiles. Later GitHub Actions runs and expanded tests are described in the current migration and CI sections.
-- **Local setup (historical):** The earlier SQLite database and virtual environment were ignored by Git. **Do not use the old SQLite setup:** follow **Local development (Windows PowerShell)** at the top of this README and set `MONGODB_URI`.
-
-### GitHub collaboration evidence
-
-| Pull request | Contribution | Recorded status |
-| --- | --- | --- |
-| [#55](https://github.com/satya1130/CSC325-Capstone/pull/55) | Salih: project hub, issue templates, PR template | Merged |
-| [#56](https://github.com/satya1130/CSC325-Capstone/pull/56) | Aryan: character API contract | Merged |
-| [#57](https://github.com/satya1130/CSC325-Capstone/pull/57) | Satya: initial 12-character searchable frontend preview | Merged |
-| [#58](https://github.com/satya1130/CSC325-Capstone/pull/58) | Satya: Django backend, SQLite, full 49-character import, API, frontend integration and Django tests | Merged then reversed from `main` by [#59](https://github.com/satya1130/CSC325-Capstone/pull/59); Aryan commented on ID stability post-merge |
-
-Contributor credit above is limited to the evidence in these pull requests. Proposed assignments elsewhere in the repo, including Kyle's responsive design/image tasks, are not completion evidence. The actual GitHub Projects Kanban board should be checked separately from issue labels.
-
-### Figma prototype versus coded application
-
-The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains prototype screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows; these are not live Django Brawl or account functionality. **Since this October snapshot, the roster has been deployed to Render using MongoDB Atlas**. The live website supports character browsing, name search, category/power filtering, profiles, images, and read-only API access. Real authentication, persistent favorites, a working comparison/Brawl engine, AI-generated battle outcomes and more comprehensive accessibility testing remain future work.
-
-### AI assistance on implementation
-
-The AI-use statement above discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
-
-For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** PR #60 restored Django on `main`; PR #88 migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
-
-### Historical restoration review notes — SQLite-era implementation superseded by PR #88
-
-- **Character IDs (before MongoDB):** The October implementation returned string-encoded SQLite integer keys. **Current API IDs are string-encoded MongoDB ObjectIds** after PR #88; see the live API route documentation above.
-- **Automated CI (current):** `.github/workflows/django-tests.yml` starts a temporary **MongoDB 7** service, runs Django checks and migrations, imports and checks 49 records, and executes the automated tests. The four-stage workflow also uses MongoDB for its Test job. Confirm green results on GitHub before merging.
-- **Review workflow:** PR #58 was merged before a submitted teammate review and subsequently reverted by PR #59. Request teammate review on the replacement PR *before* merging. A COMMENTED review is not the same as an APPROVED review.
-- **Document scope (historical):** Existing Figma and Brawl plans were unchanged at that stage. **Images and Render deployment have since been implemented**, but executable Brawl and production authentication have not.
-
-
----
-
-## CSC 325 — November 8, 2026 submission evidence (historical snapshot; see November 10 update above)
-
-This section supersedes older pre-deployment and planning-status statements elsewhere in this historical README. The selected scope is **Epic 1: Character Search & Discovery** and **Epic 2: Character Profiles & Information**, with six stories total. **Login / US-21 is not part of this six-story submission.**
-
-### A. Four-stage CI/CD
-
-Workflow: [`.github/workflows/marvel-clash-cicd.yml`](.github/workflows/marvel-clash-cicd.yml). It runs on pull requests targeting `main` and pushes to `main`.
-
-| Job | Responsibility |
-| --- | --- |
-| **Setup** | Checkout, Python 3.14, validate required files |
-| **Dependencies** | Install Python requirements and verify Django |
-| **Test** | Django system checks, migrations, import/count of 49 characters, Django acceptance/API tests, Node roster tests |
-| **Deploy** | After Test, call Render deploy hook for eligible pushes to `main` |
-
-**Why Deploy shows skipped on PRs:** the deploy job condition explicitly requires a `push` to `refs/heads/main` and repository Actions variable `RENDER_DEPLOY_ENABLED == 'true'`. It is intentionally skipped during PR validation, while the required **Test** check runs.
-
-- [Verified successful four-stage main workflow run (Nov. 7)](https://github.com/satya1130/CSC325-Capstone/actions/runs/42400002283).
-- [Four-stage workflow file](.github/workflows/marvel-clash-cicd.yml).
-- [Original standalone Django tests workflow](.github/workflows/django-tests.yml).
-- Deployment is via Render using encrypted **GitHub Actions secret** `RENDER_DEPLOY_HOOK` and repository variable `RENDER_DEPLOY_ENABLED=true`. Never copy their values into commits, screenshots, README or logs.
-- CI's Deploy success shows the hook returned successfully. Render's final deploy health and the current live images/filters should be manually checked at the hosted site; the hook alone is not a health check.
-- **Current persistence:** Render's filesystem is ephemeral, but the active application uses **MongoDB Atlas for durable database storage**, with a repeatable source-CSV roster import. Future accounts and persistent favorites require additional models, authorization, and implementation; they are not live features.
-
-### B. Protected `main` branch
-
-The repository's [**Protect Main Branch** ruleset](https://github.com/satya1130/CSC325-Capstone/rules/26650396) is **active**. It targets the default branch (`main`) and has **no bypass actors**. Verified configured rules:
-
-- Pull request required before merging.
-- **One submitted teammate APPROVED review** required; COMMENTED does not qualify.
-- Previously submitted approval is dismissed on a subsequent push.
-- GitHub Actions **Test** status check must pass.
-- Force pushes and branch deletions blocked.
-
-A real instance is [US-01 PR #70](https://github.com/satya1130/CSC325-Capstone/pull/70): Kyle (`wilska1-stack`) submitted **APPROVED** before the PR was merged.
-
-### C. Six-story evidence: two selected epics
-
-Each linked PR is a distinct branch contribution, has recorded teammate APPROVED review, was merged into `main`, and ran the `Marvel Clash CI/CD` workflow successfully. Feature implementations sometimes predated these acceptance-test PRs; the story PRs add or improve implementation and regression coverage rather than claiming each feature was first invented in its listed PR.
-
-| Epic / story | Issue and acceptance focus | Feature branch | Approved merged PR | Passing workflow |
-| --- | --- | --- | --- | --- |
-| **Epic 1 / US-01 Search** | [#4](https://github.com/satya1130/CSC325-Capstone/issues/4): partial, case-insensitive, multi-result and no-match search | `feature/us01-search-acceptance` | [#70](https://github.com/satya1130/CSC325-Capstone/pull/70) — Kyle | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42111610364) |
-| **Epic 1 / US-02 Browse** | [#5](https://github.com/satya1130/CSC325-Capstone/issues/5): all 49 character records, ordering and optional image references | `feature/us02-browse-acceptance` | [#71](https://github.com/satya1130/CSC325-Capstone/pull/71) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42264142738) |
-| **Epic 1 / US-03 Filter** | [#6](https://github.com/satya1130/CSC325-Capstone/issues/6): Hero/Villain/Antihero, 49 imported categories, combined filters | `feature/aryan-us03-character-filters` | [#73](https://github.com/satya1130/CSC325-Capstone/pull/73) — Aryan; earlier [#65](https://github.com/satya1130/CSC325-Capstone/pull/65) | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42390325040) |
-| **Epic 2 / US-04 Description** | [#7](https://github.com/satya1130/CSC325-Capstone/issues/7): labeled character name and description | `feature/us04-profile-description-label` | [#74](https://github.com/satya1130/CSC325-Capstone/pull/74) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42392662214) |
-| **Epic 2 / US-05 Powers** | [#8](https://github.com/satya1130/CSC325-Capstone/issues/8): readable powers, API data and missing-information fallback | `feature/us05-readable-powers` | [#75](https://github.com/satya1130/CSC325-Capstone/pull/75) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42395973186) |
-| **Epic 2 / US-06 Images** | [#9](https://github.com/satya1130/CSC325-Capstone/issues/9): 49 character JPGs, responsive profile portrait, unavailable-image fallback | `feature/us06-character-profile-images` | [#76](https://github.com/satya1130/CSC325-Capstone/pull/76) — Aryan | [CI](https://github.com/satya1130/CSC325-Capstone/actions/runs/42397587339) |
-
-**Additional enhancements (not additional required stories):** [PR #77](https://github.com/satya1130/CSC325-Capstone/pull/77) makes profile details more consistent; [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78) replaces roster initials with the 49 images. Both are merged. The 49 static JPGs are at [`backend/characters/static/characters/images/`](backend/characters/static/characters/images/) and sourced from a team-supplied slides PDF. Note: Hero/Villain/Antihero classifications are team-proposed editorial choices where fictional character alignment is ambiguous.
-
-### D. Local onboarding and review-to-deploy walkthrough
-
-On **Windows PowerShell**, install Python 3.14, Node.js 22 and Git, then:
-
-```powershell
-git clone https://github.com/satya1130/CSC325-Capstone.git
-cd CSC325-Capstone
-py -3.14 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-$env:MONGODB_URI = Read-Host "MongoDB connection URI"
-cd backend
-..\.venv\Scripts\python.exe manage.py migrate --noinput
-..\.venv\Scripts\python.exe manage.py import_characters
-..\.venv\Scripts\python.exe manage.py test
-..\.venv\Scripts\python.exe manage.py runserver
-```
-
-Open `http://127.0.0.1:8000/` for the roster and `http://127.0.0.1:8000/api/characters/` for the API. In a new terminal from repo root, run the original frontend tests with `cd frontend/roster; node --test roster.test.cjs`. The importer uses `update_or_create` and can run repeatedly without duplicate character names.
-
-For a new story or fix, branch from updated `main` with `git checkout -b feature/<issue-name>`, implement code and an acceptance test, then push `git push -u origin <branch-name>`. Open a PR into `main`, reference its issue, request a real teammate **Approve**, wait for green **Test**, and merge. The new `main` workflow starts Deploy only under its conditional hook configuration. Check the host's actual deployment and the live UI after merging. Protected `main` intentionally disallows bypassing approval/CI.
-
-Do **not** commit local SQLite files, `.env`, secret tokens, deployment hook URLs or API keys. The repo's standard Django read-only character endpoints do not require external AI keys.
-
-### E. AI-use disclosure and actual corrections
-
-ChatGPT was used to assist with the four-stage GitHub Actions workflow, Django/JS changes and acceptance tests for the selected user stories, CSS/profile/roster presentation, 49-image integration instructions, branch and PR creation, and README/evidence writing. The team's own character data, images and Figma design were used as inputs. Every change was submitted to GitHub with a visible diff and required a real teammate review and successful CI before merge. AI-generated outputs were **not treated as independently verified facts**.
-
-Recorded issues and corrections from actual work (not invented examples):
-
-1. **Render static assets:** Initial production CSS/JS did not load. PR [#66](https://github.com/satya1130/CSC325-Capstone/pull/66) added WhiteNoise/static file and startup support; a production-storage/test-mode issue was then corrected before tests passed. The site was visually checked after deployment.
-2. **US-03 wrong branch / conflicts:** The category dropdown changes were initially submitted on a newly created branch as PR [#72](https://github.com/satya1130/CSC325-Capstone/pull/72). After a request to use the original filtering branch, the changes were transferred, the old branch/main divergence was reconciled, the duplicate PR closed, and [#73](https://github.com/satya1130/CSC325-Capstone/pull/73) reviewed and merged.
-3. **US-04 wording and failing test:** The first version used 'Description'; it was changed to the requested **'Character Description'** label and its acceptance test updated on the same PR [#74](https://github.com/satya1130/CSC325-Capstone/pull/74). An earlier test run failed; a later run passed before review and merge.
-4. **US-06 image delivery:** The team provided a PDF slide deck with one character image per page. A ZIP was first committed in the image folder, but the application required individual JPEG static assets; all 49 JPGs were then uploaded and verified. [#76](https://github.com/satya1130/CSC325-Capstone/pull/76) merged with those files, and [#78](https://github.com/satya1130/CSC325-Capstone/pull/78) added roster-card portraits.
-
-Limitations: the images are third-party Marvel film visuals supplied for an **unofficial student fan prototype**; no commercial rights are claimed. The Figma Brawl engine and true login remain conceptual, and Render's hook success is not an automatic end-to-end live health assertion.
-
-### F. Final teammate sanity check
-
-**Teammate sanity check: COMPLETE (November 7, 2026).** Kyle independently cloned the latest `main` repository on macOS, installed dependencies, applied migrations, imported 49 Marvel characters, and launched the local Django website. He reported **36 Django tests passing**, confirmed 49 character images and descriptions, and checked search, filters, and the character API. See his written findings in [`docs/sanity-check-kyle.md`](docs/sanity-check-kyle.md) and his [merged PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), which Satya formally approved.
-
-Kyle also documented three honest follow-ups: searching `spiderman` without a hyphen returns no results, a local missing `staticfiles` directory warning appears, and `/favicon.ico` returns 404. None prevented the tests from passing. After PR #81 merged, the [main-branch four-stage workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/42417364258) completed successfully, including the Render deployment-hook step. **The successful hook does not independently prove the live site is healthy; live deployment verification remains a separate check.**
-
-The older 8–10 minute midpoint presentation and its separate video are **not** substitutes for the November 8 submission's ≤3-minute recorded story walkthrough.
