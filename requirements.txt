@@ -4,3 +4,5 @@ sqlparse==0.6.0
 tzdata==2026.5
 whitenoise>=6.11,<7
 gunicorn>=23,<27
+
+django-mongodb-backend==6.1.0

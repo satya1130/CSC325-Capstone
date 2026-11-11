@@ -18,13 +18,44 @@ function filterCharacters(characters, query, powers = "", category = "") {
     (!categoryQuery || normalize(character.category) === categoryQuery)
   );
 
-  // Show names beginning with the search first, while keeping partial matches.
-  // Leave the default roster order unchanged when the name search is empty.
+  // Prioritize names starting with the search while preserving other partial matches.
+  // An empty query retains the original alphabetical roster order.
   if (!q) return matches;
   return matches.sort((a, b) =>
     Number(normalize(b.name).startsWith(q)) -
     Number(normalize(a.name).startsWith(q))
   );
+}
+
+// Build a single-select, alphabetical list from abilities actually in the roster.
+// Powers are stored as period-separated phrases in the team's character data.
+function availablePowers(roster) {
+  const distinct = new Map();
+  for (const character of roster) {
+    for (const item of String(character.powers ?? "").split(/[.;\n]+/)) {
+      const power = item.trim();
+      if (power && !distinct.has(normalize(power))) {
+        distinct.set(normalize(power), power);
+      }
+    }
+  }
+  return [...distinct.values()].sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: "base" })
+  );
+}
+
+function populatePowerOptions(doc, roster) {
+  const select = doc.getElementById("powers-filter");
+  const all = doc.createElement("option");
+  all.value = "";
+  all.textContent = "All powers and abilities";
+  select.replaceChildren(all);
+  for (const power of availablePowers(roster)) {
+    const option = doc.createElement("option");
+    option.value = power;
+    option.textContent = power;
+    select.append(option);
+  }
 }
 
 function renderRoster(doc, characters) {
@@ -145,7 +176,7 @@ async function init(doc) {
 
   const powersFilter = doc.getElementById("powers-filter");
   const categoryFilter = doc.getElementById("category-filter");
-  powersFilter.addEventListener("input", () => renderRoster(doc, characters));
+  powersFilter.addEventListener("change", () => renderRoster(doc, characters));
   categoryFilter.addEventListener("change", () => renderRoster(doc, characters));
 
   search.addEventListener("input", () => {
@@ -176,6 +207,7 @@ async function init(doc) {
     const data = await response.json();
 
     characters = data.characters;
+    populatePowerOptions(doc, characters);
     // Fixed character types are defined in the HTML dropdown.
     // The selected value is applied by renderRoster through filterCharacters.
     renderRoster(doc, characters);

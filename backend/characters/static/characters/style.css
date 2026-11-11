@@ -81,3 +81,23 @@ dialog#profile{width:min(94vw,820px)}
 .card .card-portrait-fallback{padding:12px;color:#c2cbdd;font-size:13px;text-align:center}
 .card .card-portrait-fallback[hidden]{display:none}
 .card:has(.card-portrait) h2{margin-top:16px}
+
+
+/* US-03: match the powers and character-type dropdowns to the search field. */
+.controls select{
+  width:100%;
+  min-width:0;
+  min-height:48px;
+  padding:14px 18px;
+  background:#151c2b;
+  border:1px solid #59647c;
+  border-radius:10px;
+  color:#fff;
+  font:inherit;
+  font-size:16px;
+  cursor:pointer;
+}
+.controls select:focus-visible{
+  outline:3px solid #9db8ff;
+  outline-offset:3px;
+}
