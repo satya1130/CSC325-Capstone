@@ -1,5 +1,7 @@
 # CSC325 Midpoint — Scrum/Kanban, ownership and GitHub evidence
 
+> **HISTORICAL MIDPOINT SNAPSHOT (October 2026).** Some pending-review statements, proposed assignments, and missing-Kyle-PR notes below are no longer current. Kyle later merged [PR #62](https://github.com/satya1130/CSC325-Capstone/pull/62) and contributed the [sanity check PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81). The current project uses MongoDB Atlas and is deployed on Render; see [README](../README.md), [updated feature status](M7_FEATURE_STATUS.md) and [current PRs](https://github.com/satya1130/CSC325-Capstone/pulls). This document is retained as dated process evidence.
+
 > **Accuracy rule:** Actual GitHub issues, pull requests and CI are evidence. Proposed assignments below must be confirmed by teammates. GitHub `kanban:*` issue labels are not the same as a live GitHub Projects board. This document is a board-setup checklist and presentation reference, not proof that Projects cards have been updated.
 
 ## Team identity and PR evidence
