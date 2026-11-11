@@ -8,6 +8,49 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
 
+## 🚀 Current status — November 10, 2026
+
+**Marvel Clash is deployed on Render and uses MongoDB Atlas.** The team verified the live roster, character images, profiles, name search, Hero/Villain/Antihero filtering, and power/ability filtering after deployment.
+
+| Area | Current implementation |
+| --- | --- |
+| Frontend | Django templates, HTML, CSS, JavaScript and 49 local JPG portraits |
+| Backend | Python 3.14, Django 6.1, read-only character API |
+| Database | MongoDB Atlas via the official `django-mongodb-backend` |
+| Hosting | Render web service with Gunicorn and WhiteNoise |
+| Automation | GitHub Actions Django tests and four-stage CI/CD |
+| Design | Figma interactive prototype for future fighter comparison/Brawl |
+| Not yet implemented | Live AI Brawl engine, secure member accounts, persistent favorites |
+
+**MongoDB migration:** [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated Django to MongoDB Atlas, introduced MongoDB-specific migrations and ObjectId character IDs, and updated CI to test against a separate temporary MongoDB service. The 49 character records were imported into Atlas, not committed to Git. The original SQLite database is legacy local development data, **not** the current application database.
+
+### Local development (Windows PowerShell)
+
+Install Python 3.14 and have access to a MongoDB Atlas deployment or another compatible MongoDB server. From the repository root:
+
+```powershell
+py -3.14 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+$env:MONGODB_URI = Read-Host "MongoDB connection URI"
+cd backend
+..\.venv\Scripts\python.exe manage.py check
+..\.venv\Scripts\python.exe manage.py migrate --noinput
+..\.venv\Scripts\python.exe manage.py import_characters
+..\.venv\Scripts\python.exe manage.py runserver
+```
+
+Open `http://127.0.0.1:8000/` for the roster and `http://127.0.0.1:8000/api/characters/` for the API. A character detail endpoint uses a **MongoDB ObjectId**, for example `/api/characters/<24-character-objectid>/`; numeric paths such as `/api/characters/1/` are no longer valid. The import command is repeatable and updates characters by name.
+
+**Security:** Never commit or share `MONGODB_URI`, `DJANGO_SECRET_KEY` or deployment secrets. For production, set `DJANGO_DEBUG=false`, `DJANGO_ALLOWED_HOSTS` to the actual Render hostname, and `DJANGO_SECRET_KEY` to a secure secret. Atlas Network Access must include the Render service's outbound IP ranges. Keep production data separate from CI test data.
+
+### Production deployment on Render
+
+The Render service needs these environment variables: `MONGODB_URI`, `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=false`, `DJANGO_ALLOWED_HOSTS`, and a suitable `PYTHON_VERSION`. The deployment runs Django migrations and the repeatable 49-character import before starting Gunicorn. Static images, CSS and JavaScript are served using Django staticfiles and WhiteNoise.
+
+The verified live functionality is the **character roster**, not a playable Brawl or production authentication system. This section supersedes older SQLite/deployment descriptions kept below as project history.
+
+---
+
 ## 🧭 Project Hub — Important Links
 
 > **Use this section first.** It is the front-door index for the current Marvel Clash project.
@@ -16,13 +59,13 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 >
 > **🐍 Django / Backend:** [Backend folder](backend/) · [Django project](backend/marvelclash/) · [Character app](backend/characters/) · [API contract](docs/CHARACTER_API_CONTRACT.md)
 >
-> **🗄️ Data / Database:** [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **local SQLite DB is generated and intentionally not committed**
+> **🗄️ Data / Database:** [49-character CSV](backend/characters/data/marvel_characters.csv) · [Character model](backend/characters/models.py) · [Import command](backend/characters/management/commands/import_characters.py) · **MongoDB Atlas is the active database; the legacy SQLite DB is not committed**
 >
 > **📋 Project Management:** [Repository Map](docs/REPOSITORY_MAP.md) · [Project Description](Project_Description.md) · [Brawl Backlog](BRAWL_BACKLOG.md) · [Scrum/Kanban Plan](MIDPOINT_SCRUM_PLAN.md) · [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects/Kanban](https://github.com/satya1130/CSC325-Capstone/projects) · [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls)
 >
 > **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Feature Status](docs/M7_FEATURE_STATUS.md) · [Kanban/PR Evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Nov. 8 Story Evidence](docs/NOV8_STORY_EVIDENCE.md)
 
-### Current implementation snapshot — November 7, 2026
+### Historical implementation snapshot — November 7, 2026
 
 - **Working Django roster:** 49 imported Marvel characters with name search, power search, Hero/Villain/Antihero filtering, profile descriptions, organized powers, and 49 uploaded local JPG portraits in the profile and roster cards. The original Figma Brawl remains a design prototype; an executable AI Brawl engine and real member sign-in have not been implemented.
 - **Six selected user stories, two epics:** US-01 through US-06 all have dedicated branches, acceptance tests, successful CI, formal teammate approval, and merged PRs #70, #71, #73, #74, #75 and #76. Additional visual improvements: #77 (profile layout) and #78 (roster images), both merged.
@@ -36,9 +79,9 @@ Marvel Clash is a fan-made character-exploration and Brawl **Figma prototype**. 
 
 ## Current Django MVP — roster and profile implementation
 
-The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles, filtered read-only APIs and a local SQLite data layer. The CSV source is committed; the generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in PRs #76 and #78.
+The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles and filtered read-only APIs backed by MongoDB Atlas following PR #88. The CSV source is committed; the legacy generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in PRs #76 and #78.
 
-### Run locally (Windows PowerShell)
+### Earlier local setup (SQLite-era; superseded by the MongoDB instructions above)
 
 From the repository root, with Python 3.14 available:
 
@@ -52,7 +95,7 @@ cd backend
 ..\.venv\Scripts\python.exe manage.py runserver
 ```
 
-Open `http://127.0.0.1:8000/` for the roster, `/api/characters/` for the JSON list, or `/api/characters/1/` for one character. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
+Open `http://127.0.0.1:8000/` for the roster or `/api/characters/` for the JSON list. Current character detail URLs require MongoDB ObjectIds, not `/api/characters/1/`. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
 
 **Tests:** The Django test suite (expanded after the original midpoint) covers the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. The November 8 feature PRs each have successful `Marvel Clash CI/CD` runs; see the verified per-story matrix below. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
 
@@ -75,7 +118,7 @@ A possible future deployment would use a web client, a character-data service an
 
 The planned AI-assisted battle service would generate varied explanations and battle sequences grounded in that data. Animation and replay capabilities could be added later.
 
-**The character roster, SQLite data layer and read-only API are implemented on `main` following PR #60.** Accounts and battle simulation are still planned.
+**The roster and read-only API are implemented on `main`; PR #88 subsequently replaced the SQLite data layer with MongoDB Atlas.** Accounts and battle simulation are still planned.
 
 ## Prototype
 
