@@ -63,7 +63,7 @@ The verified live functionality is the **character roster**, not a playable Braw
 >
 > **📋 Project Management:** [Repository Map](docs/REPOSITORY_MAP.md) · [Project Description](Project_Description.md) · [Brawl Backlog](BRAWL_BACKLOG.md) · [Scrum/Kanban Plan](MIDPOINT_SCRUM_PLAN.md) · [Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [Projects/Kanban](https://github.com/satya1130/CSC325-Capstone/projects) · [Pull Requests](https://github.com/satya1130/CSC325-Capstone/pulls)
 >
-> **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Feature Status](docs/M7_FEATURE_STATUS.md) · [Kanban/PR Evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Nov. 8 Story Evidence](docs/NOV8_STORY_EVIDENCE.md)
+> **🧪 CI / Evidence:** [Four-stage CI/CD](.github/workflows/marvel-clash-cicd.yml) · [Django tests workflow](.github/workflows/django-tests.yml) · [Current feature status](docs/M7_FEATURE_STATUS.md) · [Historical M7 Kanban planning](docs/M7_TEAM_KANBAN_EVIDENCE.md) · [Historical Nov. 8 planning tracker](docs/NOV8_STORY_EVIDENCE.md). For completed six-story acceptance evidence, see the [November 8 delivery section](#november-8-2026--six-story-delivery-and-cicd-evidence) below.
 
 ---
 
@@ -80,7 +80,7 @@ The sections below follow the order in which the project evolved. The **current 
 | **November 10** | MongoDB migration and deployment | Transferred the roster from SQLite to MongoDB Atlas, repaired images and ObjectId APIs, fixed CI/Render errors, and verified the deployed roster |
 | **After the migration** | Documentation and follow-up | Updated README, API contract, repository map, feature status and AI-use disclosures; further Brawl/account features remain planned |
 
-**Reading guide:** Start with the October prototype, then follow the dated implementation sections through November 10. Finish with the **Implementation reference**, **AI-Use Statement**, and **Next Steps**. Each phase below references the central disclosure rather than presenting separate, inconsistent claims about AI usage. Historic submission requirements are retained for coursework and may no longer describe the latest assignment.
+**Reading guide:** Start with the October prototype, then follow the dated implementation sections through November 10. Finish with the **Implementation reference**, **Project-wide AI-Use Statement**, and **Next Steps**. Each phase below references the central disclosure rather than presenting separate, inconsistent claims about AI usage. Historic submission requirements are retained for coursework and may no longer describe the latest assignment.
 
 ---
 
@@ -227,7 +227,7 @@ The previous prototype walkthrough's under-two-minute limit applies to that earl
 
 ## October 26, 2026 — Initial Django MVP and recovery history
 
-> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See **Current status** and **Database migration and deployment journal** above for the active MongoDB Atlas system.
+> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See [Current status](#-current-status--november-10-2026) at the top and the [November 10 migration journal](#november-10-2026--sqlite-to-mongodb-migration-and-render-deployment) further below for the active MongoDB Atlas system.
 
 The earlier sections preserve the project's original Figma planning and development roadmap. This **October recovery snapshot** records the working local Django MVP originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and restored in [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60). The current application uses MongoDB Atlas, not this original SQLite configuration.
 
@@ -248,7 +248,7 @@ The earlier sections preserve the project's original Figma planning and developm
 | [#57](https://github.com/satya1130/CSC325-Capstone/pull/57) | Satya: initial 12-character searchable frontend preview | Merged |
 | [#58](https://github.com/satya1130/CSC325-Capstone/pull/58) | Satya: Django backend, SQLite, full 49-character import, API, frontend integration and Django tests | Merged then reversed from `main` by [#59](https://github.com/satya1130/CSC325-Capstone/pull/59); Aryan commented on ID stability post-merge |
 
-Contributor credit above is limited to the evidence in these pull requests. Proposed assignments elsewhere in the repo, including Kyle's responsive design/image tasks, are not completion evidence. The actual GitHub Projects Kanban board should be checked separately from issue labels.
+**October snapshot only:** Contributor credit in this table is limited to the PRs that existed at that point. Kyle's later responsive work is recorded in [PR #62](https://github.com/satya1130/CSC325-Capstone/pull/62) and his independent sanity check in [PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81). The GitHub Projects board should still be checked separately from issue labels.
 
 ### Figma prototype versus coded application
 
@@ -281,7 +281,7 @@ For the formal 8–10 minute midpoint group presentation, demonstrate the live l
 - **Production configuration:** Render service and GitHub deployment secret/variable were configured and deployment was previously demonstrated. A green Deploy job proves the hook request succeeded, **not by itself that Render finished serving the new version**; verify live functionality after changes.
 - **November 8 submission:** Kyle's independent clean-clone sanity check is complete in [PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81), with 36 passing Django tests and documented minor findings. The **new** unlisted video under three minutes remains to be recorded and linked.
 
-**Module 7 midpoint navigation:** [Presentation guide and 10-item rubric](docs/M7_MIDPOINT_PRESENTATION.md) · [Truthful feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Team roles / Kanban / PR evidence](docs/M7_TEAM_KANBAN_EVIDENCE.md). **Recorded group video and real Projects board verification are still required.**
+**Module 7 midpoint navigation (historical presentation package):** [October presentation guide](docs/M7_MIDPOINT_PRESENTATION.md) · [Updated feature matrix and architecture](docs/M7_FEATURE_STATUS.md) · [Historical team roles / Kanban planning](docs/M7_TEAM_KANBAN_EVIDENCE.md). The October presentation guide includes superseded SQLite-era technical context.. **Recorded group video and real Projects board verification are still required.**
 
 ---
 
@@ -361,7 +361,7 @@ Do **not** commit local SQLite files, `.env`, secret tokens, deployment hook URL
 
 ### E. AI-use disclosure and actual corrections
 
-**Disclosure for the November 8 phase:** See the [project-wide AI-Use Statement](#project-wide-ai-use-statement) for tools, roles, verification and accepted/edited/rejected suggestions. The linked [story evidence](docs/NOV8_STORY_EVIDENCE.md), [four-stage workflow](.github/workflows/marvel-clash-cicd.yml) and [PR #63](https://github.com/satya1130/CSC325-Capstone/pull/63) show project artifacts; they do not independently prove which prompts a person used.
+**Disclosure for the November 8 phase:** See the [project-wide AI-Use Statement](#project-wide-ai-use-statement) for tools, roles, verification and accepted/edited/rejected suggestions. The [historical story-planning tracker](docs/NOV8_STORY_EVIDENCE.md), [four-stage workflow](.github/workflows/marvel-clash-cicd.yml) and [PR #63](https://github.com/satya1130/CSC325-Capstone/pull/63) show project artifacts; they do not independently prove which prompts a person used.
 
 ChatGPT was used to assist with the four-stage GitHub Actions workflow, Django/JS changes and acceptance tests for the selected user stories, CSS/profile/roster presentation, 49-image integration instructions, branch and PR creation, and README/evidence writing. The team's own character data, images and Figma design were used as inputs. Every change was submitted to GitHub with a visible diff and required a real teammate review and successful CI before merge. AI-generated outputs were **not treated as independently verified facts**.
 
@@ -503,7 +503,7 @@ Before [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), the team 
 
 Current character detail URLs require MongoDB ObjectIds, not `/api/characters/1/`. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own template/static assets.
 
-**Tests:** The Django test suite (expanded after the original midpoint) covers the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. The November 8 feature PRs each have successful `Marvel Clash CI/CD` runs; see the verified per-story matrix below. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
+**Tests:** The Django test suite (expanded after the original midpoint) covers the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. The November 8 feature PRs each have successful `Marvel Clash CI/CD` runs; see the verified per-story matrix in the [November 8 section](#november-8-2026--six-story-delivery-and-cicd-evidence) above. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
 
 **Development safety:** `DEBUG` defaults to true for local work. For any deployment, set `DJANGO_DEBUG=false`, configure `DJANGO_SECRET_KEY` and `DJANGO_ALLOWED_HOSTS`, and follow Django's deployment checklist. Do not deploy with the development defaults or the built-in server.
 
