@@ -5,11 +5,11 @@
 [![Character roster](https://img.shields.io/badge/CHARACTERS-49-22c55e?style=for-the-badge)](backend/characters/data/marvel_characters.csv)
 [![Backend](https://img.shields.io/badge/DJANGO-MVP%20ON%20MAIN-22c55e?style=for-the-badge)](backend/)
 
-> **Current navigation — November 5, 2026:** use the [main README](README.md) and [Repository Map](docs/REPOSITORY_MAP.md) for the current source-of-truth links. Older dashboard counts/diagrams below are preserved as dated course evidence.
+> **HISTORICAL DASHBOARD (November 5, 2026):** The workflow, SQLite architecture, PR statuses, and board counts in the snapshot below are **not today's source of truth**. Use the [main README](README.md), [Repository Map](docs/REPOSITORY_MAP.md), and [updated feature status](docs/M7_FEATURE_STATUS.md) for the current Django/MongoDB Atlas app and Render deployment.
 >
-> **Current code:** Django + SQLite development model + 49-character CSV importer + roster/profile UI + read-only API are on `main`. PR #65 added combined name/powers/category filters and acceptance tests.
+> **As documented November 5:** Django then used a SQLite development database with the 49-character CSV importer and API-backed roster. [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) later replaced SQLite with MongoDB Atlas. The app now has a deployed 49-character roster, images, search, and filters; full Brawl and secure accounts remain future work.
 >
-> **Current workflow:** PR #62 (Kyle responsive work), PR #63 (four-stage CI/CD), and PR #65 (Aryan US-03 filters) are merged. PR #64 (Nov. 8 scope/docs) and PR #66 is merged with green CI for the Render static-file production fix, but it has no submitted teammate review and the live deployment still needs verification.
+> **November 5 workflow snapshot:** PRs #62, #63, #65, and #66 were merged, while #64's scope update was still pending. [PR #64](https://github.com/satya1130/CSC325-Capstone/pull/64) has since merged. Consult [open PRs](https://github.com/satya1130/CSC325-Capstone/pulls) for current status.
 
 > **One project. One product goal. Clear evidence.**
 > Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
