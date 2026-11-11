@@ -364,7 +364,7 @@ The original backlog and project details are in [Project_Description.md](Project
 
 The additional Brawl-focused user stories are documented in [BRAWL_BACKLOG.md](BRAWL_BACKLOG.md).
 
-Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The local Django roster frontend and character APIs are merged in PR #60; the full fighter-selection/AI Brawl experience is still planned.
+Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The Django roster and APIs were restored by PR #60 and migrated to MongoDB Atlas in PR #88; the full fighter-selection/AI Brawl experience is still planned.
 
 ## Submission Checklist
 
@@ -385,17 +385,19 @@ The previous prototype walkthrough's under-two-minute limit applies to that earl
 
 ---
 
-## Historical midpoint recovery notes (October 26, 2026 — superseded by PR #60)
+## Historical midpoint recovery notes (October 26, 2026 — superseded by PRs #60 and #88)
+
+> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See **Current status** and **Database migration and deployment journal** above for the active MongoDB Atlas system.
 
 The sections above preserve the project's original Figma planning and development roadmap. This update records the **working local Django MVP** originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), subsequently reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and included on this recovery branch for renewed review.
 
 ### Completed implementation
 
-- **Backend and data:** Django project in `backend/marvelclash/`, character app in `backend/characters/`, SQLite `Character` model, 49-row CSV dataset and repeatable `import_characters` management command.
+- **Backend and data (October snapshot):** Django project in `backend/marvelclash/`, character app in `backend/characters/`, then-SQLite-backed `Character` model, 49-row CSV dataset and repeatable `import_characters` management command. **As of PR #88, MongoDB Atlas is the active database.**
 - **API contract:** `GET /api/characters/` and `GET /api/characters/{id}/` implemented using JSON with stable string IDs; missing characters return a structured HTTP 404, and unsupported methods return HTTP 405. See [API contract](docs/CHARACTER_API_CONTRACT.md).
 - **Frontend integration:** The Django-served roster uses the character API rather than the original 12 hard-coded sample entries. Users can view the 49-character roster, search by name, clear filters, see no-match feedback, and open/close a character profile with description and powers. The earlier standalone preview in `frontend/roster/` is retained.
-- **Testing:** Eight Django tests passed locally (`python manage.py test`, result `OK`), and the running local site was checked for roster count, search, and profiles. A passing GitHub Actions run has **not** been verified.
-- **Local setup:** Follow the Windows PowerShell setup steps in the **Current Django MVP** section above; the SQLite database and Python virtual environment are intentionally ignored by Git.
+- **Testing (October snapshot):** Eight Django tests passed locally (`python manage.py test`, result `OK`), and the local site was checked for roster count, search, and profiles. Later GitHub Actions runs and expanded tests are described in the current migration and CI sections.
+- **Local setup (historical):** The earlier SQLite database and virtual environment were ignored by Git. **Do not use the old SQLite setup:** follow **Local development (Windows PowerShell)** at the top of this README and set `MONGODB_URI`.
 
 ### GitHub collaboration evidence
 
@@ -410,25 +412,25 @@ Contributor credit above is limited to the evidence in these pull requests. Prop
 
 ### Figma prototype versus coded application
 
-The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows. **These are currently prototype demonstrations, not coded Django functionality.** The implemented website covers character browsing, name search, profiles, and read-only API access. Real authentication, favorites, comparison/Brawl engines, AI-generated battle outcomes, licensed images, deployment, and more comprehensive accessibility testing remain future work.
+The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains prototype screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows; these are not live Django Brawl or account functionality. **Since this October snapshot, the roster has been deployed to Render using MongoDB Atlas**. The live website supports character browsing, name search, category/power filtering, profiles, images, and read-only API access. Real authentication, persistent favorites, a working comparison/Brawl engine, AI-generated battle outcomes and more comprehensive accessibility testing remain future work.
 
 ### AI assistance on implementation
 
 The AI-use statement above discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
 
-For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** PR #60 restored Django on `main` with passing CI; historical recovery-branch descriptions above are superseded.
+For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** PR #60 restored Django on `main`; PR #88 migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
 
-### Historical restoration review notes — current implementation is in PR #60
+### Historical restoration review notes — SQLite-era implementation superseded by PR #88
 
-- **Character IDs:** API `id` values are string-encoded SQLite primary keys; they are stable only within a single database. Recreating/importing a database may change IDs. This limitation addresses Aryan's PR #58 review and is recorded in the API contract; source-backed permanent IDs remain a future compatibility decision.
-- **Automated CI:** `.github/workflows/django-tests.yml` creates a clean SQLite test database and runs `python manage.py check`, migrations, the 49-character CSV importer and all Django tests for PRs and pushes to `main`. Confirm green results on GitHub before merging.
+- **Character IDs (before MongoDB):** The October implementation returned string-encoded SQLite integer keys. **Current API IDs are string-encoded MongoDB ObjectIds** after PR #88; see the live API route documentation above.
+- **Automated CI (current):** `.github/workflows/django-tests.yml` starts a temporary **MongoDB 7** service, runs Django checks and migrations, imports and checks 49 records, and executes the automated tests. The four-stage workflow also uses MongoDB for its Test job. Confirm green results on GitHub before merging.
 - **Review workflow:** PR #58 was merged before a submitted teammate review and subsequently reverted by PR #59. Request teammate review on the replacement PR *before* merging. A COMMENTED review is not the same as an APPROVED review.
-- **Document scope:** Existing Figma, proposals, epics and Brawl plans remain unchanged; executable Brawl, production authentication, images and deployment are not claimed.
+- **Document scope (historical):** Existing Figma and Brawl plans were unchanged at that stage. **Images and Render deployment have since been implemented**, but executable Brawl and production authentication have not.
 
 
 ---
 
-## CSC 325 — November 8, 2026 final delivery evidence (current)
+## CSC 325 — November 8, 2026 submission evidence (historical snapshot; see November 10 update above)
 
 This section supersedes older pre-deployment and planning-status statements elsewhere in this historical README. The selected scope is **Epic 1: Character Search & Discovery** and **Epic 2: Character Profiles & Information**, with six stories total. **Login / US-21 is not part of this six-story submission.**
 
@@ -450,7 +452,7 @@ Workflow: [`.github/workflows/marvel-clash-cicd.yml`](.github/workflows/marvel-c
 - [Original standalone Django tests workflow](.github/workflows/django-tests.yml).
 - Deployment is via Render using encrypted **GitHub Actions secret** `RENDER_DEPLOY_HOOK` and repository variable `RENDER_DEPLOY_ENABLED=true`. Never copy their values into commits, screenshots, README or logs.
 - CI's Deploy success shows the hook returned successfully. Render's final deploy health and the current live images/filters should be manually checked at the hosted site; the hook alone is not a health check.
-- Render's ephemeral filesystem and SQLite startup import are **not durable user-data storage**; adding accounts or persistent favorites requires a persistent production database. The current roster is source-CSV backed.
+- **Current persistence:** Render's filesystem is ephemeral, but the active application uses **MongoDB Atlas for durable database storage**, with a repeatable source-CSV roster import. Future accounts and persistent favorites require additional models, authorization, and implementation; they are not live features.
 
 ### B. Protected `main` branch
 
@@ -488,6 +490,7 @@ git clone https://github.com/satya1130/CSC325-Capstone.git
 cd CSC325-Capstone
 py -3.14 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+$env:MONGODB_URI = Read-Host "MongoDB connection URI"
 cd backend
 ..\.venv\Scripts\python.exe manage.py migrate --noinput
 ..\.venv\Scripts\python.exe manage.py import_characters
