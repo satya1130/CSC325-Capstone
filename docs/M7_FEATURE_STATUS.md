@@ -1,68 +1,70 @@
-# Marvel Clash — Midpoint Feature and Technical Status
+# Marvel Clash — Feature and Technical Status
 
-> **Verified snapshot:** 2026-10-27 UTC. Figma design examples are not the same as executable features. Current source branch: `main` following PR #60. Do not claim public deployment or live AI.
+> **Updated November 10, 2026.** This document started as the October 27 midpoint snapshot and is now updated to reflect the live Django/MongoDB Atlas roster. The team's original Figma Brawl prototype is separate from implemented functionality.
 
-## Finalized product goal
-Help Marvel fans and newcomers discover, understand and compare Marvel characters, then experience an entertaining, explainable Brawl. Prefer truthful, source-backed character powers and a deterministic battle baseline before adding variation or optional AI narrative.
+## Product goal
 
-## Feature matrix
+Help Marvel fans discover and understand characters, compare possible fighters, and eventually experience an entertaining, explainable Brawl. Only the character-exploration roster is implemented and deployed so far.
 
-| Feature | Django MVP on `main` | Figma representation | Remaining work / evidence |
+## Current feature matrix
+
+| Feature | Django application | Figma | Status / follow-up |
 | --- | --- | --- | --- |
-| 49-character roster | **Working**: SQLite, CSV and API | Yes | Cross-check source workbook |
-| Character name search | **Working**: browser JavaScript | Yes | Add browser-level tests |
-| Name, description, powers profile | **Working**: basic modal | Yes | Improve consistency and data quality |
-| Read-only list/detail REST API | **Working**: Django JSON endpoints | N/A | Stable IDs, API integration tests |
-| 49-row repeatable importer | **Working**; new idempotency unit tests proposed | N/A | Source validation and provenance |
-| Image portraits and category filters | **Not implemented**; fields nullable | Yes | Approved artwork, image manifest and category mapping |
-| Accessible/mobile coded UI | Basic responsive CSS | Yes | Manual device/keyboard WCAG review |
-| Sign up/sign in/admin/guest authorization | **Not implemented** | Simulated PIN/roles only | Django auth, permission tests and session persistence |
-| Saved favorites and comparisons | **Not implemented** | Demonstrated | Database models, UI and tests |
-| Select two fighters | **Not implemented** | Demonstrated | Validate two distinct characters |
-| Health bars, combat rounds and outcome | **Not implemented** | Scripted example | Rules engine and deterministic tests |
-| Brawl explanations/replay | **Not implemented** | Scripted result | Match state, replay and explanation |
-| Grounded AI narration and animation | **Not implemented; stretch** | Visual concept only | Reviewed moves/counters, non-invented powers, safeguards |
-| Public deployment | **Not deployed** | N/A | Host/secrets/static files/security checklist |
+| 49-character roster | **Implemented:** MongoDB Atlas + repeatable CSV import + API | Yes | Manually verified after Render deployment; editorial review still needed |
+| Search by character name | **Implemented:** case-insensitive partial search | Yes | Automated Django/Node checks exist; smart prefix-first enhancement remains in separate PR #86 |
+| Filter by powers or ability | **Implemented:** populated power dropdown and matching filter | Yes | Tested in GitHub Actions; manually reported working live |
+| Filter Hero / Villain / Antihero | **Implemented** | Yes | Source-category review remains desirable |
+| Profiles with descriptions and abilities | **Implemented** | Yes | Data quality review remains |
+| Character JPG portraits | **Implemented:** all 49 local JPGs | Yes | Third-party artwork use/attribution needs review |
+| Read-only JSON character API | **Implemented** | N/A | ObjectId detail URLs, `q`, `powers` and `category` filters |
+| Repeatable 49-character import | **Implemented:** `update_or_create` | N/A | CI checks record count and idempotency |
+| Responsive/accessibility behavior | Basic responsive UI and keyboard labels | Yes | Complete manual accessibility/browser audit pending |
+| Public deployment | **Implemented:** Django on Render, database on MongoDB Atlas | N/A | November 10 manually verified; monitor future deploys |
+| Real member login and permissions | **Not implemented** | Simulated | Account/session and permission work |
+| Persistent favorites, comparisons | **Not implemented** | Demonstrated | Data models, API, UI and tests |
+| Two-fighter selection / combat engine | **Not implemented** | Scripted interactions | Deterministic rules and battle invariants |
+| AI Brawl narration, animation, replay | **Not implemented** | Illustrative | Grounding, model integration, safeguards |
 
-## Architecture
+## Current architecture
 
 ```mermaid
 flowchart LR
-  U[Browser user] -->|search/profile actions| FE[Django HTML/CSS/JS roster]
-  FE -->|GET /api/characters/| API[Django JSON views]
+  U[Browser visitor] --> FE[Django HTML/CSS/JS roster]
+  FE -->|GET /api/characters/| API[Django JsonResponse views]
   API --> ORM[Django Character model]
-  CSV[49-row reviewed CSV] -->|import_characters command| ORM
-  ORM --> DB[(SQLite development database)]
-  FE -. future .-> AUTH[Django accounts & permissions]
-  FE -. future .-> BRAWL[Rules-based Brawl engine]
-  BRAWL -. stretch .-> AI[Grounded AI narrator]
+  CSV[49-character CSV] -->|idempotent import| ORM
+  ORM --> DB[(MongoDB Atlas)]
+  APP[Django on Render] --> API
+  FE -. future .-> AUTH[Real member accounts]
+  FE -. future .-> BRAWL[Brawl engine]
+  BRAWL -. future .-> AI[Grounded AI narration]
 ```
 
-**Technology:** Python 3.14, Django 6.1.2 per pinned requirements, SQLite for local MVP, Django templates, vanilla JavaScript and CSS, GitHub CI, Figma for design. These are not Django REST Framework viewsets; the API is implemented using Django `JsonResponse`.
+**Technology:** Python 3.14, Django 6.1.2, `django-mongodb-backend==6.1.0`, MongoDB Atlas, vanilla JavaScript/CSS and Django templates, Gunicorn/WhiteNoise on Render, GitHub Actions with temporary MongoDB 7 test services. The API uses Django `JsonResponse`, not Django REST Framework.
 
-## Working endpoints
-- `GET /api/characters/` returns `{"characters":[...]}`, alphabetized by name.
-- `GET /api/characters/<id>/` returns one JSON character or a structured 404.
-- Unsupported POST requests to those URLs return 405.
-- `/` serves the API-backed searchable roster.
-- Character IDs are SQLite-generated stringified primary keys, stable only within the same database.
+## Live endpoints
 
-## Evidence
-- Restored MVP: https://github.com/satya1130/CSC325-Capstone/pull/60
-- Successful CI on `main`: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711
-- Original Django work: https://github.com/satya1130/CSC325-Capstone/pull/58
-- Figma screens: https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15
-- Design context: https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2
+- `GET /api/characters/` returns an alphabetized `{"characters":[...]}` object.
+- Optional `q`, `powers`, and `category` queries filter the list.
+- `GET /api/characters/<objectid>/` returns one character or JSON 404 for malformed/unknown IDs.
+- Unsupported POST requests return HTTP 405.
+- `/` serves the API-backed searchable roster, images, dropdown filters, and profiles.
 
-## Milestone order
-1. Finish MVP cleanup, source proof and end-to-end browser demonstration.
-2. Character data and image mapping; permanent IDs and category vocabulary.
-3. Fighter selection + comparison and stable rules-based Brawl with invariant tests.
-4. Only after the baseline works: AI-grounded explanation, variable moves, optional animations/replay.
-5. Security, accessibility, packaging, final group video and documentation.
+Character IDs are **string-encoded MongoDB ObjectIds**, not SQLite numeric IDs. See the [API contract](CHARACTER_API_CONTRACT.md).
 
-### Source and quality follow-ups
-The CSV includes `Valkryie`, while slideshow art uses `Valkyrie` in the team review issue. Do not silently rename production primary keys without a reviewed migration/import strategy. Other descriptions and pronouns need workbook verification. Import count passing does not prove editorial accuracy. Public images need usage review.
+## Verification and development history
 
-### Test coverage limitations
-The published CI currently verifies Django setup, migrations, exactly 49 imports, eight API/homepage unit tests, and passes on Ubuntu. The PR in this midpoint package proposes extra importer/idempotence and admin tests plus standalone Node search tests. There is **no browser E2E suite**, no load testing and no combat invariant testing yet.
+- Original Django MVP: [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), restored in [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60).
+- MongoDB migration, CI and ObjectId compatibility: [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88).
+- GitHub's Django tests and four-stage CI/CD passed on `main` after the migration. The test stage uses a temporary MongoDB service; passing a Render deploy hook alone is not a live-site health check.
+- The live roster, character images, profiles, name search, category filters, and power filters were manually confirmed working after Atlas network access was configured on November 10.
+- Original user-story acceptance and team evidence: [November 8 evidence](NOV8_STORY_EVIDENCE.md) and [README](../README.md).
+
+## Quality gaps and future work
+
+1. **Art/data:** Review Marvel artwork usage/attribution and verify character descriptions, categorizations, and the `Valkryie` spelling against the original source before changing any production identity or filename.
+2. **Testing:** No complete automated browser end-to-end, load, or combat-invariant suite yet.
+3. **Security and accessibility:** Run Django's deployment checks and a real browser/device accessibility pass; store production secrets in Render settings, never in Git.
+4. **Future app features:** Secure authentication, favorites, compare flows, battle model, explainable combat, optional AI narrative, and replay.
+
+**Historical note:** The October 27 version of this document described SQLite, eight tests, missing images/filters, and an undeployed MVP. Those statements were accurate for that earlier snapshot but are now superseded by the MongoDB migration and Render deployment.
