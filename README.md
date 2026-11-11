@@ -51,8 +51,6 @@ The verified live functionality is the **character roster**, not a playable Braw
 
 ---
 
----
-
 ## 🧭 Project Hub — Important Links
 
 > **Use this section first.** It is the front-door index for the current Marvel Clash project.
@@ -82,11 +80,13 @@ The sections below follow the order in which the project evolved. The **current 
 | **November 10** | MongoDB migration and deployment | Transferred the roster from SQLite to MongoDB Atlas, repaired images and ObjectId APIs, fixed CI/Render errors, and verified the deployed roster |
 | **After the migration** | Documentation and follow-up | Updated README, API contract, repository map, feature status and AI-use disclosures; further Brawl/account features remain planned |
 
-**Reading guide:** Start with the October prototype, then follow the dated implementation sections through November 10. Finish with the **Implementation reference**, **AI-Use Statement**, and **Next Steps**. Historic submission requirements are retained for coursework and may no longer describe the latest assignment.
+**Reading guide:** Start with the October prototype, then follow the dated implementation sections through November 10. Finish with the **Implementation reference**, **AI-Use Statement**, and **Next Steps**. Each phase below references the central disclosure rather than presenting separate, inconsistent claims about AI usage. Historic submission requirements are retained for coursework and may no longer describe the latest assignment.
 
 ---
 
 ## October 2026 — Figma prototype and user journeys
+
+**AI disclosure:** AI-assisted planning and prototype-writing support is described in the [project-wide AI-use statement](#project-wide-ai-use-statement). The Figma files are team design artifacts, not evidence that AI authored every screen or that the prototype implements live AI battles.
 
 **Primary Marvel Clash Figma design:** https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15
 
@@ -144,7 +144,7 @@ The prototype is illustrative: it does not implement permanent login sessions, p
 
 ## October 2026 — Original architecture and planned web application
 
-### Current architecture: Interactive prototype
+### October snapshot: Interactive Figma prototype architecture
 
 This section documents the original Figma prototype. The working Django roster originated in PR #58, was restored in PR #60, and has since been deployed to Render. The prototype uses these conceptual layers:
 
@@ -153,7 +153,7 @@ This section documents the original Figma prototype. The working Django roster o
 - **Prototype interaction/state:** Figma navigation and variables demonstrate the selected persona, fighter choices and screen transitions. These are not secure, persistent accounts or a browser database.
 - **Illustrative simulation:** Pre-authored battle actions, commentary, health changes and results. Fights are **not** computed by a running AI or combat engine.
 
-### Planned architecture: Web application
+### Original proposal: Web application architecture
 
 A possible future deployment would use a web client, a character-data service and database, authenticated account services with server-side authorization, and a battle engine that uses reviewed powers, moves, strengths, weaknesses and counters.
 
@@ -165,7 +165,7 @@ The planned AI-assisted battle service would generate varied explanations and ba
 
 ## October 2026 — Original test plan and quality goals
 
-The following are **test plans**, not a claim that tests have been implemented or executed in a working application.
+The following are **original October test-plan ideas**, not a claim that all tests were implemented. The later November 8 and November 10 sections document the actual Django/JavaScript tests and deployment checks.
 
 ### 1. Unit Testing (Future Implementation)
 
@@ -225,13 +225,11 @@ The previous prototype walkthrough's under-two-minute limit applies to that earl
 
 ---
 
----
-
 ## October 26, 2026 — Initial Django MVP and recovery history
 
 > **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See **Current status** and **Database migration and deployment journal** above for the active MongoDB Atlas system.
 
-The sections above preserve the project's original Figma planning and development roadmap. This update records the **working local Django MVP** originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), subsequently reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and included on this recovery branch for renewed review.
+The earlier sections preserve the project's original Figma planning and development roadmap. This **October recovery snapshot** records the working local Django MVP originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and restored in [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60). The current application uses MongoDB Atlas, not this original SQLite configuration.
 
 ### Completed implementation
 
@@ -258,9 +256,11 @@ The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains
 
 ### AI assistance on implementation
 
-The AI-use statement above discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
+**Disclosure for this October phase:** [Project-wide AI-Use Statement](#project-wide-ai-use-statement), especially the ChatGPT/Django MVP entry. This phase used AI-assisted drafting and debugging; code correctness was checked by the team using the actual application and tests.
 
-For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** PR #60 restored Django on `main`; PR #88 migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
+The [project-wide AI-Use Statement](#project-wide-ai-use-statement) **below** discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Supporting implementation history is visible in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58) and [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60). Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
+
+For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60) restored Django on `main`; [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
 
 ### Historical restoration review notes — SQLite-era implementation superseded by PR #88
 
@@ -269,8 +269,6 @@ For the formal 8–10 minute midpoint group presentation, demonstrate the live l
 - **Review workflow:** PR #58 was merged before a submitted teammate review and subsequently reverted by PR #59. Request teammate review on the replacement PR *before* merging. A COMMENTED review is not the same as an APPROVED review.
 - **Document scope (historical):** Existing Figma and Brawl plans were unchanged at that stage. **Images and Render deployment have since been implemented**, but executable Brawl and production authentication have not.
 
-
----
 
 ---
 
@@ -362,6 +360,8 @@ For a new story or fix, branch from updated `main` with `git checkout -b feature
 Do **not** commit local SQLite files, `.env`, secret tokens, deployment hook URLs or API keys. The repo's standard Django read-only character endpoints do not require external AI keys.
 
 ### E. AI-use disclosure and actual corrections
+
+**Disclosure for the November 8 phase:** See the [project-wide AI-Use Statement](#project-wide-ai-use-statement) for tools, roles, verification and accepted/edited/rejected suggestions. The linked [story evidence](docs/NOV8_STORY_EVIDENCE.md), [four-stage workflow](.github/workflows/marvel-clash-cicd.yml) and [PR #63](https://github.com/satya1130/CSC325-Capstone/pull/63) show project artifacts; they do not independently prove which prompts a person used.
 
 ChatGPT was used to assist with the four-stage GitHub Actions workflow, Django/JS changes and acceptance tests for the selected user stories, CSS/profile/roster presentation, 49-image integration instructions, branch and PR creation, and README/evidence writing. The team's own character data, images and Figma design were used as inputs. Every change was submitted to GitHub with a visible diff and required a real teammate review and successful CI before merge. AI-generated outputs were **not treated as independently verified facts**.
 
@@ -485,33 +485,23 @@ This is a **working, hosted character exploration application**, not merely a Fi
 
 ### 8. Contribution and evidence
 
+**Disclosure for the migration phase:** See the [project-wide AI-Use Statement](#project-wide-ai-use-statement), which distinguishes ChatGPT-assisted planning, code suggestions, troubleshooting and documentation from the configuration, test runs and live verification performed by people.
+
 **Satya's documented migration/deployment work:** synchronized the local team repository, configured and tested the Django/Atlas integration, ran the one-time 49-character transfer and image-reference repair, validated character profiles and images, committed the integration branch, coordinated the PR/CI troubleshooting, added Render environment configuration and outbound IP ranges to Atlas, and verified the deployed application. ChatGPT was used for step-by-step assistance, code changes, troubleshooting, GitHub PR creation/updates, and README documentation. Teammate review and the prior team's original frontend/API/Figma contributions remain separate contributions.
 
 **Evidence and source files:** [MongoDB integration PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) · [Django settings](backend/marvelclash/settings.py) · [Mongo migrations](backend/mongo_migrations/) · [Character model](backend/characters/models.py) · [CSV import command](backend/characters/management/commands/import_characters.py) · [Character API views](backend/characters/views.py) · [Django test suite](backend/characters/tests.py) · [GitHub Actions runs](https://github.com/satya1130/CSC325-Capstone/actions).
 
 ---
 
----
-
 ## Implementation reference — Django roster, API and local setup history
 
-The Django roster first appeared in PR #58, was temporarily reverted by PR #59, and was **restored to `main` by merged PR #60**. PR #65 later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles and filtered read-only APIs backed by MongoDB Atlas following PR #88. The CSV source is committed; the legacy generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in PRs #76 and #78.
+The Django roster first appeared in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), was temporarily reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and was **restored to `main` by merged [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60)**. [PR #65](https://github.com/satya1130/CSC325-Capstone/pull/65) later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles and filtered read-only APIs backed by MongoDB Atlas following PR #88. The CSV source is committed; the legacy generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in [PR #76](https://github.com/satya1130/CSC325-Capstone/pull/76) and [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78).
 
-### Earlier local setup (SQLite-era; superseded by the MongoDB instructions above)
+### Historical local setup (SQLite era, not current instructions)
 
-From the repository root, with Python 3.14 available:
+Before [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), the team used a local SQLite database for the Django MVP. **Do not reuse those old commands without MongoDB configuration.** For the current application, follow [Local development (Windows PowerShell)](#local-development-windows-powershell) near the top of this README, including the required `MONGODB_URI` environment variable, then run Django checks, migrations, the importer, and tests against the configured MongoDB instance.
 
-```powershell
-py -3.14 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-cd backend
-..\.venv\Scripts\python.exe manage.py migrate
-..\.venv\Scripts\python.exe manage.py import_characters
-..\.venv\Scripts\python.exe manage.py test
-..\.venv\Scripts\python.exe manage.py runserver
-```
-
-Open `http://127.0.0.1:8000/` for the roster or `/api/characters/` for the JSON list. Current character detail URLs require MongoDB ObjectIds, not `/api/characters/1/`. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own copied template/static assets.
+Current character detail URLs require MongoDB ObjectIds, not `/api/characters/1/`. The import command uses `update_or_create` so it can be rerun without duplicating names. The original `frontend/roster` preview is retained; Django uses its own template/static assets.
 
 **Tests:** The Django test suite (expanded after the original midpoint) covers the character list/detail API, missing characters, unsupported POST requests, homepage, empty roster, nullable unreviewed fields, repeatable imports, Django admin registration, and US-03 name/powers/category filtering behavior. The November 8 feature PRs each have successful `Marvel Clash CI/CD` runs; see the verified per-story matrix below. The earlier verified main run for the restored MVP is preserved here: https://github.com/satya1130/CSC325-Capstone/actions/runs/40442492711 .
 
@@ -519,19 +509,23 @@ Open `http://127.0.0.1:8000/` for the roster or `/api/characters/` for the JSON 
 
 ---
 
-## AI-Use Statement
+## Project-wide AI-Use Statement
 
-The team used AI assistance during planning, development, troubleshooting, and documentation. The following disclosure distinguishes **AI-assisted suggestions and drafts** from the changes that team members applied, tested, reviewed, and deployed. AI output was not treated as automatically correct.
+This disclosure covers **the whole Marvel Clash project**, from Figma planning and the original Django MVP through the November user stories, MongoDB migration, GitHub Actions, deployment, and documentation. It distinguishes **AI-assisted suggestions and drafts** from changes that team members applied, tested, reviewed, and deployed. AI output was not treated as automatically correct. Individual AI usage is attributed only where reported or documented; unverified use by other teammates is not assumed.
+
+**Evidence and attribution:** Relevant GitHub PRs, workflows, and code files are linked throughout this section. These citations support **what was built, reviewed and merged**. A GitHub PR alone does **not prove which exact AI prompts were used**, so descriptions of personal AI-tool use are explicitly reported disclosures, not independently verified prompt transcripts.
 
 ### AI Tools Used
 
-**ChatGPT (OpenAI):** Helped plan and revise prototype user flows, the context diagram, written explanations, and some Figma interactions. For the initial Django MVP in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), Satya used ChatGPT to help draft and revise Python/Django code, character models and API views, the CSV import command, HTML templates, JavaScript API integration, automated tests, local setup instructions, and Git/GitHub steps. Satya applied the proposed code in VS Code and checked the working 49-character roster, search, profiles, and Django tests.
+**ChatGPT (OpenAI), planning and Django MVP (October):** Satya reports using ChatGPT to help plan and revise prototype user flows, the context diagram, written explanations and some Figma interactions. Project planning artifacts are linked in the [Figma prototype section](#october-2026--figma-prototype-and-user-journeys); this does not mean AI independently created or reviewed the team's entire Figma file. For the initial Django MVP in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), Satya used ChatGPT to help draft and revise Python/Django code, character models and API views, the CSV import command, HTML templates, JavaScript API integration, automated tests, local setup instructions, and Git/GitHub steps. Satya applied the proposed code in VS Code and checked the working 49-character roster, search, profiles, and Django tests.
 
-**ChatGPT for the SQLite-to-MongoDB migration and Render deployment ([PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), November 2026):** Satya used ChatGPT for guided migration planning and troubleshooting. Assistance included MongoDB Atlas connection setup, configuring `django-mongodb-backend` and migrations, transferring the existing 49 character records, correcting image references, updating character API routes for MongoDB ObjectIds, diagnosing CI dependency/service/test failures, revising GitHub Actions, and troubleshooting the Render-to-Atlas TLS connection failure. ChatGPT also helped draft GitHub PR changes and update this README. These were **AI-assisted development and documentation tasks**, not a claim that AI independently verified the software.
+**ChatGPT, November user stories, testing and CI/CD:** Satya reports ChatGPT assistance with Django/JavaScript acceptance tests, roster/profile CSS and layout, the 49 portrait integration workflow, GitHub Actions configuration, Git troubleshooting, and README/evidence drafting. Code and review evidence: [PR #63](https://github.com/satya1130/CSC325-Capstone/pull/63) (CI/CD), [PR #65](https://github.com/satya1130/CSC325-Capstone/pull/65) (filters), [PR #76](https://github.com/satya1130/CSC325-Capstone/pull/76) and [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78) (images), and [November 8 story evidence](docs/NOV8_STORY_EVIDENCE.md). These links establish the project changes, not the exact text of AI interactions.
 
-**Claude (Anthropic):** A group contributor reported using Claude to assist with README drafting and a separate Figma prototype. The other contributor's exact prompts, outputs, and edits should be confirmed with that person before final submission.
+**ChatGPT, SQLite-to-MongoDB migration and Render deployment ([PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), November 2026):** Satya used ChatGPT for guided migration planning and troubleshooting. Assistance included MongoDB Atlas connection setup, configuring `django-mongodb-backend` and migrations, transferring the existing 49 character records, correcting image references, updating character API routes for MongoDB ObjectIds, diagnosing CI dependency/service/test failures, revising GitHub Actions, and troubleshooting the Render-to-Atlas TLS connection failure. ChatGPT also helped draft GitHub PR changes and update this README. These were **AI-assisted development and documentation tasks**, not a claim that AI independently verified the software.
 
-**Figma:** Used for the team's interface design, interactive prototypes, personas, context diagram, and user journey. **GitHub/GitHub Actions:** Used for source control, pull requests, peer review, automated checks, and project management. Figma and GitHub are listed here as project tools, **not represented as generative AI models**.
+**Claude (Anthropic):** A group contributor was previously reported to have used Claude to assist with README drafting and a separate Figma prototype. This is a **team-reported contribution, not independently confirmed for a named teammate**. The contributor should confirm the specific assistance and review before submission; no additional Claude usage is assumed.
+
+**Non-AI development tools:** [Figma](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) was used for interface design, interactive prototypes, personas, context diagram, and user journey. [GitHub](https://github.com/satya1130/CSC325-Capstone) and [GitHub Actions](.github/workflows/marvel-clash-cicd.yml) supported source control, pull requests, peer review, and automated checks. These tools are **not themselves cited as generative AI models**. MongoDB Atlas and Render are database/hosting infrastructure, also not generative AI.
 
 ### How AI-Assisted Work Was Reviewed
 
@@ -539,19 +533,23 @@ The team used AI assistance during planning, development, troubleshooting, and d
 
 **Edited and adapted:** Persona details, access-state descriptions, design flows, wording about existing versus planned features, MongoDB/ObjectId route handling, image references, workflow configuration, test environments, and deployment setup. Proposed instructions and code were changed when they did not match the actual environment or tests.
 
-**Rejected or corrected:** Confusing prototype navigation and account claims; suggestions implying secure production accounts or a live AI battle engine existed; and technical approaches that failed real checks, such as incomplete CI requirements, a missing MongoDB test service, incompatible MongoDB runner setup, and integer-only character detail routes after adopting ObjectIds.
+**Rejected or corrected:** Confusing prototype navigation and account claims; suggestions implying secure production accounts or a live AI battle engine existed; and technical approaches that failed real checks, such as incomplete CI requirements, a missing MongoDB test service, incompatible MongoDB runner setup, and integer-only character detail routes after adopting ObjectIds. The migration fixes are described in the [November 10 troubleshooting journal](#5-github-workflow-and-pull-request-troubleshooting) and represented in [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88).
 
 ### Human Implementation, Verification, and Accountability
 
-Satya worked in VS Code, configured MongoDB Atlas and Render settings, ran the migrations/imports, checked the transferred 49 character records and corresponding images, examined GitHub Actions/Render failures, and verified the deployed roster, character profiles, name search, and category/power filters. The MongoDB integration went through the team's GitHub pull-request and code-review process; the detailed sequence and source links are in the **Database migration and deployment journal** above.
+Satya worked in VS Code, configured MongoDB Atlas and Render settings, ran the migrations/imports, checked the transferred 49 character records and corresponding images, examined GitHub Actions/Render failures, and verified the deployed roster, character profiles, name search, and category/power filters. The MongoDB integration went through the team's GitHub pull-request and code-review process; the detailed sequence and source links are in the [November 10 migration and deployment journal](#november-10-2026--sqlite-to-mongodb-migration-and-render-deployment) above.
 
-AI assistance was used to help write and revise the README itself. Screens, integration behavior, automated check outcomes, and deployment results are described as verified **only where they were actually tested or reported as working**. The team remains responsible for reviewing AI-assisted code, protecting credentials, and accurately reporting each person's contribution.
+AI assistance also helped write and revise the README and documentation (see merged [PR #89](https://github.com/satya1130/CSC325-Capstone/pull/89) and [PR #90](https://github.com/satya1130/CSC325-Capstone/pull/90)). Screens, integration behavior, automated check outcomes, and deployment results are described as verified **only where they were actually tested or reported as working**. The team remains responsible for reviewing AI-assisted code, protecting credentials, and accurately reporting each person's contribution.
+
+**Team confirmation before grading:** Satya's disclosed assistance is detailed here. Other team members should verify and add their own AI tools, dates or tasks only when accurate. The repository's code, tests, PRs and reviews are evidence of implementation and quality checks, but are not substitutes for disclosure of AI-generated content where required by the professor.
 
 The Figma prototype's Brawl flow is separate from the deployed Django roster: **a live AI combat engine, production member login, and persistent favorites have not been implemented**. Team members should confirm their individual AI-tool use and contributions before submission.
 
 ---
 
 ## Project Backlog and Next Steps
+
+**As of November 10, 2026:** The current implemented scope is the MongoDB-backed 49-character roster, read-only APIs, portraits, search, and filters. PR #86's prefix-first smart-search change remains a separate proposal until merged; do not describe it as live functionality based solely on an open PR.
 
 The original backlog and project details are in [Project_Description.md](Project_Description.md) and the GitHub Issues tab.
 
@@ -567,4 +565,4 @@ Remaining implementation work includes secure authenticated accounts, team revie
 - [ ] Confirm the Figma screens, personas, context diagram and UX journey follow the Product Goal.
 - [ ] For the **earlier** prototype assignment, confirm the short video is unlisted and under two minutes. For **Module 7**, separately record an 8–10-minute video with **all group members participating**.
 - [ ] Demonstrate MarvelFan's complete Figma workflow, from sign-in to the Brawl result.
-- [ ] Confirm that the AI-use statement and team contribution information are accurate.
+- [ ] Have every team member confirm their actual AI tool usage and contributions. Review the [project-wide AI-use disclosure](#project-wide-ai-use-statement) and its linked implementation evidence before submission.
