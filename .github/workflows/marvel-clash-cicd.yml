@@ -44,7 +44,7 @@ jobs:
   test:
     name: Test
     needs: [dependencies]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       MONGODB_URI: mongodb://127.0.0.1:27017/
     services:
