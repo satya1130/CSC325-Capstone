@@ -29,7 +29,7 @@ Marvel Clash is a fan-made **Django character-exploration web app** backed by Mo
 
 A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-Capstone/issues/47) is deferred too. All these issues keep their original histories and acceptance criteria. Future Scope is a **GitHub Projects tab**, not a new epic. Issue labels `scope:future` and `kanban:future-scope` identify deferred items; the Projects view filter/Status must also be configured or verified separately. The remaining technical/design/process tasks have `scope:supporting` and do **not** count toward the fifteen active user stories.
 
-**Review links:** [Current 5-epic story definitions and acceptance guidance](Project_Description.md#current-requirements--sprint-3-active-product-scope-november-13-2026) · [Brawl backlog (active Epic 5 and historical extension)](BRAWL_BACKLOG.md) · [GitHub Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [GitHub Projects board](https://github.com/satya1130/CSC325-Capstone/projects).
+**Review links:** [All 54 issue labels and recommended Projects card positions](docs/KANBAN_BOARD_PLACEMENT.md) · [Current 5-epic story definitions and acceptance guidance](Project_Description.md#current-requirements--sprint-3-active-product-scope-november-13-2026) · [Brawl backlog (active Epic 5 and historical extension)](BRAWL_BACKLOG.md) · [GitHub Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [GitHub Projects board](https://github.com/satya1130/CSC325-Capstone/projects).
 
 
 
