@@ -1,6 +1,57 @@
 # Marvel Character Selection Project — Marvel Clash
 
-> **Current direction:** Marvel Clash is a fan-made character roster + explainable Brawl product. The Django 49-character searchable MVP is merged on `main` in [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60); advanced Brawl/AI and real accounts remain future implementation. The older proposal and user stories below are preserved for assignment history. See [Module 7 feature matrix](docs/M7_FEATURE_STATUS.md) and [presentation guide](docs/M7_MIDPOINT_PRESENTATION.md).
+> **Current direction (November 13, 2026):** Deployed Django/MongoDB Atlas roster on Render; Figma Brawl prototype complete. For the authoritative 5-epic / 15-story active Sprint 3 scope and deferred stories, see the section immediately below. Older plans farther down are archived.
+
+## CURRENT REQUIREMENTS — Sprint 3 active product scope (November 13, 2026)
+
+> **This section is authoritative for the current backlog.** The original epics, user stories, and extensions later in this file are retained as **historical planning evidence**, not extra active epics. Current scope: **exactly 5 epics × 3 user stories = 15 active stories**, plus **9 deferred (FUT-01–FUT-09)**. GitHub issue numbers and original acceptance criteria stay intact; only the visible story IDs have been reorganized.
+
+### Current product and technical status
+
+Marvel Clash is a fan-made Marvel character discovery and Brawl website. The **deployed** Django application uses **MongoDB Atlas** as its database and **Render** for hosting, with HTML/CSS/JavaScript and a read-only JSON character API. The **completed Figma prototype** demonstrates the broader experience. The site currently serves the 49-character roster, name search, category/power filters, images, profiles, and descriptions; authentic login, character selection/compare, OpenAI character tools, and playable Brawls are not yet implemented in the deployed site. **Figma-only interaction does not equal a working backend feature.**
+
+### Five epics and fifteen active user stories
+
+| Active epic | Three active stories (existing GitHub issue numbers) | Delivery status |
+| --- | --- | --- |
+| **Epic 1 — Character Search and Discovery** | US-01 Search Characters ([#4](https://github.com/satya1130/CSC325-Capstone/issues/4)); US-02 Browse Characters ([#5](https://github.com/satya1130/CSC325-Capstone/issues/5)); US-03 Filter Characters ([#6](https://github.com/satya1130/CSC325-Capstone/issues/6)) | Done (3/3) |
+| **Epic 2 — Character Profiles** | US-04 Character Description ([#7](https://github.com/satya1130/CSC325-Capstone/issues/7)); US-05 Powers and Abilities ([#8](https://github.com/satya1130/CSC325-Capstone/issues/8)); US-06 Character Images ([#9](https://github.com/satya1130/CSC325-Capstone/issues/9)) | Done (3/3) |
+| **Epic 3 — User Accounts and Character Selection** | US-07 Member Login (#45; formerly US-21); US-08 User Permissions (#46; formerly US-22); US-09 Select a Character (#10; formerly US-07) | Ready / Backlog |
+| **Epic 4 — OpenAI Features** | US-10 AI Character Summary ([#13](https://github.com/satya1130/CSC325-Capstone/issues/13)); US-11 AI Character Recommendations ([#14](https://github.com/satya1130/CSC325-Capstone/issues/14)); US-12 Ask AI About a Character ([#15](https://github.com/satya1130/CSC325-Capstone/issues/15)) | Backlog |
+| **Epic 5 — Brawl Engine** | US-13 Choose Two Fighters (#19; formerly US-16); US-14 Display Brawl (#20; formerly US-17); US-15 Working Brawl Engine (#49; formerly US-23) | Ready / Backlog |
+
+**Status rules:** The six completed roster/profile stories (#4–#9) are **Done**. Login (#45), server-side permissions (#46), and deterministic working Brawl engine (#49) are **Ready** for development. The remaining six active stories are in **Backlog** until work actually starts. No stories should be moved to In Progress/Review without corresponding work and evidence. Technical tasks may have their own active workflow but **do not count as user stories**.
+
+### Acceptance and implementation notes
+
+- Every active story retains its existing acceptance criteria. The team's original requirement to have at least **three testable Given/When/Then conditions per story** remains the target. GitHub issues #45, #46, #20, and #49 additionally specify registration/logout, server-enforced permissions, winner display, and repeatable battle results.
+- **US-07 Member Login** includes secure signup/registration, member login, logout, and persistent authenticated session handling; the UI-only Figma sign-in mock-up is not authentication.
+- **US-08 User Permissions** enforces guest/member/admin access **on the server**, not merely through hidden UI elements.
+- **US-15 Working Brawl Engine** should use verifiable deterministic combat rules, valid character move inputs, and bounded turn/health transitions. **US-14** displays a winner and readable outcome; optional AI narration is separate future scope.
+- **Epic 4 OpenAI Features** remains an active three-story epic as requested by the team, but all three stories are **unimplemented**, low-priority backlog items. API keys, model output validation, and source limitations must be considered when the team starts work.
+- This backlog change is **planning and documentation only**; it does not modify Django code, MongoDB data, CI, frontend, Figma, or Render configuration.
+
+### Future Scope — deferred, not deleted
+
+| Future ID | Existing issue | Feature |
+| --- | --- | --- |
+| FUT-01 | [#11](https://github.com/satya1130/CSC325-Capstone/issues/11) | Compare Marvel Characters |
+| FUT-02 | [#12](https://github.com/satya1130/CSC325-Capstone/issues/12) | Save Favorite Characters |
+| FUT-03 | [#16](https://github.com/satya1130/CSC325-Capstone/issues/16) | Responsive Website Design Improvements |
+| FUT-04 | [#17](https://github.com/satya1130/CSC325-Capstone/issues/17) | Easy Website Navigation Improvements |
+| FUT-05 | [#18](https://github.com/satya1130/CSC325-Capstone/issues/18) | Handle Errors Clearly |
+| FUT-06 | [#21](https://github.com/satya1130/CSC325-Capstone/issues/21) | Understand and Retry Brawl Results |
+| FUT-07 | [#22](https://github.com/satya1130/CSC325-Capstone/issues/22) | Generate Grounded AI Battle Actions |
+| FUT-08 | [#23](https://github.com/satya1130/CSC325-Capstone/issues/23) | Explain AI-Generated Results |
+| FUT-09 | [#51](https://github.com/satya1130/CSC325-Capstone/issues/51) | Review Previous Brawls and Replay |
+
+The supporting Favorites persistence task [#47](https://github.com/satya1130/CSC325-Capstone/issues/47) is also deferred. Future items are labeled `scope:future` and `kanban:future-scope`. Quality standards from FUT-03/FUT-04/FUT-05 still apply as acceptance expectations to current functionality. Supporting tasks for current implementation and process remain labeled `scope:supporting` and do **not** inflate the active story count.
+
+**Kanban board:** [GitHub Projects](https://github.com/satya1130/CSC325-Capstone/projects). The new **Future Scope** view is a GitHub Projects tab. Issue labels identify the correct membership, but **the view's filter and actual Projects item Status fields must be checked separately**. A GitHub issue label alone does not prove the Projects view has changed.
+
+---
+
+## ARCHIVED ORIGINAL REQUIREMENTS (historical; not the current active epic list)
 
 ## Project Description
 
@@ -468,7 +519,7 @@ The earlier AI ideas, including character summaries, recommendations, and charac
 
 ## Additional Backlog
 
-The existing five epics and fifteen user stories remain part of the project.
+The **original** five epics and fifteen user stories are preserved here as historical scope; see the current authoritative five-epic/15-story section above.
 
 New Brawl-related user stories and acceptance criteria are documented in [BRAWL_BACKLOG.md](BRAWL_BACKLOG.md).
 

@@ -7,6 +7,32 @@ Marvel Clash is a fan-made **Django character-exploration web app** backed by Mo
 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
+## 📋 Current Sprint 3 backlog — 5 epics / 15 active user stories (November 13, 2026)
+
+> **Authoritative current planning scope.** All 24 previously numbered user stories were classified: **15 active stories** in five epics (three each) and **9 preserved deferred features** renamed FUT-01–FUT-09. The older October epic tables and "Epic 6" extensions farther down this README and the related documents are **historical evidence**, not extra current requirements. No working code or database was changed during the backlog restructure.
+
+| Epic | Active user stories (GitHub issue numbers stay unchanged) | Current website status |
+| --- | --- | --- |
+| **1 — Character Search and Discovery** | [US-01 Search (#4)](https://github.com/satya1130/CSC325-Capstone/issues/4), [US-02 Browse (#5)](https://github.com/satya1130/CSC325-Capstone/issues/5), [US-03 Filter (#6)](https://github.com/satya1130/CSC325-Capstone/issues/6) | **3 Done** |
+| **2 — Character Profiles** | [US-04 Description (#7)](https://github.com/satya1130/CSC325-Capstone/issues/7), [US-05 Powers (#8)](https://github.com/satya1130/CSC325-Capstone/issues/8), [US-06 Images (#9)](https://github.com/satya1130/CSC325-Capstone/issues/9) | **3 Done** |
+| **3 — User Accounts and Character Selection** | [US-07 Member Login (#45)](https://github.com/satya1130/CSC325-Capstone/issues/45), [US-08 User Permissions (#46)](https://github.com/satya1130/CSC325-Capstone/issues/46), [US-09 Select Character (#10)](https://github.com/satya1130/CSC325-Capstone/issues/10) | **2 Ready, 1 Backlog** |
+| **4 — OpenAI Features** | [US-10 AI Summary (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 AI Recommendations (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), [US-12 AI Questions (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15) | **3 Backlog** (not implemented) |
+| **5 — Brawl Engine** | [US-13 Two Fighters (#19)](https://github.com/satya1130/CSC325-Capstone/issues/19), [US-14 Display Brawl (#20)](https://github.com/satya1130/CSC325-Capstone/issues/20), [US-15 Working Engine (#49)](https://github.com/satya1130/CSC325-Capstone/issues/49) | **1 Ready, 2 Backlog** |
+
+**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. **Real** signup/login, sessions and role enforcement, playable Brawls, and OpenAI character features still need implementation. UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
+
+### Future Scope (nine deferred stories)
+
+- **FUT-01** Compare characters [#11](https://github.com/satya1130/CSC325-Capstone/issues/11); **FUT-02** Save favorites [#12](https://github.com/satya1130/CSC325-Capstone/issues/12); **FUT-03** Responsive improvements [#16](https://github.com/satya1130/CSC325-Capstone/issues/16)
+- **FUT-04** Navigation improvements [#17](https://github.com/satya1130/CSC325-Capstone/issues/17); **FUT-05** Error handling improvements [#18](https://github.com/satya1130/CSC325-Capstone/issues/18); **FUT-06** Extended Brawl results/retry [#21](https://github.com/satya1130/CSC325-Capstone/issues/21)
+- **FUT-07** AI-generated Brawl actions [#22](https://github.com/satya1130/CSC325-Capstone/issues/22); **FUT-08** AI Brawl explanations [#23](https://github.com/satya1130/CSC325-Capstone/issues/23); **FUT-09** Match history/replay [#51](https://github.com/satya1130/CSC325-Capstone/issues/51)
+
+A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-Capstone/issues/47) is deferred too. All these issues keep their original histories and acceptance criteria. Future Scope is a **GitHub Projects tab**, not a new epic. Issue labels `scope:future` and `kanban:future-scope` identify deferred items; the Projects view filter/Status must also be configured or verified separately. The remaining technical/design/process tasks have `scope:supporting` and do **not** count toward the fifteen active user stories.
+
+**Review links:** [All 54 issue labels and recommended Projects card positions](docs/KANBAN_BOARD_PLACEMENT.md) · [Current 5-epic story definitions and acceptance guidance](Project_Description.md#current-requirements--sprint-3-active-product-scope-november-13-2026) · [Brawl backlog (active Epic 5 and historical extension)](BRAWL_BACKLOG.md) · [GitHub Issues](https://github.com/satya1130/CSC325-Capstone/issues) · [GitHub Projects board](https://github.com/satya1130/CSC325-Capstone/projects).
+
+
+
 
 ## 🚀 Current status — November 10, 2026
 
