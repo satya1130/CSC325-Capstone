@@ -1,4 +1,3 @@
-import os
 """
 Django settings for marvelclash project.
 
@@ -13,9 +12,15 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load private local configuration automatically, including after VS Code restarts.
+# A variable already set by the shell or hosting provider takes precedence.
+load_dotenv(BASE_DIR / '.env', override=False)
+load_dotenv(BASE_DIR.parent / '.env', override=False)
 
 
 # Quick-start development settings - unsuitable for production
