@@ -7,3 +7,4 @@ gunicorn>=23,<27
 
 django-mongodb-backend==6.1.0
 openai==3.51.0
+python-dotenv==1.2.1
