@@ -1,8 +1,16 @@
+
 from django.urls import path
 from . import views
 
 urlpatterns = [
     path("", views.character_list, name="character_list"),
+
+    path(
+        "<str:character_id>/summary/",
+        views.character_summary,
+        name="character_summary"
+    ),
+
     path(
         "<str:character_id>/",
         views.character_detail,
