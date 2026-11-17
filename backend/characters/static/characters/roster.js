@@ -139,7 +139,76 @@ function showCharacterImage(doc, character) {
   image.src = `${dialog.dataset.staticBase || "/static/"}${path}`;
 }
 
+
+// US-10: Request an AI summary for the character currently in the profile.
+let activeCharacterId = null;
+let summaryRequest = null;
+
+function resetSummary(doc, character) {
+  if (summaryRequest) {
+    summaryRequest.abort();
+    summaryRequest = null;
+  }
+  activeCharacterId = character ? String(character.id ?? "") : null;
+  const button = doc.getElementById("generate-summary");
+  const text = doc.getElementById("ai-summary-text");
+  const source = doc.getElementById("ai-summary-source");
+  button.disabled = !activeCharacterId;
+  button.textContent = "Generate AI Summary";
+  text.textContent = activeCharacterId
+    ? "Select Generate AI Summary to see a short character overview."
+    : "Summary unavailable for this character.";
+  source.hidden = true;
+  source.textContent = "";
+}
+
+async function loadCharacterSummary(doc) {
+  const characterId = activeCharacterId;
+  if (!characterId || summaryRequest) return;
+
+  const button = doc.getElementById("generate-summary");
+  const text = doc.getElementById("ai-summary-text");
+  const source = doc.getElementById("ai-summary-source");
+  const controller = new AbortController();
+  summaryRequest = controller;
+  button.disabled = true;
+  button.textContent = "Generating...";
+  text.textContent = "Generating character summary...";
+  source.hidden = true;
+  source.textContent = "";
+
+  try {
+    const response = await fetch(
+      `/api/characters/${encodeURIComponent(characterId)}/summary/`,
+      { signal: controller.signal }
+    );
+    if (!response.ok) throw new Error(`Summary request failed: ${response.status}`);
+    const result = await response.json();
+    if (controller.signal.aborted || activeCharacterId !== characterId) return;
+    if (result.character_id !== characterId ||
+        typeof result.summary !== "string" || !result.summary.trim()) {
+      throw new Error("Invalid summary response");
+    }
+    text.textContent = result.summary;
+    source.textContent = result.source === "openai"
+      ? "AI-generated summary. Check character details for accuracy."
+      : "Fallback summary based on the character's stored information.";
+    source.hidden = false;
+  } catch (error) {
+    if (controller.signal.aborted || activeCharacterId !== characterId) return;
+    console.error("Marvel Clash summary error:", error);
+    text.textContent = "Unable to generate a summary right now. Please try again.";
+  } finally {
+    if (summaryRequest === controller) {
+      summaryRequest = null;
+      button.disabled = false;
+      button.textContent = "Generate AI Summary";
+    }
+  }
+}
+
 function openProfile(doc, character) {
+  resetSummary(doc, character);
   doc.getElementById("profile-name").textContent = character.name;
   showCharacterImage(doc, character);
 
@@ -185,6 +254,12 @@ async function init(doc) {
 
   doc.getElementById("close").addEventListener("click", () => {
     doc.getElementById("profile").close();
+  });
+  doc.getElementById("profile").addEventListener("close", () => {
+    resetSummary(doc, null);
+  });
+  doc.getElementById("generate-summary").addEventListener("click", () => {
+    loadCharacterSummary(doc);
   });
 
   count.textContent = "Loading Marvel characters...";
