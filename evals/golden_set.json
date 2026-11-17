@@ -1,0 +1,153 @@
+
+[
+  {
+    "id": 1,
+    "character": {
+      "name": "Iron Man",
+      "description": "Uses advanced armored technology.",
+      "powers": "Flight and repulsor blasts",
+      "category": "Hero"
+    },
+    "expected_facts": ["Iron Man", "armor", "flight"]
+  },
+  {
+    "id": 2,
+    "character": {
+      "name": "Spider-Man",
+      "description": "A hero with spider-like abilities.",
+      "powers": "Wall crawling and web swinging",
+      "category": "Hero"
+    },
+    "expected_facts": ["Spider-Man", "wall", "web"]
+  },
+  {
+    "id": 3,
+    "character": {
+      "name": "Thor",
+      "description": "A powerful Asgardian warrior.",
+      "powers": "Lightning and thunder",
+      "category": "Hero"
+    },
+    "expected_facts": ["Thor", "lightning", "thunder"]
+  },
+  {
+    "id": 4,
+    "character": {
+      "name": "Hulk",
+      "description": "A hero with incredible strength.",
+      "powers": "Super strength",
+      "category": "Hero"
+    },
+    "expected_facts": ["Hulk", "strength"]
+  },
+  {
+    "id": 5,
+    "character": {
+      "name": "Black Widow",
+      "description": "A highly trained spy.",
+      "powers": "Combat and espionage",
+      "category": "Hero"
+    },
+    "expected_facts": ["Black Widow", "spy", "combat"]
+  },
+  {
+    "id": 6,
+    "character": {
+      "name": "Captain America",
+      "description": "A super soldier and team leader.",
+      "powers": "Enhanced strength and agility",
+      "category": "Hero"
+    },
+    "expected_facts": ["Captain America", "strength", "agility"]
+  },
+  {
+    "id": 7,
+    "character": {
+      "name": "Doctor Strange",
+      "description": "A master of mystical arts.",
+      "powers": "Magic and spellcasting",
+      "category": "Hero"
+    },
+    "expected_facts": ["Doctor Strange", "magic"]
+  },
+  {
+    "id": 8,
+    "character": {
+      "name": "Black Panther",
+      "description": "A skilled warrior and protector.",
+      "powers": "Enhanced agility and combat",
+      "category": "Hero"
+    },
+    "expected_facts": ["Black Panther", "agility", "combat"]
+  },
+  {
+    "id": 9,
+    "character": {
+      "name": "Loki",
+      "description": "A cunning trickster.",
+      "powers": "Illusions and magic",
+      "category": "Villain"
+    },
+    "expected_facts": ["Loki", "illusions", "magic"]
+  },
+  {
+    "id": 10,
+    "character": {
+      "name": "Thanos",
+      "description": "A powerful cosmic villain.",
+      "powers": "Super strength",
+      "category": "Villain"
+    },
+    "expected_facts": ["Thanos", "strength"]
+  },
+  {
+    "id": 11,
+    "character": {
+      "name": "Scarlet Witch",
+      "description": "A powerful magic user.",
+      "powers": "Energy manipulation and magic",
+      "category": "Hero"
+    },
+    "expected_facts": ["Scarlet Witch", "magic", "energy"]
+  },
+  {
+    "id": 12,
+    "character": {
+      "name": "Vision",
+      "description": "A synthetic hero.",
+      "powers": "Flight and energy beams",
+      "category": "Hero"
+    },
+    "expected_facts": ["Vision", "flight", "energy"]
+  },
+  {
+    "id": 13,
+    "character": {
+      "name": "Ant-Man",
+      "description": "A hero who can change size.",
+      "powers": "Shrinking and growing",
+      "category": "Hero"
+    },
+    "expected_facts": ["Ant-Man", "shrinking", "growing"]
+  },
+  {
+    "id": 14,
+    "character": {
+      "name": "Wolverine",
+      "description": "A mutant with regenerative abilities.",
+      "powers": "Healing and claws",
+      "category": "Hero"
+    },
+    "expected_facts": ["Wolverine", "healing", "claws"]
+  },
+  {
+    "id": 15,
+    "character": {
+      "name": "Deadpool",
+      "description": "A mercenary with regenerative abilities.",
+      "powers": "Healing and combat",
+      "category": "Antihero"
+    },
+    "expected_facts": ["Deadpool", "healing", "combat"]
+  }
+]
