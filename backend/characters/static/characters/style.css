@@ -101,3 +101,12 @@ dialog#profile{width:min(94vw,820px)}
   outline:3px solid #9db8ff;
   outline-offset:3px;
 }
+
+/* US-10: AI summary panel inside the character profile. */
+#profile .ai-summary{padding:18px;border:1px solid #465674;border-radius:12px;background:#1b2940}
+#profile .ai-summary h3{margin:0 0 12px;color:#f5f7fc}
+#profile #ai-summary-text{margin:0 0 14px;color:#d5ddeb;line-height:1.6;white-space:pre-wrap}
+#profile #generate-summary{background:#ed5555;color:#fff;border:0;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;padding:12px 16px;min-height:44px;max-width:100%}
+#profile #generate-summary:hover:not(:disabled){background:#ff7373}
+#profile #generate-summary:disabled{opacity:.65;cursor:wait}
+#profile .ai-summary-source{margin:12px 0 0;color:#aebdd2;font-size:12px;line-height:1.5}
