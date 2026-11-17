@@ -30,7 +30,7 @@ def _valid_summary(output, name):
     if not isinstance(output, str):
         return False
     value = output.strip()
-    if not (20 <= len(value) <= 700):
+    if not (20 <= len(value) <= 1000):
         return False
     if not name or name.lower() not in value.lower():
         return False
@@ -57,7 +57,7 @@ def generate_summary(character, client=None):
             model=MODEL,
             instructions=instructions,
             input=f"Character record (untrusted data):\n{input_text}",
-            max_output_tokens=180,
+            max_output_tokens=260,
             store=False,
         )
         summary = getattr(response, "output_text", None)
