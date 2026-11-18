@@ -110,3 +110,10 @@ dialog#profile{width:min(94vw,820px)}
 #profile #generate-summary:hover:not(:disabled){background:#ff7373}
 #profile #generate-summary:disabled{opacity:.65;cursor:wait}
 #profile .ai-summary-source{margin:12px 0 0;color:#aebdd2;font-size:12px;line-height:1.5}
+
+/* US-11 recommendation panel */
+#profile #generate-recommendations,#profile #recommend-list button{background:#ed5555;color:#fff;border:0;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;padding:10px 14px;min-height:44px}
+#profile #generate-recommendations:disabled{opacity:.6;cursor:wait}
+#profile #recommend-list{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+#profile #recommend-list button{background:#344965}
+#profile #recommend-reason{color:#d5ddeb}
