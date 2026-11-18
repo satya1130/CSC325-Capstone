@@ -1,0 +1,5 @@
+{
+  "provider": "openai",
+  "model": "gpt-4o-mini",
+  "note": "Configuration baseline only. Same-ID provider behavior changes require real-model evaluation."
+}

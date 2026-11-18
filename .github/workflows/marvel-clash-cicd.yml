@@ -117,6 +117,11 @@ jobs:
           OPENAI_API_KEY: ""
         run: python -m unittest characters.test_ai_summary characters.test_ai_recommendations characters.test_ai_questions -v
 
+      - name: Test model-change detection without calling OpenAI
+        env:
+          OPENAI_API_KEY: ""
+        run: python -m unittest discover -s evals -p 'test_*.py' -v
+
       - name: Run 15-case golden evaluation and safety checks
         env:
           OPENAI_API_KEY: ""
