@@ -12,6 +12,12 @@ urlpatterns = [
     ),
 
     path(
+        "<str:character_id>/ask/",
+        views.character_question,
+        name="character_question"
+    ),
+
+    path(
         "<str:character_id>/summary/",
         views.character_summary,
         name="character_summary"
