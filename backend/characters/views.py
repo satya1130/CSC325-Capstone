@@ -6,6 +6,7 @@ from django.shortcuts import render
 from .models import Character
 from .ai_summary import generate_summary
 from .ai_recommendations import recommend
+from .ai_questions import answer_question, MAX_QUESTION_LENGTH
 
 
 # Character List, Search, and Filtering
@@ -143,3 +144,31 @@ def character_recommendations(request, character_id):
     ]
     result = recommend(selected, roster)
     return JsonResponse({"character_id": selected["id"], **result})
+
+
+# US-12: ask a question about one stored character (POST only).
+def character_question(request, character_id):
+    if request.method != "POST":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    if not ObjectId.is_valid(character_id):
+        return JsonResponse({"error": "Character not found"}, status=404)
+    character = Character.objects.filter(id=ObjectId(character_id)).first()
+    if character is None:
+        return JsonResponse({"error": "Character not found"}, status=404)
+    import json
+    if len(request.body) > 4096:
+        return JsonResponse({"error": "Question payload too large"}, status=413)
+    try:
+        payload = json.loads(request.body)
+    except (ValueError, UnicodeDecodeError):
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    if not isinstance(payload, dict):
+        return JsonResponse({"error": "Invalid question"}, status=400)
+    question = payload.get("question")
+    if not isinstance(question, str) or not 1 <= len(question.strip()) <= MAX_QUESTION_LENGTH:
+        return JsonResponse({"error": "Question must be 1 to 300 characters"}, status=400)
+    record = {"name": character.name, "description": character.description,
+              "powers": character.powers, "category": character.category}
+    result = answer_question(record, question.strip())
+    return JsonResponse({"character_id": str(character.id),
+                         "character_name": character.name, **result})
