@@ -34,6 +34,16 @@ A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-C
 
 
 
+## Epic 5 — Playable Brawl (PR pending review)
+
+Epic 5 introduces a Django-backed Brawl Arena at `/brawl/` (authenticated members only), and a CSRF-protected `POST /api/brawl/start/` endpoint accepting `{"fighter1":"<ObjectId>","fighter2":"<ObjectId>"}`. Both IDs must refer to distinct existing characters. The response contains the fighter IDs/names, deterministic turn history, health after each attack, and the winner. The page lets members select two fighters, inspect the selection, step through turns, see health bars and winner, and start another matchup.
+
+**Game design:** `brawl_v1` starts both fighters at 100 HP, alternates attacks, and uses a SHA-256-derived deterministic damage value between 8 and 20 per turn, capped at remaining health. This is **team-designed fan-game balancing**, not a claim about Marvel powers, weaknesses, or canon. No OpenAI calls, persistent match records, or database migrations are required. The rules and numerical values need teammate review before final acceptance of supporting issue #50. Characters' sourced `powers` fields are not used as invented move definitions.
+
+**Epic 3 integration dependency:** Both routes require Django authentication. Until Kyle's Epic 3 signup/login routes are merged, anonymous visitors are redirected to Django's default login URL `/accounts/login/`, which may not yet exist. Coordinate with Epic 3 to preserve `/brawl/` and `/api/brawl/start/` and configure `LOGIN_URL` as needed. This PR is **not** proof that signup/login is complete.
+
+**Testing:** Run `cd backend && python manage.py test characters.test_brawl` against the configured test MongoDB; then run the full suite. The PR is not considered verified until GitHub Actions and manual member flows pass. CSRF protection remains enabled; the UI sends the form token.
+
 ## Sprint 3 — AI evaluation and evidence (November 17, 2026)
 
 The third implemented epic is **Epic 4: OpenAI Features**: character summary (US-10), recommendations (US-11), and character Q&A (US-12). Prompts are versioned in `prompts/summary_v1.txt`, `prompts/recommend_v1.txt`, and `prompts/character_qa_v1.txt`. Python services use `OPENAI_API_KEY` from the deployment environment; never commit keys. For the Sprint 3 rubric, configure the repository Actions secret named `OPENAI_API_KEY` in **Settings → Secrets and variables → Actions** (never expose its value). Production requires its own `OPENAI_API_KEY` in Render environment settings. The current CI Eval stage deliberately uses mocked responses with an empty key; it must **not** call the real API or read the secret.
