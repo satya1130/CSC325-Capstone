@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marvel Clash | Brawl Arena</title>
+  <link rel="stylesheet" href="{% static 'characters/style.css' %}">
+  <link rel="stylesheet" href="{% static 'characters/brawl.css' %}">
+  <script src="{% static 'characters/brawl.js' %}" defer></script>
+</head>
+<body>
+<header class="topbar"><a class="brand" href="/">MARVEL <span>CLASH</span></a><a href="/">Back to roster</a></header>
+<main class="arena">
+  <p class="eyebrow">EPIC 5 / BRAWL ARENA</p>
+  <h1>Choose your fighters.</h1>
+  <p>Unofficial fan-game simulation. Damage and health are game-balance rules, not Marvel canon.</p>
+  <form id="brawl-form">
+    {% csrf_token %}
+    <div class="fighter-pickers">
+      <label>Fighter one<select id="fighter1" required><option value="">Choose fighter one</option></select></label>
+      <label>Fighter two<select id="fighter2" required><option value="">Choose fighter two</option></select></label>
+    </div>
+    <div id="selection-preview" class="fighter-preview" aria-live="polite"></div>
+    <p id="brawl-error" role="alert" hidden></p>
+    <button id="start-brawl" type="submit">Start Brawl</button>
+  </form>
+  <section id="battle" hidden aria-label="Brawl results">
+    <h2>Battle replay</h2>
+    <div id="health-bars" class="health-bars"></div>
+    <p id="turn-status" role="status" aria-live="polite"></p>
+    <button id="next-turn" type="button">Next turn</button>
+    <ol id="turn-log" aria-label="Battle turn history"></ol>
+    <h2 id="winner" aria-live="polite"></h2>
+    <button id="new-match" type="button" hidden>New matchup</button>
+  </section>
+</main>
+<footer>Marvel Clash · Fan-made, unofficial simulation</footer>
+</body>
+</html>
