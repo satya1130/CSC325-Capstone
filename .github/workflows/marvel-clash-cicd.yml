@@ -94,7 +94,7 @@ jobs:
         run: node --test roster-powers-dropdown.test.cjs
 
   eval:
-    name: Eval - AI Summary Quality and Safety
+    name: Eval - AI Features Quality and Safety
     needs: [dependencies]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -111,11 +111,15 @@ jobs:
       - name: Install project dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Run AI summary unit tests
+      - name: Run offline unit tests for all three AI features
         working-directory: backend
-        run: python -m unittest characters.test_ai_summary -v
+        env:
+          OPENAI_API_KEY: ""
+        run: python -m unittest characters.test_ai_summary characters.test_ai_recommendations characters.test_ai_questions -v
 
       - name: Run 15-case golden evaluation and safety checks
+        env:
+          OPENAI_API_KEY: ""
         run: python evals/run_evals.py
 
   deploy:
