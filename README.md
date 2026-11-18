@@ -16,10 +16,10 @@ Marvel Clash is a fan-made **Django character-exploration web app** backed by Mo
 | **1 — Character Search and Discovery** | [US-01 Search (#4)](https://github.com/satya1130/CSC325-Capstone/issues/4), [US-02 Browse (#5)](https://github.com/satya1130/CSC325-Capstone/issues/5), [US-03 Filter (#6)](https://github.com/satya1130/CSC325-Capstone/issues/6) | **3 Done** |
 | **2 — Character Profiles** | [US-04 Description (#7)](https://github.com/satya1130/CSC325-Capstone/issues/7), [US-05 Powers (#8)](https://github.com/satya1130/CSC325-Capstone/issues/8), [US-06 Images (#9)](https://github.com/satya1130/CSC325-Capstone/issues/9) | **3 Done** |
 | **3 — User Accounts and Character Selection** | [US-07 Member Login (#45)](https://github.com/satya1130/CSC325-Capstone/issues/45), [US-08 User Permissions (#46)](https://github.com/satya1130/CSC325-Capstone/issues/46), [US-09 Select Character (#10)](https://github.com/satya1130/CSC325-Capstone/issues/10) | **2 Ready, 1 Backlog** |
-| **4 — OpenAI Features** | [US-10 AI Summary (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 AI Recommendations (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), [US-12 AI Questions (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15) | **3 implemented** (PRs #94–#99; confirm CI and reviews) |
+| **4 — OpenAI Features** | [US-10 AI Summary (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 AI Recommendations (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), [US-12 AI Questions (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15) | **3 implemented** (PRs #94–#99; Sprint 3 evaluation and model-change follow-ups in PRs #100–#101) |
 | **5 — Brawl Engine** | [US-13 Two Fighters (#19)](https://github.com/satya1130/CSC325-Capstone/issues/19), [US-14 Display Brawl (#20)](https://github.com/satya1130/CSC325-Capstone/issues/20), [US-15 Working Engine (#49)](https://github.com/satya1130/CSC325-Capstone/issues/49) | **1 Ready, 2 Backlog** |
 
-**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. **Real** signup/login, sessions and role enforcement, playable Brawls, while the three OpenAI character features are implemented. UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
+**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. The three OpenAI character features (summary, recommendations, and Q&A) are implemented in Django and exposed through the character profile interface. **Secure signup/login, session and role enforcement, and playable Brawls are not implemented.** UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
 
 ### Future Scope (nine deferred stories)
 
@@ -36,7 +36,7 @@ A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-C
 
 ## Sprint 3 — AI evaluation and evidence (November 17, 2026)
 
-The third implemented epic is **Epic 4: OpenAI Features**: character summary (US-10), recommendations (US-11), and character Q&A (US-12). Prompts are versioned in `prompts/summary_v1.txt`, `prompts/recommend_v1.txt`, and `prompts/character_qa_v1.txt`. Python services use `OPENAI_API_KEY` from the deployment environment; never commit keys. Configure a GitHub Actions secret only for a workflow that actually needs the key. The current CI Eval stage is offline and does not require an API key.
+The third implemented epic is **Epic 4: OpenAI Features**: character summary (US-10), recommendations (US-11), and character Q&A (US-12). Prompts are versioned in `prompts/summary_v1.txt`, `prompts/recommend_v1.txt`, and `prompts/character_qa_v1.txt`. Python services use `OPENAI_API_KEY` from the deployment environment; never commit keys. For the Sprint 3 rubric, configure the repository Actions secret named `OPENAI_API_KEY` in **Settings → Secrets and variables → Actions** (never expose its value). Production requires its own `OPENAI_API_KEY` in Render environment settings. The current CI Eval stage deliberately uses mocked responses with an empty key; it must **not** call the real API or read the secret.
 
 **Reproduce the offline evaluation from the repository root:**
 
@@ -54,7 +54,9 @@ It checks 15 independently stored character fixtures in `evals/golden_set.json` 
 
 **AI-use disclosure (Sprint 3):** ChatGPT assisted with the prompt versions, Python services, tests, evaluation runner, and GitHub Actions wiring. The team must review generated changes and confirm each member's actual contributions. An evaluation weakness was identified: the earlier runner created its own expected output from the fallback under test, and a golden fixture used `armor` where the source said `armored`. The fix stores separate expected outputs, corrects the mismatch, adds a changed-provider mutation check, and explicitly labels the offline evaluation's limitations. The team must confirm passing GitHub Actions results, review approvals, and live functionality before submission.
 
-**Submission still required:** Provide publicly accessible repository/README link, green Actions workflow including Eval, latest evaluation results, Kanban board URL, and an unlisted YouTube demonstration under three minutes showing the LLM feature, fallback, and evaluation run. Do not claim these links/results are verified until checked.
+**Verified Sprint 3 CI evidence:** [Successful Marvel Clash CI/CD run #100](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113) includes passing **Test** and **Eval - AI Features Quality and Safety** jobs. The Eval job ran the three mocked AI unit-test modules, model-contract tests, and the 15-case golden evaluation. [Open the Eval job](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113/job/134544002963) to view the logged evaluation results; the suite is not a live-model accuracy measurement. [PR #101](https://github.com/satya1130/CSC325-Capstone/pull/101) was merged after teammate approval.
+
+**Submission still required:** Provide the repo/README URL, this green workflow/Eval log (or a newer successful run), the team's **exact** Kanban board URL, and an **unlisted YouTube video no longer than 3 minutes** demonstrating an LLM feature, its fallback via a mocked timeout test, and an evaluation run. The video and exact board URL have not been verified here.
 
 ---
 
@@ -68,8 +70,9 @@ It checks 15 independently stored character fixtures in `evals/golden_set.json` 
 | Backend | Python 3.14, Django 6.1, read-only character API |
 | Database | MongoDB Atlas via the official `django-mongodb-backend` |
 | Hosting | Render web service with Gunicorn and WhiteNoise |
-| Automation | GitHub Actions Django tests and four-stage CI/CD |
+| Automation | GitHub Actions Django tests plus Setup, Dependencies, Test, Eval, and conditional Deploy jobs |
 | Design | Figma interactive prototype for future fighter comparison/Brawl |
+| OpenAI features | US-10 character summaries, US-11 roster-grounded recommendations, US-12 character Q&A; safe fallback paths |
 | Not yet implemented | Live AI Brawl engine, secure member accounts, persistent favorites |
 
 **MongoDB migration:** [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated Django to MongoDB Atlas, introduced MongoDB-specific migrations and ObjectId character IDs, and updated CI to test against a separate temporary MongoDB service. The 49 character records were imported into Atlas, not committed to Git. The original SQLite database is legacy local development data, **not** the current application database.
@@ -97,7 +100,7 @@ Open `http://127.0.0.1:8000/` for the roster and `http://127.0.0.1:8000/api/char
 
 The Render service needs these environment variables: `MONGODB_URI`, `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=false`, `DJANGO_ALLOWED_HOSTS`, and a suitable `PYTHON_VERSION`. The deployment runs Django migrations and the repeatable 49-character import before starting Gunicorn. Static images, CSS and JavaScript are served using Django staticfiles and WhiteNoise.
 
-The verified live functionality is the **character roster**, not a playable Brawl or production authentication system. This section supersedes older SQLite/deployment descriptions kept below as project history.
+The character roster is verified live; the three AI features are implemented in Django, but this historical November 10 deployment note is **not** proof of their current live deployment status. A playable Brawl and production authentication are not implemented. This section supersedes older SQLite/deployment descriptions kept below as project history.
 
 ---
 
@@ -597,7 +600,7 @@ The Figma prototype's Brawl flow is separate from the deployed Django roster: **
 
 ## Project Backlog and Next Steps
 
-**As of November 10, 2026:** The current implemented scope is the MongoDB-backed 49-character roster, read-only APIs, portraits, search, and filters. PR #86's prefix-first smart-search change remains a separate proposal until merged; do not describe it as live functionality based solely on an open PR.
+**Historical snapshot (November 10, 2026):** The implemented scope at that date was the MongoDB-backed 49-character roster, read-only APIs, portraits, search, and filters. **Sprint 3 later added the three OpenAI features; see the current status and Sprint 3 section at the top of this README.** PR #86's prefix-first smart-search change remains a separate proposal until merged; do not describe it as live functionality based solely on an open PR.
 
 The original backlog and project details are in [Project_Description.md](Project_Description.md) and the GitHub Issues tab.
 
@@ -607,7 +610,23 @@ Remaining implementation work includes secure authenticated accounts, team revie
 
 ---
 
-## Submission Checklist
+## Sprint 3 Submission Checklist (current)
+
+- [x] Implement three epics: Character Search and Discovery, Character Profiles, and OpenAI Features (9 completed stories).
+- [x] Keep versioned AI prompts in `prompts/`, use environment-based API credentials, and document the required GitHub Actions secret name without exposing its value.
+- [x] Test safe fallbacks and use mocked AI calls in automated tests.
+- [x] Include at least 15 golden cases, expected outputs, hallucination/grounding and consistency checks, thresholds, and a one-command evaluation.
+- [x] Run the Eval stage on PRs to `main`: [verified green workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113) and [Eval job / latest verified results](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113/job/134544002963).
+- [x] Document prompt-injection risk, model-change sanity-check scope, and AI-use mistakes/corrections above.
+- [ ] Confirm repository secret `OPENAI_API_KEY` in GitHub settings (secret values are not readable from the README).
+- [ ] Confirm all required feature PRs are linked to Kanban issues and have teammate approval; [PR #101](https://github.com/satya1130/CSC325-Capstone/pull/101) is approved.
+- [ ] Provide the exact shareable Kanban board URL (the [Projects overview](https://github.com/satya1130/CSC325-Capstone/projects) is not necessarily the board view).
+- [ ] Record and provide an **unlisted YouTube video, maximum 3 minutes**, showing an AI feature, a simulated fallback, and the Eval run.
+- [ ] Submit the [repository/README](https://github.com/satya1130/CSC325-Capstone/blob/main/README.md), green workflow, evaluation log, board, and video links together.
+
+---
+
+## Historical Submission Checklist (earlier assignments; not Sprint 3)
 
 - [ ] Confirm that the root README and primary Figma link can be viewed by the professor.
 - [ ] Confirm the Figma screens, personas, context diagram and UX journey follow the Product Goal.
