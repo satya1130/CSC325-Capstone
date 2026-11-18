@@ -144,6 +144,7 @@ function showCharacterImage(doc, character) {
 let activeCharacterId = null;
 let summaryRequest = null;
 let recommendRequest = null;
+let askRequest = null;
 
 function resetSummary(doc, character) {
   if (summaryRequest) {
@@ -151,6 +152,11 @@ function resetSummary(doc, character) {
     summaryRequest = null;
   }
   if (recommendRequest) { recommendRequest.abort(); recommendRequest = null; }
+  if (askRequest) { askRequest.abort(); askRequest = null; }
+  doc.getElementById("ask-ai-question").value = "";
+  doc.getElementById("ask-ai-answer").textContent = "Ask a question based on this character’s profile.";
+  doc.getElementById("ask-ai-source").hidden = true;
+  doc.getElementById("ask-ai-submit").disabled = !character;
   activeCharacterId = character ? String(character.id ?? "") : null;
   doc.getElementById("generate-recommendations").disabled = !activeCharacterId;
   doc.getElementById("recommend-list").replaceChildren();
@@ -257,6 +263,49 @@ async function loadRecommendations(doc) {
   }
 }
 
+async function askCharacterQuestion(doc) {
+  const id = activeCharacterId;
+  const question = doc.getElementById("ask-ai-question").value.trim();
+  if (!id || !question || question.length > 300 || askRequest) return;
+  const controller = new AbortController();
+  askRequest = controller;
+  const button = doc.getElementById("ask-ai-submit");
+  const answer = doc.getElementById("ask-ai-answer");
+  const source = doc.getElementById("ask-ai-source");
+  button.disabled = true;
+  answer.textContent = "Thinking...";
+  source.hidden = true;
+  try {
+    const token = doc.querySelector("#ask-ai-form input[name=csrfmiddlewaretoken]").value;
+    const response = await fetch(`/api/characters/${encodeURIComponent(id)}/ask/`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "X-CSRFToken": token},
+      body: JSON.stringify({question}),
+      signal: controller.signal,
+    });
+    if (!response.ok) throw new Error("Question request failed");
+    const result = await response.json();
+    if (controller.signal.aborted || activeCharacterId !== id) return;
+    if (result.character_id !== id || typeof result.answer !== "string" || !result.answer.trim()) {
+      throw new Error("Invalid answer");
+    }
+    answer.textContent = result.answer;
+    source.textContent = result.source === "openai"
+      ? "AI answer based on stored character information. Verify important details."
+      : "Safe offline answer based on stored character information.";
+    source.hidden = false;
+  } catch (error) {
+    if (!controller.signal.aborted && activeCharacterId === id) {
+      answer.textContent = "Unable to answer right now. Please try again.";
+    }
+  } finally {
+    if (askRequest === controller) {
+      askRequest = null;
+      button.disabled = false;
+    }
+  }
+}
+
 function openProfile(doc, character) {
   resetSummary(doc, character);
   doc.getElementById("profile-name").textContent = character.name;
@@ -307,6 +356,10 @@ async function init(doc) {
   });
   doc.getElementById("profile").addEventListener("close", () => {
     resetSummary(doc, null);
+  });
+  doc.getElementById("ask-ai-form").addEventListener("submit", event => {
+    event.preventDefault();
+    askCharacterQuestion(doc);
   });
   doc.getElementById("generate-recommendations").addEventListener("click", () => loadRecommendations(doc));
   doc.getElementById("generate-summary").addEventListener("click", () => {
