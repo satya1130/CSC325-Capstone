@@ -117,3 +117,12 @@ dialog#profile{width:min(94vw,820px)}
 #profile #recommend-list{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 #profile #recommend-list button{background:#344965}
 #profile #recommend-reason{color:#d5ddeb}
+
+/* US-12: question-and-answer panel */
+#profile #ask-ai-form{display:grid;gap:10px}
+#profile #ask-ai-form label{font-size:13px;font-weight:700;color:#d5ddeb}
+#profile #ask-ai-question{width:100%;resize:vertical;min-height:80px;background:#111a2a;border:1px solid #64748b;border-radius:10px;padding:12px;color:#fff;font:inherit;font-size:15px}
+#profile #ask-ai-question:focus-visible{outline:3px solid #9db8ff;outline-offset:2px}
+#profile #ask-ai-submit{justify-self:start;background:#ed5555;color:#fff;border:0;border-radius:10px;cursor:pointer;font:inherit;font-weight:700;padding:12px 16px;min-height:44px}
+#profile #ask-ai-submit:disabled{opacity:.6;cursor:wait}
+#profile #ask-ai-answer{white-space:pre-wrap;color:#d5ddeb}
