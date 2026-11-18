@@ -80,6 +80,17 @@
                         <button type="button" id="generate-recommendations">Recommend Characters</button>
                         <p id="recommend-source" class="ai-summary-source" hidden></p>
                     </section>
+                    <section class="profile-section ai-summary" aria-labelledby="ask-ai-heading">
+                        <h3 id="ask-ai-heading">Ask AI About This Character</h3>
+                        <form id="ask-ai-form">
+                            {% csrf_token %}
+                            <label for="ask-ai-question">Your question</label>
+                            <textarea id="ask-ai-question" name="question" rows="3" maxlength="300" required placeholder="What are this character’s abilities?"></textarea>
+                            <button type="submit" id="ask-ai-submit">Ask AI</button>
+                        </form>
+                        <p id="ask-ai-answer" role="status" aria-live="polite">Ask a question based on this character’s profile.</p>
+                        <p id="ask-ai-source" class="ai-summary-source" hidden></p>
+                    </section>
                 </div>
             </div>
             <p class="note">Character descriptions and powers are sourced from the team's Marvel character spreadsheet.</p>
