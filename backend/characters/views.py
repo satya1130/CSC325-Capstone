@@ -5,6 +5,7 @@ from django.shortcuts import render
 
 from .models import Character
 from .ai_summary import generate_summary
+from .ai_recommendations import recommend
 
 
 # Character List, Search, and Filtering
@@ -121,3 +122,24 @@ def character_summary(request, character_id):
         "source": result["source"],
         "prompt_version": result["prompt_version"],
     })
+
+
+# US-11: grounded character recommendations
+def character_recommendations(request, character_id):
+    if request.method != "GET":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+    if not ObjectId.is_valid(character_id):
+        return JsonResponse({"error": "Character not found"}, status=404)
+    character = Character.objects.filter(id=ObjectId(character_id)).first()
+    if character is None:
+        return JsonResponse({"error": "Character not found"}, status=404)
+    selected = {"id": str(character.id), "name": character.name,
+                "description": character.description, "powers": character.powers,
+                "category": character.category}
+    roster = [
+        {"id": str(c.id), "name": c.name, "description": c.description,
+         "powers": c.powers, "category": c.category}
+        for c in Character.objects.all()
+    ]
+    result = recommend(selected, roster)
+    return JsonResponse({"character_id": selected["id"], **result})
