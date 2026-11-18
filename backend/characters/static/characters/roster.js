@@ -143,13 +143,19 @@ function showCharacterImage(doc, character) {
 // US-10: Request an AI summary for the character currently in the profile.
 let activeCharacterId = null;
 let summaryRequest = null;
+let recommendRequest = null;
 
 function resetSummary(doc, character) {
   if (summaryRequest) {
     summaryRequest.abort();
     summaryRequest = null;
   }
+  if (recommendRequest) { recommendRequest.abort(); recommendRequest = null; }
   activeCharacterId = character ? String(character.id ?? "") : null;
+  doc.getElementById("generate-recommendations").disabled = !activeCharacterId;
+  doc.getElementById("recommend-list").replaceChildren();
+  doc.getElementById("recommend-reason").textContent = "Find characters with related abilities.";
+  doc.getElementById("recommend-source").hidden = true;
   const button = doc.getElementById("generate-summary");
   const text = doc.getElementById("ai-summary-text");
   const source = doc.getElementById("ai-summary-source");
@@ -207,6 +213,50 @@ async function loadCharacterSummary(doc) {
   }
 }
 
+async function loadRecommendations(doc) {
+  const id = activeCharacterId;
+  if (!id || recommendRequest) return;
+  const controller = new AbortController();
+  recommendRequest = controller;
+  const button = doc.getElementById("generate-recommendations");
+  const list = doc.getElementById("recommend-list");
+  const reason = doc.getElementById("recommend-reason");
+  const source = doc.getElementById("recommend-source");
+  button.disabled = true;
+  reason.textContent = "Finding recommendations...";
+  list.replaceChildren();
+  source.hidden = true;
+  try {
+    const response = await fetch(`/api/characters/${encodeURIComponent(id)}/recommendations/`, {signal: controller.signal});
+    if (!response.ok) throw new Error("Recommendation request failed");
+    const result = await response.json();
+    if (controller.signal.aborted || activeCharacterId !== id) return;
+    if (result.character_id !== id || !Array.isArray(result.recommendations)) throw new Error("Invalid response");
+    reason.textContent = result.reason || "Suggested characters:";
+    for (const item of result.recommendations) {
+      const li = doc.createElement("li");
+      const link = doc.createElement("button");
+      link.type = "button";
+      link.textContent = item.name;
+      link.addEventListener("click", () => {
+        const match = characters.find(c => String(c.id) === String(item.id));
+        if (match) openProfile(doc, match);
+      });
+      li.append(link);
+      list.append(li);
+    }
+    source.textContent = result.source === "openai" ? "AI-assisted suggestions based on stored character data." : "Offline recommendations based on stored character data.";
+    source.hidden = false;
+  } catch (error) {
+    if (!controller.signal.aborted && activeCharacterId === id) reason.textContent = "Recommendations unavailable. Please try again.";
+  } finally {
+    if (recommendRequest === controller) {
+      recommendRequest = null;
+      button.disabled = false;
+    }
+  }
+}
+
 function openProfile(doc, character) {
   resetSummary(doc, character);
   doc.getElementById("profile-name").textContent = character.name;
@@ -258,6 +308,7 @@ async function init(doc) {
   doc.getElementById("profile").addEventListener("close", () => {
     resetSummary(doc, null);
   });
+  doc.getElementById("generate-recommendations").addEventListener("click", () => loadRecommendations(doc));
   doc.getElementById("generate-summary").addEventListener("click", () => {
     loadCharacterSummary(doc);
   });
