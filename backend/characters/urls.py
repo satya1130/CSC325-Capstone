@@ -6,6 +6,12 @@ urlpatterns = [
     path("", views.character_list, name="character_list"),
 
     path(
+        "<str:character_id>/recommendations/",
+        views.character_recommendations,
+        name="character_recommendations"
+    ),
+
+    path(
         "<str:character_id>/summary/",
         views.character_summary,
         name="character_summary"
