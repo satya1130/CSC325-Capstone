@@ -5,6 +5,7 @@ The fixture results validate the pipeline and its detection rules, NOT live-mode
 accuracy. Re-evaluate and review real model outputs when changing provider/model.
 """
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -18,6 +19,21 @@ from characters.ai_recommendations import recommend
 from characters.ai_questions import answer_question
 
 DATASET = ROOT / "evals" / "golden_set.json"
+MODEL_BASELINE = ROOT / "evals" / "approved_model.json"
+
+
+def model_contract_check(model=None, baseline_path=MODEL_BASELINE):
+    """Fail closed if the configured model differs from the reviewed baseline.
+
+    This detects configuration drift, not a provider's silent same-ID update.
+    """
+    baseline = json.loads(Path(baseline_path).read_text(encoding="utf-8"))
+    approved = baseline["model"]
+    configured = model if model is not None else os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+    if not isinstance(approved, str) or not approved.strip():
+        raise ValueError("Invalid approved model baseline")
+    return configured == approved, configured, approved
+
 THRESHOLDS = {"facts": 1.0, "grounding": 1.0, "consistency": 1.0}
 ALLOWED = set(("is a an the and or with who has have can uses use known for his her their "
                "of in to as by from abilities ability recorded no available character "
@@ -91,6 +107,9 @@ def main():
     scores = {metric: sum(r[metric] for r in results) / len(results)
               for metric in THRESHOLDS}
     checks = safety_checks()
+    model_ok, configured_model, approved_model = model_contract_check()
+    checks["approved_model_configuration"] = model_ok
+    print(f"Configured AI model: {configured_model}; approved baseline: {approved_model}")
     print("MARVEL CLASH SPRINT 3 OFFLINE EVAL (mocked responses, not live model quality)")
     for result in results:
         ok = all(result[metric] for metric in THRESHOLDS)
