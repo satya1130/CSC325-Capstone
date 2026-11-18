@@ -19,7 +19,7 @@ def fallback_answer(character, question):
     q = question.casefold()
     if any(word in q for word in ("power", "abilit", "skill", "do", "fight", "strong")):
         return f"{name}'s recorded powers and abilities: {powers}." if powers else f"No powers or abilities are recorded for {name}."
-    if any(word in q for word in ("who", "describe", "about", "character", "what is")):
+    if (q.startswith(("who is this character", "who is "+name.casefold(), "describe ", "tell me about ", "what is "+name.casefold())) or q in ("who is this?", "who is this character?", "describe this character")):
         return f"{name}: {description}" if description else f"No description is recorded for {name}."
     return f"I can't verify that from {name}'s stored character profile. The available description is: {description}" if description else f"I can't verify that from {name}'s stored character profile."
 
