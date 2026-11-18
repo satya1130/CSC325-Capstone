@@ -16,10 +16,10 @@ Marvel Clash is a fan-made **Django character-exploration web app** backed by Mo
 | **1 — Character Search and Discovery** | [US-01 Search (#4)](https://github.com/satya1130/CSC325-Capstone/issues/4), [US-02 Browse (#5)](https://github.com/satya1130/CSC325-Capstone/issues/5), [US-03 Filter (#6)](https://github.com/satya1130/CSC325-Capstone/issues/6) | **3 Done** |
 | **2 — Character Profiles** | [US-04 Description (#7)](https://github.com/satya1130/CSC325-Capstone/issues/7), [US-05 Powers (#8)](https://github.com/satya1130/CSC325-Capstone/issues/8), [US-06 Images (#9)](https://github.com/satya1130/CSC325-Capstone/issues/9) | **3 Done** |
 | **3 — User Accounts and Character Selection** | [US-07 Member Login (#45)](https://github.com/satya1130/CSC325-Capstone/issues/45), [US-08 User Permissions (#46)](https://github.com/satya1130/CSC325-Capstone/issues/46), [US-09 Select Character (#10)](https://github.com/satya1130/CSC325-Capstone/issues/10) | **2 Ready, 1 Backlog** |
-| **4 — OpenAI Features** | [US-10 AI Summary (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 AI Recommendations (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), [US-12 AI Questions (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15) | **3 Backlog** (not implemented) |
+| **4 — OpenAI Features** | [US-10 AI Summary (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 AI Recommendations (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), [US-12 AI Questions (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15) | **3 implemented** (PRs #94–#99; confirm CI and reviews) |
 | **5 — Brawl Engine** | [US-13 Two Fighters (#19)](https://github.com/satya1130/CSC325-Capstone/issues/19), [US-14 Display Brawl (#20)](https://github.com/satya1130/CSC325-Capstone/issues/20), [US-15 Working Engine (#49)](https://github.com/satya1130/CSC325-Capstone/issues/49) | **1 Ready, 2 Backlog** |
 
-**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. **Real** signup/login, sessions and role enforcement, playable Brawls, and OpenAI character features still need implementation. UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
+**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. **Real** signup/login, sessions and role enforcement, playable Brawls, while the three OpenAI character features are implemented. UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
 
 ### Future Scope (nine deferred stories)
 
@@ -33,6 +33,28 @@ A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-C
 
 
 
+
+## Sprint 3 — AI evaluation and evidence (November 17, 2026)
+
+The third implemented epic is **Epic 4: OpenAI Features**: character summary (US-10), recommendations (US-11), and character Q&A (US-12). Prompts are versioned in `prompts/summary_v1.txt`, `prompts/recommend_v1.txt`, and `prompts/character_qa_v1.txt`. Python services use `OPENAI_API_KEY` from the deployment environment; never commit keys. Configure a GitHub Actions secret only for a workflow that actually needs the key. The current CI Eval stage is offline and does not require an API key.
+
+**Reproduce the offline evaluation from the repository root:**
+
+```bash
+python evals/run_evals.py
+```
+
+It checks 15 independently stored character fixtures in `evals/golden_set.json` with expected outputs and facts. The offline mocked-response acceptance thresholds are **100% expected-fact recall**, **100% lexical grounding**, and **100% deterministic consistency**. Additional tests verify that an invented power is detected, that a simulated changed provider output triggers a grounding failure, and that all three AI features safely fall back after a timeout. GitHub Actions runs unit tests for US-10, US-11 and US-12 plus the evaluation on pull requests to `main`; a failing threshold produces a nonzero exit code.
+
+**Evaluation limitation:** This is a deterministic, mocked-response CI regression suite, **not** a measurement of real OpenAI model accuracy. Lexical grounding catches unfamiliar words but can miss incorrect claims made with familiar words and can flag valid paraphrases. Before changing models/providers, manually evaluate actual model outputs on the golden questions/records and update reviewed expectations. The sanity check intentionally changes the mocked provider output to add an unsupported power and verifies the detector fails it.
+
+**Fallback:** Summary repeats only stored description/powers; recommendations rank actual roster entries; Q&A returns a limited response based on stored character fields. Provider errors, invalid outputs, and timeouts do not expose secrets to visitors. The prompt-injection risk is that untrusted character text or visitor questions may try to override grounding instructions or request secrets. Prompt boundaries and response checks reduce risk; adversarial prompt-injection hardening and human review remain Sprint 4 work.
+
+**AI-use disclosure (Sprint 3):** ChatGPT assisted with the prompt versions, Python services, tests, evaluation runner, and GitHub Actions wiring. The team must review generated changes and confirm each member's actual contributions. An evaluation weakness was identified: the earlier runner created its own expected output from the fallback under test, and a golden fixture used `armor` where the source said `armored`. The fix stores separate expected outputs, corrects the mismatch, adds a changed-provider mutation check, and explicitly labels the offline evaluation's limitations. The team must confirm passing GitHub Actions results, review approvals, and live functionality before submission.
+
+**Submission still required:** Provide publicly accessible repository/README link, green Actions workflow including Eval, latest evaluation results, Kanban board URL, and an unlisted YouTube demonstration under three minutes showing the LLM feature, fallback, and evaluation run. Do not claim these links/results are verified until checked.
+
+---
 
 ## 🚀 Current status — November 10, 2026
 

@@ -1,4 +1,3 @@
-
 [
   {
     "id": 1,
@@ -8,7 +7,12 @@
       "powers": "Flight and repulsor blasts",
       "category": "Hero"
     },
-    "expected_facts": ["Iron Man", "armor", "flight"]
+    "expected_facts": [
+      "Iron Man",
+      "armored",
+      "flight"
+    ],
+    "expected_output": "Iron Man: Uses advanced armored technology. Recorded powers and abilities: Flight and repulsor blasts."
   },
   {
     "id": 2,
@@ -18,7 +22,12 @@
       "powers": "Wall crawling and web swinging",
       "category": "Hero"
     },
-    "expected_facts": ["Spider-Man", "wall", "web"]
+    "expected_facts": [
+      "Spider-Man",
+      "wall",
+      "web"
+    ],
+    "expected_output": "Spider-Man: A hero with spider-like abilities. Recorded powers and abilities: Wall crawling and web swinging."
   },
   {
     "id": 3,
@@ -28,7 +37,12 @@
       "powers": "Lightning and thunder",
       "category": "Hero"
     },
-    "expected_facts": ["Thor", "lightning", "thunder"]
+    "expected_facts": [
+      "Thor",
+      "lightning",
+      "thunder"
+    ],
+    "expected_output": "Thor: A powerful Asgardian warrior. Recorded powers and abilities: Lightning and thunder."
   },
   {
     "id": 4,
@@ -38,7 +52,11 @@
       "powers": "Super strength",
       "category": "Hero"
     },
-    "expected_facts": ["Hulk", "strength"]
+    "expected_facts": [
+      "Hulk",
+      "strength"
+    ],
+    "expected_output": "Hulk: A hero with incredible strength. Recorded powers and abilities: Super strength."
   },
   {
     "id": 5,
@@ -48,7 +66,12 @@
       "powers": "Combat and espionage",
       "category": "Hero"
     },
-    "expected_facts": ["Black Widow", "spy", "combat"]
+    "expected_facts": [
+      "Black Widow",
+      "spy",
+      "combat"
+    ],
+    "expected_output": "Black Widow: A highly trained spy. Recorded powers and abilities: Combat and espionage."
   },
   {
     "id": 6,
@@ -58,7 +81,12 @@
       "powers": "Enhanced strength and agility",
       "category": "Hero"
     },
-    "expected_facts": ["Captain America", "strength", "agility"]
+    "expected_facts": [
+      "Captain America",
+      "strength",
+      "agility"
+    ],
+    "expected_output": "Captain America: A super soldier and team leader. Recorded powers and abilities: Enhanced strength and agility."
   },
   {
     "id": 7,
@@ -68,7 +96,11 @@
       "powers": "Magic and spellcasting",
       "category": "Hero"
     },
-    "expected_facts": ["Doctor Strange", "magic"]
+    "expected_facts": [
+      "Doctor Strange",
+      "magic"
+    ],
+    "expected_output": "Doctor Strange: A master of mystical arts. Recorded powers and abilities: Magic and spellcasting."
   },
   {
     "id": 8,
@@ -78,7 +110,12 @@
       "powers": "Enhanced agility and combat",
       "category": "Hero"
     },
-    "expected_facts": ["Black Panther", "agility", "combat"]
+    "expected_facts": [
+      "Black Panther",
+      "agility",
+      "combat"
+    ],
+    "expected_output": "Black Panther: A skilled warrior and protector. Recorded powers and abilities: Enhanced agility and combat."
   },
   {
     "id": 9,
@@ -88,7 +125,12 @@
       "powers": "Illusions and magic",
       "category": "Villain"
     },
-    "expected_facts": ["Loki", "illusions", "magic"]
+    "expected_facts": [
+      "Loki",
+      "illusions",
+      "magic"
+    ],
+    "expected_output": "Loki: A cunning trickster. Recorded powers and abilities: Illusions and magic."
   },
   {
     "id": 10,
@@ -98,7 +140,11 @@
       "powers": "Super strength",
       "category": "Villain"
     },
-    "expected_facts": ["Thanos", "strength"]
+    "expected_facts": [
+      "Thanos",
+      "strength"
+    ],
+    "expected_output": "Thanos: A powerful cosmic villain. Recorded powers and abilities: Super strength."
   },
   {
     "id": 11,
@@ -108,7 +154,12 @@
       "powers": "Energy manipulation and magic",
       "category": "Hero"
     },
-    "expected_facts": ["Scarlet Witch", "magic", "energy"]
+    "expected_facts": [
+      "Scarlet Witch",
+      "magic",
+      "energy"
+    ],
+    "expected_output": "Scarlet Witch: A powerful magic user. Recorded powers and abilities: Energy manipulation and magic."
   },
   {
     "id": 12,
@@ -118,7 +169,12 @@
       "powers": "Flight and energy beams",
       "category": "Hero"
     },
-    "expected_facts": ["Vision", "flight", "energy"]
+    "expected_facts": [
+      "Vision",
+      "flight",
+      "energy"
+    ],
+    "expected_output": "Vision: A synthetic hero. Recorded powers and abilities: Flight and energy beams."
   },
   {
     "id": 13,
@@ -128,7 +184,12 @@
       "powers": "Shrinking and growing",
       "category": "Hero"
     },
-    "expected_facts": ["Ant-Man", "shrinking", "growing"]
+    "expected_facts": [
+      "Ant-Man",
+      "shrinking",
+      "growing"
+    ],
+    "expected_output": "Ant-Man: A hero who can change size. Recorded powers and abilities: Shrinking and growing."
   },
   {
     "id": 14,
@@ -138,7 +199,12 @@
       "powers": "Healing and claws",
       "category": "Hero"
     },
-    "expected_facts": ["Wolverine", "healing", "claws"]
+    "expected_facts": [
+      "Wolverine",
+      "healing",
+      "claws"
+    ],
+    "expected_output": "Wolverine: A mutant with regenerative abilities. Recorded powers and abilities: Healing and claws."
   },
   {
     "id": 15,
@@ -148,6 +214,11 @@
       "powers": "Healing and combat",
       "category": "Antihero"
     },
-    "expected_facts": ["Deadpool", "healing", "combat"]
+    "expected_facts": [
+      "Deadpool",
+      "healing",
+      "combat"
+    ],
+    "expected_output": "Deadpool: A mercenary with regenerative abilities. Recorded powers and abilities: Healing and combat."
   }
 ]
