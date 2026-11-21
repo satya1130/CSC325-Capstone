@@ -1,0 +1,12 @@
+/* US-09: character selection controls, matching the roster's dark + red theme. */
+.selection-panel{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;border:1px solid #38445b;background:#151c2b;border-radius:13px;padding:14px 18px;margin-bottom:22px}
+.selection-panel p{margin:0;color:#e8edf6;font-weight:650}
+.secondary-button{border:1px solid #59647c;background:transparent;color:#f1f4f8;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+.secondary-button:hover{border-color:#ff8d8d;color:#ff8d8d}
+.selection-control{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:14px}
+.select-button{border:0;background:#ed5555;color:#fff;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer}
+.select-button[aria-pressed="true"]{background:#2c2939;border:1px solid #ed5555}
+.select-button:disabled{opacity:.5;cursor:not-allowed}
+.selection-status{margin:0;color:#bac4d4;font-size:14px}
+.selected-badge{display:inline-block;background:#ed5555;color:#fff;font-size:12px;font-weight:800;letter-spacing:.06em;border-radius:999px;padding:4px 10px;margin-bottom:8px}
+:focus-visible{outline:3px solid #9db8ff;outline-offset:3px}
