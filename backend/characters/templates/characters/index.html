@@ -7,12 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Marvel Clash | Character Roster</title>
     <link rel="stylesheet" href="{% static 'characters/style.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+    <link rel="stylesheet" href="{% static 'characters/selection.css' %}">
     <script src="{% static 'characters/roster.js' %}" defer></script>
 </head>
 <body>
     <header class="topbar">
         <a class="brand" href="/">MARVEL <span>CLASH</span></a>
-        <nav><a href="/brawl/" style="color:#ff8d8d;font-weight:700">Brawl Arena</a></nav>
+        {% include "accounts/_nav.html" %}
     </header>
 
     <main>
@@ -40,6 +42,11 @@
             <p id="count" role="status" aria-live="polite"></p>
         </section>
 
+        <section id="selection-panel" class="selection-panel" aria-label="Selected character">
+            <p id="selection-text" role="status" aria-live="polite">Loading your selection...</p>
+            <button type="button" id="remove-selection" class="secondary-button" hidden>Remove selection</button>
+        </section>
+
         <section id="roster" class="cards" aria-label="Character results"></section>
 
         <section id="empty" class="empty" hidden>
@@ -52,6 +59,10 @@
         <div class="dialog-inner">
             <button type="button" id="close" class="close" aria-label="Close character profile">×</button>
             <p class="eyebrow">CHARACTER PROFILE</p>
+            <div class="selection-control">
+                <button type="button" id="select-character" class="select-button" aria-pressed="false">Select</button>
+                <p id="select-status" class="selection-status" role="status" aria-live="polite"></p>
+            </div>
             <div class="profile-layout">
                 <div class="profile-art" id="profile-art">
                     <img id="profile-image" alt="" hidden>

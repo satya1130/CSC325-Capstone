@@ -108,6 +108,13 @@ function renderRoster(doc, characters) {
       openProfile(doc, character);
     });
 
+    if (selectedId && String(character.id) === selectedId) {
+      const badge = doc.createElement("span");
+      badge.className = "selected-badge";
+      badge.textContent = "Selected";
+      article.append(badge);
+    }
+
     article.append(avatar, title, description, button);
     roster.append(article);
   }
@@ -306,8 +313,94 @@ async function askCharacterQuestion(doc) {
   }
 }
 
+// US-09: character selection. The server keeps the selection in the session;
+// the page mirrors it here so the banner, badges and Select button stay in sync.
+let selectedId = null;
+let selectedCharacter = null;
+let selectionRequest = null;
+
+function csrfToken(doc) {
+  const input = doc.querySelector("input[name=csrfmiddlewaretoken]");
+  return input ? input.value : "";
+}
+
+function renderSelection(doc) {
+  const text = doc.getElementById("selection-text");
+  const remove = doc.getElementById("remove-selection");
+  if (selectedCharacter) {
+    text.textContent = `Selected character: ${selectedCharacter.name}`;
+    remove.hidden = false;
+  } else {
+    text.textContent = "No character selected. Open a profile and choose Select to track a fighter.";
+    remove.hidden = true;
+  }
+  const profileButton = doc.getElementById("select-character");
+  const status = doc.getElementById("select-status");
+  const activeId = activeCharacterId;
+  const isSelected = Boolean(activeId && selectedId === activeId);
+  profileButton.disabled = !activeId;
+  profileButton.textContent = isSelected ? "Selected · Remove" : "Select";
+  profileButton.setAttribute("aria-pressed", String(isSelected));
+  status.textContent = isSelected ? "This character is your current selection." : "";
+}
+
+function applySelection(doc, selected) {
+  selectedCharacter = selected || null;
+  selectedId = selected ? String(selected.id) : null;
+  renderSelection(doc);
+  renderRoster(doc, characters);
+}
+
+async function requestSelection(doc, method, body) {
+  if (selectionRequest) return;
+  const controller = new AbortController();
+  selectionRequest = controller;
+  const status = doc.getElementById("select-status");
+  const options = {method, headers: {"X-CSRFToken": csrfToken(doc)}, signal: controller.signal};
+  if (body) {
+    options.headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(body);
+  }
+  try {
+    const response = await fetch("/api/selection/", options);
+    if (!response.ok) throw new Error(`Selection request failed: ${response.status}`);
+    const result = await response.json();
+    applySelection(doc, result.selected);
+  } catch (error) {
+    if (!controller.signal.aborted) {
+      console.error("Marvel Clash selection error:", error);
+      status.textContent = "Could not update your selection. Please try again.";
+    }
+  } finally {
+    if (selectionRequest === controller) selectionRequest = null;
+  }
+}
+
+async function loadSelection(doc) {
+  try {
+    const response = await fetch("/api/selection/");
+    if (!response.ok) throw new Error("Selection unavailable");
+    const result = await response.json();
+    applySelection(doc, result.selected);
+  } catch (error) {
+    console.error("Marvel Clash selection error:", error);
+    doc.getElementById("selection-text").textContent = "Your selection is unavailable right now.";
+  }
+}
+
+function toggleSelection(doc) {
+  const id = activeCharacterId;
+  if (!id) return;
+  if (selectedId === id) {
+    requestSelection(doc, "DELETE");
+  } else {
+    requestSelection(doc, "POST", {character_id: id});
+  }
+}
+
 function openProfile(doc, character) {
   resetSummary(doc, character);
+  renderSelection(doc);
   doc.getElementById("profile-name").textContent = character.name;
   showCharacterImage(doc, character);
 
@@ -366,6 +459,9 @@ async function init(doc) {
     loadCharacterSummary(doc);
   });
 
+  doc.getElementById("select-character").addEventListener("click", () => toggleSelection(doc));
+  doc.getElementById("remove-selection").addEventListener("click", () => requestSelection(doc, "DELETE"));
+
   count.textContent = "Loading Marvel characters...";
 
   try {
@@ -382,6 +478,7 @@ async function init(doc) {
     // Fixed character types are defined in the HTML dropdown.
     // The selected value is applied by renderRoster through filterCharacters.
     renderRoster(doc, characters);
+    loadSelection(doc);
 
   } catch (error) {
     console.error("Marvel Clash API error:", error);

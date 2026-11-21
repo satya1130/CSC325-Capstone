@@ -34,13 +34,78 @@ A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-C
 
 
 
+## Epic 3 — User Accounts and Character Selection (PR pending review)
+
+**Scope:** US-07 Member Login, US-08 User Permissions, US-09 Select a Character. Implemented on branch `feature/epic3-user-accounts-character-selection`. Status is **implemented, pending teammate review and a passing GitHub Actions run**; it is not marked Done.
+
+### Authentication routes (US-07)
+
+| Route | Method | Purpose |
+|---|---|---|
+| `/accounts/signup/` | GET, POST | Register with username, email, password and password confirmation. Passwords are validated and hashed by Django's `django.contrib.auth`; the new member is signed in and sent to `/brawl/`. |
+| `/accounts/login/` | GET, POST | Log in with Django's authentication system. Honours `?next=` only for same-site URLs (unsafe external targets are ignored). |
+| `/accounts/logout/` | POST only | Logs out and flushes the server-side session. GET returns 405. |
+| `/accounts/admin-control/` | GET | Admin Control Room placeholder (see permissions below). |
+
+Logged-in members see their username and a Log out button in the header. Guests see Log in and Sign up. The login form is rendered from `accounts/templates/accounts/login.html`. No shared demo passwords or Figma-only login flows are used.
+
+Session settings are Django defaults. Logout invalidates the session; protected pages afterwards redirect to `/accounts/login/?next=...`.
+
+### Permissions (US-08)
+
+| Role | Access |
+|---|---|
+| Guest (anonymous) | Character roster, profiles, public AI features, and character selection (session-scoped). |
+| Member (signed in, not staff) | Everything a guest can use, plus `/brawl/` and the Brawl API. |
+| Admin (`is_staff`) | Everything a member can use, plus `/accounts/admin-control/`. Django admin remains at `/admin/`. |
+
+Authorization is enforced on the server:
+
+- `/brawl/` and `/api/brawl/start/` use `login_required` (guests are redirected to login).
+- `/accounts/admin-control/` uses the `admin_required` decorator in `accounts/decorators.py` (guests go to login; non-staff members get HTTP 403).
+- The character API is read-only; POST, PUT and DELETE on `/api/characters/` return 405 for everyone.
+
+Hiding a button is not treated as security. The automated tests call the endpoints directly as guests and members.
+
+### Character selection (US-09)
+
+- Each character card and profile dialog has a **Select** control. Selecting a character marks it with a **Selected** badge and shows it in the selection banner above the roster.
+- **Change** works by selecting another character. **Remove selection** clears it (from the banner, or by pressing the profile button again).
+- The selection is stored in the Django session through `GET|POST|DELETE /api/selection/` (`characters/selection_views.py`). It persists while the user navigates the site, works for guests and members, and does not write to MongoDB.
+- Brawl fighter selection (Epic 5, US-13) is separate and unchanged.
+- Saving favourites to a member account is future work (FUT-TASK / FUT-02).
+
+### Brawl Arena integration
+
+Unauthenticated visitors to `/brawl/` are redirected to `/accounts/login/?next=/brawl/`. After login they return to `/brawl/`. Members can select two different fighters, run a battle, start another battle, and log out to lose access.
+
+### Configuration
+
+No new environment variables or secrets were added. Existing `MONGODB_URI`, `DJANGO_SECRET_KEY`, `DJANGO_DEBUG` and `DJANGO_ALLOWED_HOSTS` are unchanged. Settings added: `accounts` in `INSTALLED_APPS`, `LOGIN_URL='/accounts/login/'`, `LOGIN_REDIRECT_URL='/brawl/'`, `LOGOUT_REDIRECT_URL='/'`. No new models, so no new migrations are needed.
+
+### Tests
+
+- `accounts/tests.py`: registration success and rejection (duplicate username and email, invalid input), login success and failure, safe and unsafe `next`, session persistence, logout invalidation, guest and member access, admin-only denial and admin access, and denied modification of protected roster content.
+- `characters/test_selection.py`: guest select, persistence, change, remove, invalid and missing IDs.
+- Existing `characters/test_brawl.py`, roster, and AI tests are unchanged.
+
+Run with `cd backend && python manage.py test --verbosity 2` against a MongoDB instance (`MONGODB_URI`), as in CI. The JavaScript roster tests run with `node --test` in `backend/characters/static/characters`.
+
+**Verification status:** The offline AI unit tests and `BrawlEngineTests` passed locally. The database-backed Django tests need MongoDB and were **not run locally at the time of writing**; GitHub Actions is the first full run. Do not treat this section as verified until that CI run passes.
+
+### AI-use disclosure for Epic 3
+
+Claude (Anthropic) drafted the Epic 3 code, tests, templates, and this README section at the request of a team member, based on the GitHub user stories. The team member must review every change, run the tests against MongoDB, and confirm their own contributions before merge. No AI-generated text is claimed as independently verified.
+
+---
+
 ## Epic 5 — Playable Brawl (PR pending review)
 
 Epic 5 introduces a Django-backed Brawl Arena at `/brawl/` (authenticated members only), and a CSRF-protected `POST /api/brawl/start/` endpoint accepting `{"fighter1":"<ObjectId>","fighter2":"<ObjectId>"}`. Both IDs must refer to distinct existing characters. The response contains the fighter IDs/names, deterministic turn history, health after each attack, and the winner. The page lets members select two fighters, inspect the selection, step through turns, see health bars and winner, and start another matchup.
 
 **Game design:** `brawl_v1` starts both fighters at 100 HP, alternates attacks, and uses a SHA-256-derived deterministic damage value between 8 and 20 per turn, capped at remaining health. This is **team-designed fan-game balancing**, not a claim about Marvel powers, weaknesses, or canon. No OpenAI calls, persistent match records, or database migrations are required. The rules and numerical values need teammate review before final acceptance of supporting issue #50. Characters' sourced `powers` fields are not used as invented move definitions.
 
-**Epic 3 integration dependency:** Both routes require Django authentication. Until Kyle's Epic 3 signup/login routes are merged, anonymous visitors are redirected to Django's default login URL `/accounts/login/`, which may not yet exist. Coordinate with Epic 3 to preserve `/brawl/` and `/api/brawl/start/` and configure `LOGIN_URL` as needed. This PR is **not** proof that signup/login is complete.
+**Epic 3 integration:** Both routes require Django authentication. Anonymous visitors are redirected to `/accounts/login/?next=/brawl/` (see [Epic 3](#epic-3--user-accounts-and-character-selection-pr-pending-review)). Login is implemented in the Epic 3 branch; this statement describes that branch, not a merged or deployed state.
 
 **Testing:** Run `cd backend && python manage.py test characters.test_brawl` against the configured test MongoDB; then run the full suite. The PR is not considered verified until GitHub Actions and manual member flows pass. CSRF protection remains enabled; the UI sends the form token.
 
@@ -586,7 +651,9 @@ This disclosure covers **the whole Marvel Clash project**, from Figma planning a
 
 **ChatGPT, SQLite-to-MongoDB migration and Render deployment ([PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), November 2026):** Satya used ChatGPT for guided migration planning and troubleshooting. Assistance included MongoDB Atlas connection setup, configuring `django-mongodb-backend` and migrations, transferring the existing 49 character records, correcting image references, updating character API routes for MongoDB ObjectIds, diagnosing CI dependency/service/test failures, revising GitHub Actions, and troubleshooting the Render-to-Atlas TLS connection failure. ChatGPT also helped draft GitHub PR changes and update this README. These were **AI-assisted development and documentation tasks**, not a claim that AI independently verified the software.
 
-**Claude (Anthropic):** A group contributor was previously reported to have used Claude to assist with README drafting and a separate Figma prototype. This is a **team-reported contribution, not independently confirmed for a named teammate**. The contributor should confirm the specific assistance and review before submission; no additional Claude usage is assumed.
+**Claude (Anthropic), Epic 3 accounts and character selection:** Claude (Claude Code) drafted the accounts app, selection endpoint, roster/profile changes, tests, and README sections for Epic 3 at a team member's request. The team member must review, run the tests, and confirm the work before merge; the disclosure does not claim the code was verified in CI or deployment.
+
+**Claude (Anthropic), earlier:** A group contributor was previously reported to have used Claude to assist with README drafting and a separate Figma prototype. This is a **team-reported contribution, not independently confirmed for a named teammate**. The contributor should confirm the specific assistance and review before submission; no additional Claude usage is assumed.
 
 **Non-AI development tools:** [Figma](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) was used for interface design, interactive prototypes, personas, context diagram, and user journey. [GitHub](https://github.com/satya1130/CSC325-Capstone) and [GitHub Actions](.github/workflows/marvel-clash-cicd.yml) supported source control, pull requests, peer review, and automated checks. These tools are **not themselves cited as generative AI models**. MongoDB Atlas and Render are database/hosting infrastructure, also not generative AI.
 

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
     'characters',
     'django_mongodb_backend',
 ]
@@ -93,6 +94,12 @@ DATABASES = {
         "NAME": "marvelclash",
     }
 }
+
+# Authentication (US-07 / US-08)
+# Protected pages redirect here with ?next=; LoginView validates the next URL.
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/brawl/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Password validation
 # https://docs.djangoproject.com/en/6.1/ref/settings/#auth-password-validators

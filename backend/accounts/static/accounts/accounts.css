@@ -1,0 +1,25 @@
+/* US-07 / US-08: account pages and nav, styled to the Marvel Clash dark + red theme. */
+.account-nav{display:flex;align-items:center;flex-wrap:wrap;gap:14px;font-size:14px}
+.account-nav a,.link-button{color:#f1f4f8;font-weight:650}
+.account-nav a:hover,.link-button:hover{color:#ff8d8d}
+.brawl-link{color:#ff8d8d!important;font-weight:700}
+.account-user{color:#bac4d4}
+.logout-form{margin:0}
+.link-button{background:none;border:0;padding:0;font:inherit;cursor:pointer}
+.auth-main{display:flex;justify-content:center}
+.auth-card{width:min(100%,460px);margin:40px auto;background:#151c2b;border:1px solid #38445b;border-radius:15px;padding:clamp(20px,5vw,34px)}
+.auth-card h1{font-size:clamp(28px,6vw,38px);letter-spacing:-.03em;margin:10px 0 20px}
+.auth-form{display:flex;flex-direction:column;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:650}
+.field input{width:100%;padding:13px 16px;background:#0c1220;border:1px solid #59647c;border-radius:10px;color:#fff;font-size:16px}
+.field input:focus-visible,.primary-button:focus-visible{outline:3px solid #9db8ff;outline-offset:3px}
+.field-error,.form-errors{color:#ff9a9a;font-size:14px;margin:0}
+.form-errors{border:1px solid #7a2a2a;background:#2a1212;border-radius:10px;padding:12px 14px}
+.help-text{color:#9aabc5;font-size:13px;margin:0;line-height:1.5}
+.help-text ul{padding-left:18px;margin:4px 0}
+.primary-button{border:0;background:#ed5555;color:#fff;border-radius:10px;padding:14px;font-weight:800;font-size:16px;cursor:pointer}
+.primary-button:hover{background:#ff7373}
+.auth-switch{color:#adb8ca;font-size:14px;margin-top:20px}
+.auth-switch a{color:#ff8d8d;font-weight:700}
+@media(max-width:520px){.account-nav{width:100%;justify-content:flex-start}.auth-card{margin:24px 0}}

@@ -1,0 +1,8 @@
+{% extends "accounts/_auth_base.html" %}
+{% block title %}Admin Control Room{% endblock %}
+{% block eyebrow %}ADMIN ONLY{% endblock %}
+{% block heading %}Admin Control Room{% endblock %}
+{% block content %}
+<p>Signed in as <strong>{{ user.username }}</strong> with administrator access.</p>
+<p>Protected admin operations are checked on the server. Manage accounts and content in the <a href="/admin/">Django admin</a>.</p>
+{% endblock %}

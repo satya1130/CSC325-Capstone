@@ -1,0 +1,25 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Marvel Clash | {% block title %}Account{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'characters/style.css' %}">
+    <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="/">MARVEL <span>CLASH</span></a>
+        {% include "accounts/_nav.html" %}
+    </header>
+    <main class="auth-main">
+        <section class="auth-card" aria-labelledby="auth-heading">
+            <p class="eyebrow">{% block eyebrow %}MEMBER ACCOUNT{% endblock %}</p>
+            <h1 id="auth-heading">{% block heading %}{% endblock %}</h1>
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+    <footer>Marvel Clash · CSC 325 student prototype · Fan-made, unofficial</footer>
+</body>
+</html>

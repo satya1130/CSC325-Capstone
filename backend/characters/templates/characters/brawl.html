@@ -7,10 +7,11 @@
   <title>Marvel Clash | Brawl Arena</title>
   <link rel="stylesheet" href="{% static 'characters/style.css' %}">
   <link rel="stylesheet" href="{% static 'characters/brawl.css' %}">
+  <link rel="stylesheet" href="{% static 'accounts/accounts.css' %}">
   <script src="{% static 'characters/brawl.js' %}" defer></script>
 </head>
 <body>
-<header class="topbar"><a class="brand" href="/">MARVEL <span>CLASH</span></a><a href="/">Back to roster</a></header>
+<header class="topbar"><a class="brand" href="/">MARVEL <span>CLASH</span></a><a href="/">Back to roster</a>{% include "accounts/_nav.html" %}</header>
 <main class="arena">
   <p class="eyebrow">EPIC 5 / BRAWL ARENA</p>
   <h1>Choose your fighters.</h1>
