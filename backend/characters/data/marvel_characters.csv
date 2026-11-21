@@ -1,4 +1,4 @@
-﻿name,description,powers,category
+name,description,powers,category
 Iron Man,Genius inventor Tony Stark protects others using advanced armored technology.,Genius-level intellect. Powered armor. Flight. Repulsor blasts. Missiles. Energy weapons.,Hero
 Captain America,A super soldier and respected leader of the Avengers.,Superhuman strength. Enhanced speed. Durability. Rapid recovery. Hand-to-hand combat. Shield mastery.,Hero
 Thor,The Asgardian god of thunder and a powerful warrior.,Superhuman strength. Durability. Lightning control. Weather manipulation. Flight. Skilled combat.,Hero
@@ -48,3 +48,12 @@ Proxima Midnight,A ruthless alien warrior serving in Thanos's Black Order.,Super
 Madame Viper,A ruthless assassin and criminal leader associated with HYDRA.,Hand-to-hand combat. Espionage. Poison expertise. Weapons training. Agility. Leadership.,Villain
 Hela,The Asgardian goddess of death and a formidable enemy of Thor.,Superhuman strength. Durability. Regeneration. Weapon conjuring. Necromancy. Combat mastery.,Villain
 Dark Phoenix,Jean Grey transformed by the overwhelming power of the Phoenix Force.,Telepathy. Telekinesis. Energy manipulation. Matter manipulation. Flight. Cosmic destruction. Reality alteration.,Villain
+Ultron,An artificial intelligence created to bring peace that becomes a dangerous enemy of humanity.,Artificial intelligence. Superhuman strength. Flight. Energy blasts. Robotic body control.,Villain
+Mr. Fantastic,Reed Richards is a brilliant scientist and leader of the Fantastic Four.,Elasticity. Body stretching. Shape alteration. Genius-level intellect. Scientific invention.,Hero
+Invisible Woman,Sue Storm is a founding member of the Fantastic Four who protects her team with powerful force fields.,Invisibility. Force-field generation. Energy barriers. Force constructs.,Hero
+Human Torch,Johnny Storm is a Fantastic Four member who can ignite his body and control flames.,Pyrokinesis. Flame generation. Flight. Heat projection. Nova flame.,Hero
+The Thing,Ben Grimm is a Fantastic Four member transformed into a powerful rock-skinned hero.,Superhuman strength. Rock-like durability. Stamina. Hand-to-hand combat.,Hero
+Agatha Harkness,A formidable witch and practitioner of ancient magic.,Spellcasting. Magical energy manipulation. Illusions. Enchantments. Life-force absorption.,Villain
+Doctor Doom,Victor von Doom is the armored ruler of Latveria and a brilliant scientist and sorcerer.,Genius-level intellect. Powered armor. Energy blasts. Force fields. Sorcery.,Villain
+Speed,Tommy Shepherd is a young hero whose extraordinary speed makes him a formidable fighter.,Super speed. Enhanced reflexes. Accelerated movement. Molecular acceleration.,Hero
+Wiccan,Billy Kaplan is a young magic user with powerful reality-altering potential.,Spellcasting. Telekinesis. Energy manipulation. Flight. Reality alteration.,Hero
