@@ -129,9 +129,19 @@ It checks 15 independently stored character fixtures in `evals/golden_set.json` 
 
 **AI-use disclosure (Sprint 3):** ChatGPT assisted with the prompt versions, Python services, tests, evaluation runner, and GitHub Actions wiring. The team must review generated changes and confirm each member's actual contributions. An evaluation weakness was identified: the earlier runner created its own expected output from the fallback under test, and a golden fixture used `armor` where the source said `armored`. The fix stores separate expected outputs, corrects the mismatch, adds a changed-provider mutation check, and explicitly labels the offline evaluation's limitations. The team must confirm passing GitHub Actions results, review approvals, and live functionality before submission.
 
-**Verified Sprint 3 CI evidence:** [Successful Marvel Clash CI/CD run #100](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113) includes passing **Test** and **Eval - AI Features Quality and Safety** jobs. The Eval job ran the three mocked AI unit-test modules, model-contract tests, and the 15-case golden evaluation. [Open the Eval job](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113/job/134544002963) to view the logged evaluation results; the suite is not a live-model accuracy measurement. [PR #101](https://github.com/satya1130/CSC325-Capstone/pull/101) was merged after teammate approval.
+**Verified Sprint 3 CI evidence:** [Successful GitHub Actions workflow run](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578) includes successful **Test** and **Eval - AI Features Quality and Safety** jobs. [View the Eval job and logged results](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578/job/134868726505). The Eval stage executes mocked AI tests, the model-contract checks, and 15 golden cases. These offline tests validate the evaluation and fallback mechanisms; they **do not measure live OpenAI model accuracy**. Earlier evidence: [CI/CD run #100](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113) and [PR #101](https://github.com/satya1130/CSC325-Capstone/pull/101).
 
-**Submission still required:** Provide the repo/README URL, this green workflow/Eval log (or a newer successful run), the team's **exact** Kanban board URL, and an **unlisted YouTube video no longer than 3 minutes** demonstrating an LLM feature, its fallback via a mocked timeout test, and an evaluation run. The video and exact board URL have not been verified here.
+### Sprint 3 submission links
+
+| Submission requirement | Evidence |
+| --- | --- |
+| GitHub repository with updated `README.md` | [Marvel Clash repository](https://github.com/satya1130/CSC325-Capstone) · [README.md](https://github.com/satya1130/CSC325-Capstone/blob/main/README.md) |
+| Green workflow run including the Eval stage | [Successful GitHub Actions run](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578) |
+| Latest evaluation results provided for submission | [Eval job logs and results](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578/job/134868726505) · [Golden dataset](evals/golden_set.json) · [Evaluation runner](evals/run_evals.py) |
+| GitHub Projects Kanban board | [Sprint 3 Kanban board](https://github.com/users/satya1130/projects/2/views/1) |
+| Unlisted YouTube demo (maximum 3 minutes) | [Sprint 3 LLM, fallback, and evaluation demonstration](https://youtu.be/NTRhqhuwvC8) |
+
+**Submission note:** The team supplied the YouTube URL and Kanban URL. Before submitting, confirm the video is accessible to anyone with its link, has **Unlisted** visibility, stays within the 3-minute limit, and demonstrates the live LLM feature, a simulated fallback, and an evaluation run. The linked workflow and Eval job were confirmed successful; verify whether newer evidence is needed at submission time.
 
 ---
 
