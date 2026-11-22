@@ -109,27 +109,54 @@ Epic 5 introduces a Django-backed Brawl Arena at `/brawl/` (authenticated member
 
 **Testing:** Run `cd backend && python manage.py test characters.test_brawl` against the configured test MongoDB; then run the full suite. The merged PR is not proof of deployed behavior; check GitHub Actions and manual member flows before claiming live verification. CSRF protection remains enabled; the UI sends the form token.
 
-## Sprint 3 — AI evaluation and evidence (November 17, 2026)
+## Sprint 3 — LLM feature, evaluation, pipeline, and evidence (November 21, 2026)
 
-The third implemented epic is **Epic 4: OpenAI Features**: character summary (US-10), recommendations (US-11), and character Q&A (US-12). Prompts are versioned in `prompts/summary_v1.txt`, `prompts/recommend_v1.txt`, and `prompts/character_qa_v1.txt`. Python services use `OPENAI_API_KEY` from the deployment environment; never commit keys. For the Sprint 3 rubric, configure the repository Actions secret named `OPENAI_API_KEY` in **Settings → Secrets and variables → Actions** (never expose its value). Production requires its own `OPENAI_API_KEY` in Render environment settings. The current CI Eval stage deliberately uses mocked responses with an empty key; it must **not** call the real API or read the secret.
+This section maps directly to the Sprint 3 rubric. **Epic 4 — OpenAI Features** is the third implemented epic alongside Epic 1 (Character Search and Discovery) and Epic 2 (Character Profiles). The Sprint 3 minimum is met by these **nine user stories**; Epic 3 (accounts/selection, [PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)) and Epic 5 (deterministic Brawl, [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)) were also merged, but are not required to claim the three-epic minimum.
 
-**Reproduce the offline evaluation from the repository root:**
+### 1. LLM feature: Python API, versioned prompts, and secrets
+
+The application calls the **OpenAI API from Python** to support the Product Goal of exploring Marvel characters. Epic 4 contains **US-10 character summary**, **US-11 roster-grounded recommendations**, and **US-12 character Q&A**. Their versioned prompts live in `prompts/summary_v1.txt`, `prompts/recommend_v1.txt`, and `prompts/character_qa_v1.txt`. The application reads `OPENAI_API_KEY` from the environment; it must never be committed. Configure the GitHub Actions secret **Settings → Secrets and variables → Actions → OPENAI_API_KEY** for any approved live-API workflow, and configure the separate Render environment variable for production. **The current CI tests and Eval stage use mocks, deliberately do not read the secret, and never call the live API.** Whether the GitHub secret is actually configured must be confirmed in repository settings.
+
+### 2. Fallback path and tests
+
+If the provider fails, times out, or returns invalid output, the app uses a safe fallback: the summary uses stored character description/powers; recommendations use actual roster entries; and Q&A returns a limited response based on stored character fields. Fallbacks do not invent Marvel lore or expose credentials. Automated tests cover provider timeouts and invalid responses, including all three AI features. This verifies the fallback behavior in tests; it does not independently prove the current Render deployment.
+
+### 3. Feature development: third epic, branches, PRs, review, and CI
+
+Epic 4 delivers [US-10 (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), and [US-12 (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15). Evidence includes feature PRs [#94](https://github.com/satya1130/CSC325-Capstone/pull/94), [#95](https://github.com/satya1130/CSC325-Capstone/pull/95), [#97](https://github.com/satya1130/CSC325-Capstone/pull/97), [#98](https://github.com/satya1130/CSC325-Capstone/pull/98), and [#99](https://github.com/satya1130/CSC325-Capstone/pull/99), with evaluation improvements in [#100](https://github.com/satya1130/CSC325-Capstone/pull/100) and [#101](https://github.com/satya1130/CSC325-Capstone/pull/101). See each PR for its linked issue, branch, tests, teammate review, and checks; **a merged PR or closed issue alone does not establish teammate approval**. The [successful workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578) supplies green pipeline evidence. Confirm the required individual approvals before final submission.
+
+### 4. Evaluation suite: 15 golden cases, checks, and thresholds
+
+The independently stored `evals/golden_set.json` contains **15 character inputs with expected outputs and facts**. Run the whole offline evaluation from the repository root with:
 
 ```bash
 python evals/run_evals.py
 ```
 
-It checks 15 independently stored character fixtures in `evals/golden_set.json` with expected outputs and facts. The offline mocked-response acceptance thresholds are **100% expected-fact recall**, **100% lexical grounding**, and **100% deterministic consistency**. Additional tests verify that an invented power is detected, that a simulated changed provider output triggers a grounding failure, and that all three AI features safely fall back after a timeout. GitHub Actions runs unit tests for US-10, US-11 and US-12 plus the evaluation on pull requests to `main`; a failing threshold produces a nonzero exit code.
+The mocked-response acceptance thresholds are **100% expected-fact recall**, **100% lexical grounding (hallucination proxy)**, and **100% deterministic consistency**. The suite exits with a nonzero status if a threshold fails. It also tests whether an invented power or altered mocked provider output is detected. Lexical grounding is a limited proxy: it can miss unsupported claims made with familiar words or reject valid paraphrases. These results **do not measure live OpenAI accuracy or real-world bias**.
 
-**Model-change sanity gate:** The reviewed model baseline is stored in `evals/approved_model.json` (`openai / gpt-4o-mini`). The evaluation compares the configured `OPENAI_MODEL` (default `gpt-4o-mini`) against that baseline and fails if they differ. Offline tests intentionally substitute a different model ID to prove this failure path. To reproduce: `python -m unittest discover -s evals -p 'test_*.py' -v`, then `python evals/run_evals.py`. When intentionally changing models, review real responses on the golden inputs first, update the approved baseline through a reviewed PR, and rerun CI. **This detects explicit configuration changes, not silent provider changes behind an unchanged model ID.** The latter require live-model evaluations outside CI and must not be claimed as covered by mocked tests.
+### 5. Pipeline: mocked unit tests and GitHub Actions Eval stage
 
-**Evaluation limitation:** This is a deterministic, mocked-response CI regression suite, **not** a measurement of real OpenAI model accuracy. Lexical grounding catches unfamiliar words but can miss incorrect claims made with familiar words and can flag valid paraphrases. Before changing models/providers, manually evaluate actual model outputs on the golden questions/records and update reviewed expectations. The sanity check intentionally changes the mocked provider output to add an unsupported power and verifies the detector fails it.
+GitHub Actions runs mocked AI unit tests and the **Eval — AI Features Quality and Safety** stage on pull requests to `main`. CI does not call the real OpenAI API. Failed thresholds cause a nonzero exit code and fail the Eval job. Evidence: [successful Test and Eval workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578) and [Eval job logs](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578/job/134868726505).
 
-**Fallback:** Summary repeats only stored description/powers; recommendations rank actual roster entries; Q&A returns a limited response based on stored character fields. Provider errors, invalid outputs, and timeouts do not expose secrets to visitors. The prompt-injection risk is that untrusted character text or visitor questions may try to override grounding instructions or request secrets. Prompt boundaries and response checks reduce risk; adversarial prompt-injection hardening and human review remain Sprint 4 work.
+### 6. Prompt-injection risk (Sprint 4 follow-up)
 
-**AI-use disclosure (Sprint 3):** ChatGPT assisted with the prompt versions, Python services, tests, evaluation runner, and GitHub Actions wiring. The team must review generated changes and confirm each member's actual contributions. An evaluation weakness was identified: the earlier runner created its own expected output from the fallback under test, and a golden fixture used `armor` where the source said `armored`. The fix stores separate expected outputs, corrects the mismatch, adds a changed-provider mutation check, and explicitly labels the offline evaluation's limitations. The team must confirm passing GitHub Actions results, review approvals, and live functionality before submission.
+Untrusted character descriptions or user questions could contain instructions to ignore the grounding rules, invent powers, or reveal secrets. The prompts use boundaries and output checks to reduce this risk, but **adversarial prompt-injection testing and hardening remain Sprint 4 work**. User-controlled text must never be treated as developer instructions, and secrets must never be included in prompt content.
 
-**Verified Sprint 3 CI evidence:** [Successful GitHub Actions workflow run](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578) includes successful **Test** and **Eval - AI Features Quality and Safety** jobs. [View the Eval job and logged results](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578/job/134868726505). The Eval stage executes mocked AI tests, the model-contract checks, and 15 golden cases. These offline tests validate the evaluation and fallback mechanisms; they **do not measure live OpenAI model accuracy**. Earlier evidence: [CI/CD run #100](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113) and [PR #101](https://github.com/satya1130/CSC325-Capstone/pull/101).
+### 7. Sanity check: what if the AI provider changes its model?
+
+The reviewed model configuration is `openai / gpt-4o-mini`, recorded in `evals/approved_model.json`. The suite compares the configured `OPENAI_MODEL` to that approved baseline and fails on an unexpected model-ID change. A test intentionally changes the configured model ID to verify this guard. Run:
+
+```bash
+python -m unittest discover -s evals -p 'test_*.py' -v
+python evals/run_evals.py
+```
+
+**Limitation:** A silent provider-side model change that retains the same model ID would **not** be caught by mocked CI. Detecting that requires a separately authorized live-model evaluation against reviewed golden inputs before accepting a new model.
+
+### 8. AI-use statement: assistance, mistakes, and corrections
+
+ChatGPT assisted with versioned prompts, Python services, tests, evaluation runner, GitHub Actions configuration, and README drafting. Human contributors are responsible for reviewing and verifying these changes. Two concrete AI-assisted evaluation problems were found and corrected: (1) the early runner derived expected outputs from the same fallback implementation being tested, so expectations were not independent; it was replaced with separately stored golden expectations, and (2) a fixture said `armor` where its source said `armored`; the fixture was corrected. The team also added an altered-provider-output check and a model-ID baseline test. Mocked evaluations are clearly labeled so they are not mistaken for live-model accuracy tests. See the [project-wide AI-use statement](#project-wide-ai-use-statement) for broader attribution, and confirm each team member's actual AI use before submitting.
 
 ### Sprint 3 submission links
 
@@ -662,7 +689,7 @@ This disclosure covers **the whole Marvel Clash project**, from Figma planning a
 
 **ChatGPT, SQLite-to-MongoDB migration and Render deployment ([PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88), November 2026):** Satya used ChatGPT for guided migration planning and troubleshooting. Assistance included MongoDB Atlas connection setup, configuring `django-mongodb-backend` and migrations, transferring the existing 49 character records, correcting image references, updating character API routes for MongoDB ObjectIds, diagnosing CI dependency/service/test failures, revising GitHub Actions, and troubleshooting the Render-to-Atlas TLS connection failure. ChatGPT also helped draft GitHub PR changes and update this README. These were **AI-assisted development and documentation tasks**, not a claim that AI independently verified the software.
 
-**Claude (Anthropic), Epic 3 accounts and character selection:** Claude (Claude Code) drafted the accounts app, selection endpoint, roster/profile changes, tests, and README sections for Epic 3 at a team member's request. The team member must review, run the tests, and confirm the work before merge; the disclosure does not claim the code was verified in CI or deployment.
+**Claude (Anthropic), Epic 3 accounts and character selection:** Claude (Claude Code) assisted with drafting the accounts app, selection endpoint, roster/profile changes, tests, and README sections for Epic 3 at a team member's request. **Kyle (`wilska1-stack`) authored [merged PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)**. The PR documents the code contribution, but not the exact prompts or all individual review steps; team members should confirm their actual AI use, review, and test evidence. Merge does not by itself prove live deployment.
 
 **Claude (Anthropic), earlier:** A group contributor was previously reported to have used Claude to assist with README drafting and a separate Figma prototype. This is a **team-reported contribution, not independently confirmed for a named teammate**. The contributor should confirm the specific assistance and review before submission; no additional Claude usage is assumed.
 
@@ -682,7 +709,7 @@ Satya worked in VS Code, configured MongoDB Atlas and Render settings, ran the m
 
 AI assistance also helped write and revise the README and documentation (see merged [PR #89](https://github.com/satya1130/CSC325-Capstone/pull/89) and [PR #90](https://github.com/satya1130/CSC325-Capstone/pull/90)). Screens, integration behavior, automated check outcomes, and deployment results are described as verified **only where they were actually tested or reported as working**. 
 
-The Figma prototype's Brawl flow is separate from the deployed Django roster: **a live AI combat engine, production member login, and persistent favorites have not been implemented**. Team members should confirm their individual AI-tool use and contributions before submission.
+The Figma prototype's Brawl flow is separate from the original deployed Django roster. **Member login and a deterministic playable Brawl engine are now in merged repository code** ([PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105), [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)); their live deployment still needs independent verification. **AI-generated battle actions and persistent favorites remain future work.** Team members should confirm their individual AI-tool use and contributions before submission.
 
 ---
 
