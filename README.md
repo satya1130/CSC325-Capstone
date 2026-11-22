@@ -244,7 +244,7 @@ The sections below follow the order in which the project evolved. The **current 
 | **November 7** | Feature completion and collaboration | Expanded search, category/power filters, profiles, 49 portraits, automated tests and reviewed story pull requests |
 | **November 8** | Six-story delivery evidence | Recorded the two selected epics, four-stage GitHub Actions pipeline, protected-branch review and team sanity checks |
 | **November 10** | MongoDB migration and deployment | Transferred the roster from SQLite to MongoDB Atlas, repaired images and ObjectId APIs, fixed CI/Render errors, and verified the deployed roster |
-| **After the migration** | Documentation and follow-up | Updated README, API contract, repository map, feature status and AI-use disclosures; further Brawl/account features remain planned |
+| **After the migration** | Documentation and follow-up | Updated README, API contract, repository map, feature status and AI-use disclosures; accounts and deterministic Brawl were subsequently merged (PRs #105 and #103); live verification remains separate |
 
 **Reading guide:** Start with the October prototype, then follow the dated implementation sections through November 10. Finish with the **Implementation reference**, **Project-wide AI-Use Statement**, and **Next Steps**. Each phase below references the central disclosure rather than presenting separate, inconsistent claims about AI usage. Historic submission requirements are retained for coursework and may no longer describe the latest assignment.
 
@@ -279,7 +279,7 @@ The single Marvel Clash system exchanges information with Aryan, MarvelFan, Gues
 
 Its external prototype inputs include curated team character content and temporary Figma interaction state.
 
-Planned connections to a grounded AI Brawl service and secure persistent accounts are explicitly marked **future**, not live.
+**October prototype snapshot:** These connections were future plans at the time. Accounts and deterministic Brawl were subsequently merged in PRs #105 and #103; AI-generated Brawl actions remain future work.
 
 ### Key UI Screens
 
@@ -325,7 +325,7 @@ A possible future deployment would use a web client, a character-data service an
 
 The planned AI-assisted battle service would generate varied explanations and battle sequences grounded in that data. Animation and replay capabilities could be added later.
 
-**The roster and read-only API are implemented on `main`; PR #88 subsequently replaced the SQLite data layer with MongoDB Atlas.** Accounts and battle simulation are still planned.
+**The roster and read-only API are implemented on `main`; PR #88 subsequently replaced the SQLite data layer with MongoDB Atlas.** Accounts and battle simulation were still planned at the time of this October proposal; they were subsequently implemented in merged PRs #105 and #103.
 
 ---
 
@@ -368,13 +368,13 @@ After implementation, add automated browser tests, persistence and authorization
 
 ## October 2026 — Planned Brawl AI features (not implemented)
 
-The main planned AI feature is a grounded **Brawl engine**.
+**October plan:** The main proposed AI feature was a grounded **Brawl engine**. Sprint 3 subsequently implemented character-focused OpenAI features and a separate deterministic (non-LLM) Brawl engine.
 
 The engine would receive selected fighters and reviewed character moves, abilities, strengths, weaknesses and counter relationships.
 
 It would generate varied battle actions, damage and health changes, turn events and understandable explanations.
 
-Older project-backlog ideas—AI character summaries, recommendations and character Q&A—can remain as **additional future features**, but are not the current priority or a working integration.
+**October planning snapshot:** AI character summaries, recommendations and Q&A were proposed as future ideas at that time. All three were subsequently implemented for Sprint 3 as Epic 4 (US-10 through US-12).
 
 Results would represent fan-made game simulations rather than official Marvel canon.
 
@@ -393,7 +393,7 @@ The previous prototype walkthrough's under-two-minute limit applies to that earl
 
 ## October 26, 2026 — Initial Django MVP and recovery history
 
-> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See [Current status](#-current-status--november-10-2026) at the top and the [November 10 migration journal](#november-10-2026--sqlite-to-mongodb-migration-and-render-deployment) further below for the active MongoDB Atlas system.
+> **Archive notice (November 10):** The following October notes describe the earlier SQLite-based implementation and review history. They are not current setup, deployment, or database instructions. See [Current status](#-implementation-status-november-10-deployment-baseline-updated-sprint-3-repository-status) at the top and the [November 10 migration journal](#november-10-2026--sqlite-to-mongodb-migration-and-render-deployment) further below for the active MongoDB Atlas system.
 
 The earlier sections preserve the project's original Figma planning and development roadmap. This **October recovery snapshot** records the working local Django MVP originally delivered in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and restored in [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60). The current application uses MongoDB Atlas, not this original SQLite configuration.
 
@@ -418,7 +418,7 @@ The earlier sections preserve the project's original Figma planning and developm
 
 ### Figma prototype versus coded application
 
-The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains prototype screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows; these are not live Django Brawl or account functionality. **Since this October snapshot, the roster has been deployed to Render using MongoDB Atlas**. The live website supports character browsing, name search, category/power filtering, profiles, images, and read-only API access. Real authentication, persistent favorites, a working comparison/Brawl engine, AI-generated battle outcomes and more comprehensive accessibility testing remain future work.
+The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains prototype screens illustrating comparison, favorites, two-fighter selection, scripted Brawls, results, and persona/account flows; these are not live Django Brawl or account functionality. **Since this October snapshot, the roster has been deployed to Render using MongoDB Atlas**. The live website supports character browsing, name search, category/power filtering, profiles, images, and read-only API access. **Later Sprint 3 update:** authenticated accounts and a deterministic playable Brawl were implemented in merged PRs #105 and #103, but not in this October MVP. Persistent favorites, AI-generated battle outcomes and broader accessibility verification remain future work.
 
 ### AI assistance on implementation
 
@@ -426,14 +426,14 @@ The [Figma design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) contains
 
 The [project-wide AI-Use Statement](#project-wide-ai-use-statement) **below** discloses ChatGPT's substantive assistance with the Django model, views/API routes, CSV importer, JavaScript integration, tests, setup, and Git workflow. Supporting implementation history is visible in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58) and [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60). Satya ran and manually verified the local website, then ran the eight automated tests successfully. AI-assisted code is still subject to teammate review; no functional AI Brawl engine has been implemented.
 
-For the formal 8–10 minute midpoint group presentation, demonstrate the live local Django roster separately from the interactive Figma Brawl prototype. **Current status:** [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60) restored Django on `main`; [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
+For the historical 8–10 minute midpoint group presentation, the live local Django roster was demonstrated separately from the interactive Figma Brawl prototype. **Status at that midpoint:** [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60) restored Django on `main`; [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated the running roster to MongoDB Atlas. The October descriptions above are historical.
 
 ### Historical restoration review notes — SQLite-era implementation superseded by PR #88
 
 - **Character IDs (before MongoDB):** The October implementation returned string-encoded SQLite integer keys. **Current API IDs are string-encoded MongoDB ObjectIds** after PR #88; see the live API route documentation above.
 - **Automated CI (current):** `.github/workflows/django-tests.yml` starts a temporary **MongoDB 7** service, runs Django checks and migrations, imports and checks 49 records, and executes the automated tests. The four-stage workflow also uses MongoDB for its Test job. Confirm green results on GitHub before merging.
 - **Review workflow:** PR #58 was merged before a submitted teammate review and subsequently reverted by PR #59. Request teammate review on the replacement PR *before* merging. A COMMENTED review is not the same as an APPROVED review.
-- **Document scope (historical):** Existing Figma and Brawl plans were unchanged at that stage. **Images and Render deployment have since been implemented**, but executable Brawl and production authentication have not.
+- **Document scope (historical):** Existing Figma and Brawl plans were unchanged at that stage. **Images and Render roster deployment were implemented after this snapshot**. Executable deterministic Brawl and authenticated accounts were later merged in PRs #103 and #105; production verification remains separate.
 
 
 ---
@@ -647,7 +647,7 @@ After the successful deployment, the following were manually confirmed on the de
 - Name search and the **Hero, Villain, Antihero** filter work.
 - The **powers and abilities** filter works.
 
-This is a **working, hosted character exploration application**, not merely a Figma mock-up. The team's Figma Compare/Brawl journey, AI-driven fighting, real member sign-in, and persistent user favorites should still be described as **prototype or future work**, unless separately implemented and verified.
+This is a **working, hosted character exploration application**, not merely a Figma mock-up. **At this November 10 deployment check**, the Figma Brawl journey, AI-driven fighting, member sign-in and persistent favorites were not verified live. **Later:** member sign-in and deterministic Brawl were merged in PRs #105 and #103, but live acceptance remains unverified; AI-generated Brawl actions and favorites are still future work.
 
 ### 8. Contribution and evidence
 
@@ -661,7 +661,7 @@ This is a **working, hosted character exploration application**, not merely a Fi
 
 ## Implementation reference — Django roster, API and local setup history
 
-The Django roster first appeared in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), was temporarily reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and was **restored to `main` by merged [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60)**. [PR #65](https://github.com/satya1130/CSC325-Capstone/pull/65) later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles and filtered read-only APIs backed by MongoDB Atlas following PR #88. The CSV source is committed; the legacy generated SQLite database is intentionally not committed. Brawl simulation, secure accounts, and persistent favorites remain future work. Character image mapping, profile portraits, and roster thumbnails were implemented in [PR #76](https://github.com/satya1130/CSC325-Capstone/pull/76) and [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78).
+The Django roster first appeared in [PR #58](https://github.com/satya1130/CSC325-Capstone/pull/58), was temporarily reverted by [PR #59](https://github.com/satya1130/CSC325-Capstone/pull/59), and was **restored to `main` by merged [PR #60](https://github.com/satya1130/CSC325-Capstone/pull/60)**. [PR #65](https://github.com/satya1130/CSC325-Capstone/pull/65) later added combined name, powers and optional category filtering with acceptance tests. The current Django app supports a 49-character roster, profiles and filtered read-only APIs backed by MongoDB Atlas following PR #88. The CSV source is committed; the legacy generated SQLite database is intentionally not committed. **At this earlier implementation stage**, Brawl simulation, secure accounts and persistent favorites were future work. Deterministic Brawl and accounts were later merged (PRs #103 and #105); persistent favorites remain future scope. Character image mapping, profile portraits, and roster thumbnails were implemented in [PR #76](https://github.com/satya1130/CSC325-Capstone/pull/76) and [PR #78](https://github.com/satya1130/CSC325-Capstone/pull/78).
 
 ### Historical local setup (SQLite era, not current instructions)
 
