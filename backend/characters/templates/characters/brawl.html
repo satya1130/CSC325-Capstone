@@ -27,10 +27,19 @@
     <button id="start-brawl" type="submit">Start Brawl</button>
   </form>
   <section id="battle" hidden aria-label="Brawl results">
-    <h2>Battle replay</h2>
+    <h2>Arcade battle</h2>
+    <div class="arcade-stage" id="arcade-stage" aria-label="Animated fighters">
+      <div class="stage-heading"><span>PLAYER 1</span><strong>VS</strong><span>PLAYER 2</span></div>
+      <div class="stage-fighters">
+        <div class="stage-fighter" id="stage-fighter-1"><div class="fighter-sprite" id="sprite-1"></div><strong id="stage-name-1"></strong></div>
+        <div class="stage-impact" id="stage-impact" aria-hidden="true"></div>
+        <div class="stage-fighter" id="stage-fighter-2"><div class="fighter-sprite" id="sprite-2"></div><strong id="stage-name-2"></strong></div>
+      </div>
+      <div id="stage-announcement" class="stage-announcement" aria-live="polite">READY?</div>
+    </div>
     <div id="health-bars" class="health-bars"></div>
     <p id="turn-status" role="status" aria-live="polite"></p>
-    <button id="next-turn" type="button">Next turn</button>
+    <div class="battle-controls"><button id="auto-play" type="button">Auto play</button><button id="next-turn" type="button">Next turn</button></div>
     <ol id="turn-log" aria-label="Battle turn history"></ol>
     <h2 id="winner" aria-live="polite"></h2>
     <button id="new-match" type="button" hidden>New matchup</button>
