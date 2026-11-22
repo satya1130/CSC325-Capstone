@@ -4,6 +4,18 @@ let roster = [];
 let match = null;
 let nextIndex = 0;
 let animating = false;
+let autoPlay = false;
+let autoTimer = null;
+function stopAutoPlay() {
+  autoPlay = false;
+  window.clearTimeout(autoTimer);
+  const button = byId("auto-play");
+  if (button) button.textContent = "Auto play";
+}
+function scheduleAutoTurn() {
+  if (!autoPlay || !match || animating || nextIndex >= match.turns.length) return;
+  autoTimer = window.setTimeout(advanceTurn, 450);
+}
 const imagePattern = /^characters\/images\/[a-z0-9-]+\.jpg$/;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 function errorMessage(message) {
@@ -110,6 +122,8 @@ function animateTurn(turn) {
       animating = false;
       next.disabled = false;
       if (nextIndex !== match.turns.length) byId("stage-announcement").textContent = "NEXT ROUND";
+      if (nextIndex === match.turns.length) stopAutoPlay();
+      else scheduleAutoTurn();
     }, reduceMotion.matches ? 0 : 700);
   }, duration);
 }
@@ -157,6 +171,7 @@ byId("brawl-form").addEventListener("submit", async event => {
     if (!Array.isArray(data.turns) || !data.winner || !Array.isArray(data.fighters) || data.fighters.length !== 2) {
       throw new Error("Invalid Brawl response.");
     }
+    stopAutoPlay();
     match = data;
     nextIndex = 0;
     byId("battle").hidden = false;
@@ -172,9 +187,20 @@ byId("brawl-form").addEventListener("submit", async event => {
   } catch (error) { errorMessage(error.message); }
   finally { button.disabled = false; }
 });
-byId("next-turn").addEventListener("click", advanceTurn);
+byId("next-turn").addEventListener("click", () => {
+  stopAutoPlay();
+  advanceTurn();
+});
+byId("auto-play").addEventListener("click", () => {
+  if (!match || nextIndex >= match.turns.length) return;
+  if (autoPlay) { stopAutoPlay(); return; }
+  autoPlay = true;
+  byId("auto-play").textContent = "Pause auto play";
+  scheduleAutoTurn();
+});
 byId("new-match").addEventListener("click", () => {
   if (animating) return;
+  stopAutoPlay();
   match = null;
   byId("battle").hidden = true;
   byId("fighter1").value = "";
