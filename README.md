@@ -3,11 +3,11 @@
 **Team:** Satya, Kyle, Aryan, and Salih  
 **Repository:** https://github.com/satya1130/CSC325-Capstone
 
-Marvel Clash is a fan-made **Django character-exploration web app** backed by MongoDB Atlas, alongside an interactive **Figma Brawl prototype**. The deployed app lets visitors browse 49 Marvel characters, view their images and profiles, and search or filter their powers and categories. The Figma design explores future fighter comparisons, selections, and illustrative Brawls; a live Brawl engine is not implemented.
+Marvel Clash is a fan-made **Django character-exploration web app** backed by MongoDB Atlas, alongside an interactive **Figma Brawl prototype**. The deployed app lets visitors browse 49 Marvel characters, view their images and profiles, and search or filter their powers and categories. The Figma design also documents early fighter comparisons and Brawl journeys. The Django repository now includes a deterministic playable Brawl arena (merged [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)) and authenticated accounts (merged [PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)); production deployment and end-to-end behavior must be verified separately.
 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
-## 📋 Current Sprint 3 backlog — 5 epics / 15 active user stories (November 13, 2026)
+## 📋 Sprint 3 scope and implementation — 5 epics / 15 active user stories (reviewed November 21, 2026)
 
 > **Authoritative current planning scope.** All 24 previously numbered user stories were classified: **15 active stories** in five epics (three each) and **9 preserved deferred features** renamed FUT-01–FUT-09. The older October epic tables and "Epic 6" extensions farther down this README and the related documents are **historical evidence**, not extra current requirements. No working code or database was changed during the backlog restructure.
 
@@ -15,11 +15,11 @@ Marvel Clash is a fan-made **Django character-exploration web app** backed by Mo
 | --- | --- | --- |
 | **1 — Character Search and Discovery** | [US-01 Search (#4)](https://github.com/satya1130/CSC325-Capstone/issues/4), [US-02 Browse (#5)](https://github.com/satya1130/CSC325-Capstone/issues/5), [US-03 Filter (#6)](https://github.com/satya1130/CSC325-Capstone/issues/6) | **3 Done** |
 | **2 — Character Profiles** | [US-04 Description (#7)](https://github.com/satya1130/CSC325-Capstone/issues/7), [US-05 Powers (#8)](https://github.com/satya1130/CSC325-Capstone/issues/8), [US-06 Images (#9)](https://github.com/satya1130/CSC325-Capstone/issues/9) | **3 Done** |
-| **3 — User Accounts and Character Selection** | [US-07 Member Login (#45)](https://github.com/satya1130/CSC325-Capstone/issues/45), [US-08 User Permissions (#46)](https://github.com/satya1130/CSC325-Capstone/issues/46), [US-09 Select Character (#10)](https://github.com/satya1130/CSC325-Capstone/issues/10) | **2 Ready, 1 Backlog** |
+| **3 — User Accounts and Character Selection** | [US-07 Member Login (#45)](https://github.com/satya1130/CSC325-Capstone/issues/45), [US-08 User Permissions (#46)](https://github.com/satya1130/CSC325-Capstone/issues/46), [US-09 Select Character (#10)](https://github.com/satya1130/CSC325-Capstone/issues/10) | **Implemented and merged** in [Kyle's PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105); deployment/acceptance verification separate |
 | **4 — OpenAI Features** | [US-10 AI Summary (#13)](https://github.com/satya1130/CSC325-Capstone/issues/13), [US-11 AI Recommendations (#14)](https://github.com/satya1130/CSC325-Capstone/issues/14), [US-12 AI Questions (#15)](https://github.com/satya1130/CSC325-Capstone/issues/15) | **3 implemented** (PRs #94–#99; Sprint 3 evaluation and model-change follow-ups in PRs #100–#101) |
-| **5 — Brawl Engine** | [US-13 Two Fighters (#19)](https://github.com/satya1130/CSC325-Capstone/issues/19), [US-14 Display Brawl (#20)](https://github.com/satya1130/CSC325-Capstone/issues/20), [US-15 Working Engine (#49)](https://github.com/satya1130/CSC325-Capstone/issues/49) | **1 Ready, 2 Backlog** |
+| **5 — Brawl Engine** | [US-13 Two Fighters (#19)](https://github.com/satya1130/CSC325-Capstone/issues/19), [US-14 Display Brawl (#20)](https://github.com/satya1130/CSC325-Capstone/issues/20), [US-15 Working Engine (#49)](https://github.com/satya1130/CSC325-Capstone/issues/49) | **Implemented and merged** in [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103); deployment/acceptance verification separate |
 
-**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. The three OpenAI character features (summary, recommendations, and Q&A) are implemented in Django and exposed through the character profile interface. **Secure signup/login, session and role enforcement, and playable Brawls are not implemented.** UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
+**Delivery baseline:** Figma prototypes and journeys are complete, and the 49-character Django roster with MongoDB Atlas is deployed through Render. The three OpenAI character features (summary, recommendations, and Q&A) are implemented in Django and exposed through the character profile interface. **Secure signup/login, session and role enforcement, and deterministic playable Brawls are implemented in merged repository code (PRs #105 and #103). Live deployment and acceptance tests remain separate verification steps.** UI-only Figma examples cannot count as deployed backend functionality. The active login story includes signup and logout, and the active Brawl features require a verifiable winner/result. Original Given/When/Then criteria and GitHub issue/PR history were preserved.
 
 ### Future Scope (nine deferred stories)
 
@@ -34,9 +34,9 @@ A related Favorites persistence task [#47](https://github.com/satya1130/CSC325-C
 
 
 
-## Epic 3 — User Accounts and Character Selection (PR pending review)
+## Epic 3 — User Accounts and Character Selection (merged PR #105)
 
-**Scope:** US-07 Member Login, US-08 User Permissions, US-09 Select a Character. Implemented on branch `feature/epic3-user-accounts-character-selection`. Status is **implemented, pending teammate review and a passing GitHub Actions run**; it is not marked Done.
+**Scope:** US-07 Member Login, US-08 User Permissions, US-09 Select a Character. **Kyle (`wilska1-stack`) authored [PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)** from branch `feature/epic3-user-accounts-character-selection`; the PR is **merged into `main`**. The features below describe merged repository code, not independently verified production deployment. Teammate approvals, CI evidence, and deployed acceptance behavior should be checked in the PR and current workflows.
 
 ### Authentication routes (US-07)
 
@@ -91,23 +91,23 @@ No new environment variables or secrets were added. Existing `MONGODB_URI`, `DJA
 
 Run with `cd backend && python manage.py test --verbosity 2` against a MongoDB instance (`MONGODB_URI`), as in CI. The JavaScript roster tests run with `node --test` in `backend/characters/static/characters`.
 
-**Verification status:** The offline AI unit tests and `BrawlEngineTests` passed locally. The database-backed Django tests need MongoDB and were **not run locally at the time of writing**; GitHub Actions is the first full run. Do not treat this section as verified until that CI run passes.
+**Verification note:** At the time the feature branch was prepared, offline AI unit tests and `BrawlEngineTests` passed locally; database-backed Django tests required MongoDB. Since then [PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105) has merged. Consult its checks and newer main-branch workflows for full verification rather than treating earlier branch testing as proof of live deployment.
 
 ### AI-use disclosure for Epic 3
 
-Claude (Anthropic) drafted the Epic 3 code, tests, templates, and this README section at the request of a team member, based on the GitHub user stories. The team member must review every change, run the tests against MongoDB, and confirm their own contributions before merge. No AI-generated text is claimed as independently verified.
+Claude (Anthropic) drafted the Epic 3 code, tests, templates, and this README section at the request of a team member, based on the GitHub user stories. Team members remain responsible for reviewing AI-assisted changes, verifying tests against MongoDB, and accurately confirming their own contributions. No AI-generated text is claimed as independently verified.
 
 ---
 
-## Epic 5 — Playable Brawl (PR pending review)
+## Epic 5 — Playable Brawl (merged PR #103)
 
 Epic 5 introduces a Django-backed Brawl Arena at `/brawl/` (authenticated members only), and a CSRF-protected `POST /api/brawl/start/` endpoint accepting `{"fighter1":"<ObjectId>","fighter2":"<ObjectId>"}`. Both IDs must refer to distinct existing characters. The response contains the fighter IDs/names, deterministic turn history, health after each attack, and the winner. The page lets members select two fighters, inspect the selection, step through turns, see health bars and winner, and start another matchup.
 
 **Game design:** `brawl_v1` starts both fighters at 100 HP, alternates attacks, and uses a SHA-256-derived deterministic damage value between 8 and 20 per turn, capped at remaining health. This is **team-designed fan-game balancing**, not a claim about Marvel powers, weaknesses, or canon. No OpenAI calls, persistent match records, or database migrations are required. The rules and numerical values need teammate review before final acceptance of supporting issue #50. Characters' sourced `powers` fields are not used as invented move definitions.
 
-**Epic 3 integration:** Both routes require Django authentication. Anonymous visitors are redirected to `/accounts/login/?next=/brawl/` (see [Epic 3](#epic-3--user-accounts-and-character-selection-pr-pending-review)). Login is implemented in the Epic 3 branch; this statement describes that branch, not a merged or deployed state.
+**Epic 3 integration:** Both routes require Django authentication. Anonymous visitors are redirected to `/accounts/login/?next=/brawl/` (see [Epic 3](#epic-3--user-accounts-and-character-selection-merged-pr-105)). Login is merged in [Kyle's PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105); Brawl is merged in [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103). Verify the deployed flow separately.
 
-**Testing:** Run `cd backend && python manage.py test characters.test_brawl` against the configured test MongoDB; then run the full suite. The PR is not considered verified until GitHub Actions and manual member flows pass. CSRF protection remains enabled; the UI sends the form token.
+**Testing:** Run `cd backend && python manage.py test characters.test_brawl` against the configured test MongoDB; then run the full suite. The merged PR is not proof of deployed behavior; check GitHub Actions and manual member flows before claiming live verification. CSRF protection remains enabled; the UI sends the form token.
 
 ## Sprint 3 — AI evaluation and evidence (November 17, 2026)
 
@@ -145,7 +145,7 @@ It checks 15 independently stored character fixtures in `evals/golden_set.json` 
 
 ---
 
-## 🚀 Current status — November 10, 2026
+## 🚀 Implementation status (November 10 deployment baseline; updated Sprint 3 repository status)
 
 **Marvel Clash is deployed on Render and uses MongoDB Atlas.** The team verified the live roster, character images, profiles, name search, Hero/Villain/Antihero filtering, and power/ability filtering after deployment.
 
@@ -158,7 +158,8 @@ It checks 15 independently stored character fixtures in `evals/golden_set.json` 
 | Automation | GitHub Actions Django tests plus Setup, Dependencies, Test, Eval, and conditional Deploy jobs |
 | Design | Figma interactive prototype for future fighter comparison/Brawl |
 | OpenAI features | US-10 character summaries, US-11 roster-grounded recommendations, US-12 character Q&A; safe fallback paths |
-| Not yet implemented | Live AI Brawl engine, secure member accounts, persistent favorites |
+| Merged since the November 10 baseline | Secure member accounts, permissions and character selection ([PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)); deterministic Brawl engine ([PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)). Production verification pending. |
+| Not yet implemented | AI-generated Brawl actions, persistent favorites and match history |
 
 **MongoDB migration:** [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated Django to MongoDB Atlas, introduced MongoDB-specific migrations and ObjectId character IDs, and updated CI to test against a separate temporary MongoDB service. The 49 character records were imported into Atlas, not committed to Git. The original SQLite database is legacy local development data, **not** the current application database.
 
@@ -185,7 +186,7 @@ Open `http://127.0.0.1:8000/` for the roster and `http://127.0.0.1:8000/api/char
 
 The Render service needs these environment variables: `MONGODB_URI`, `DJANGO_SECRET_KEY`, `DJANGO_DEBUG=false`, `DJANGO_ALLOWED_HOSTS`, and a suitable `PYTHON_VERSION`. The deployment runs Django migrations and the repeatable 49-character import before starting Gunicorn. Static images, CSS and JavaScript are served using Django staticfiles and WhiteNoise.
 
-The character roster is verified live; the three AI features are implemented in Django, but this historical November 10 deployment note is **not** proof of their current live deployment status. A playable Brawl and production authentication are not implemented. This section supersedes older SQLite/deployment descriptions kept below as project history.
+The character roster is verified live; the three AI features are implemented in Django, but this historical November 10 deployment note is **not** proof of their current live deployment status. Playable Brawl and authentication are implemented in merged repository code; whether both are running successfully on Render needs separate verification. This section supersedes older SQLite/deployment descriptions kept below as project history.
 
 ---
 
@@ -687,29 +688,29 @@ The Figma prototype's Brawl flow is separate from the deployed Django roster: **
 
 ## Project Backlog and Next Steps
 
-**Historical snapshot (November 10, 2026):** The implemented scope at that date was the MongoDB-backed 49-character roster, read-only APIs, portraits, search, and filters. **Sprint 3 later added the three OpenAI features; see the current status and Sprint 3 section at the top of this README.** PR #86's prefix-first smart-search change remains a separate proposal until merged; do not describe it as live functionality based solely on an open PR.
+**Historical snapshot (November 10, 2026):** The implemented scope at that date was the MongoDB-backed 49-character roster, read-only APIs, portraits, search, and filters. **Sprint 3 later added the three OpenAI features, authenticated accounts, and a deterministic Brawl engine in merged code; see the current scope and Sprint 3 section at the top of this README.** PR #86's prefix-first smart-search change remains a separate proposal until merged; do not describe it as live functionality based solely on an open PR.
 
 The original backlog and project details are in [Project_Description.md](Project_Description.md) and the GitHub Issues tab.
 
 The additional Brawl-focused user stories are documented in [BRAWL_BACKLOG.md](BRAWL_BACKLOG.md).
 
-Remaining implementation work includes secure authenticated accounts, team review of character data, persistent favorites and match history, combat logic, AI grounding and safeguards, accessibility testing and optional animations. The Django roster and APIs were restored by PR #60 and migrated to MongoDB Atlas in PR #88; the full fighter-selection/AI Brawl experience is still planned.
+Remaining work includes verifying production authentication and Brawl behavior, team review of character data, persistent favorites and match history, optional AI-generated battle actions, accessibility testing and animations. The Django roster and APIs were restored by PR #60 and migrated to MongoDB Atlas in PR #88; the deterministic fighter-selection/Brawl experience is merged; AI-generated battle actions remain future scope.
 
 ---
 
-## Sprint 3 Submission Checklist (current)
+## Sprint 3 Submission Checklist (reviewed November 21, 2026)
 
 - [x] Implement three epics: Character Search and Discovery, Character Profiles, and OpenAI Features (9 completed stories).
 - [x] Keep versioned AI prompts in `prompts/`, use environment-based API credentials, and document the required GitHub Actions secret name without exposing its value.
 - [x] Test safe fallbacks and use mocked AI calls in automated tests.
 - [x] Include at least 15 golden cases, expected outputs, hallucination/grounding and consistency checks, thresholds, and a one-command evaluation.
-- [x] Run the Eval stage on PRs to `main`: [verified green workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113) and [Eval job / latest verified results](https://github.com/satya1130/CSC325-Capstone/actions/runs/44227407113/job/134544002963).
+- [x] Run the Eval stage on PRs to `main`: [verified green workflow](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578) and [Eval job / submitted results](https://github.com/satya1130/CSC325-Capstone/actions/runs/44323488578/job/134868726505).
 - [x] Document prompt-injection risk, model-change sanity-check scope, and AI-use mistakes/corrections above.
 - [ ] Confirm repository secret `OPENAI_API_KEY` in GitHub settings (secret values are not readable from the README).
 - [ ] Confirm all required feature PRs are linked to Kanban issues and have teammate approval; [PR #101](https://github.com/satya1130/CSC325-Capstone/pull/101) is approved.
-- [ ] Provide the exact shareable Kanban board URL (the [Projects overview](https://github.com/satya1130/CSC325-Capstone/projects) is not necessarily the board view).
-- [ ] Record and provide an **unlisted YouTube video, maximum 3 minutes**, showing an AI feature, a simulated fallback, and the Eval run.
-- [ ] Submit the [repository/README](https://github.com/satya1130/CSC325-Capstone/blob/main/README.md), green workflow, evaluation log, board, and video links together.
+- [x] Provide the exact [Kanban board URL](https://github.com/users/satya1130/projects/2/views/1). **Still verify board visibility and Projects Status fields**; closed issues currently retain some `kanban:ready` and `kanban:backlog` labels.
+- [x] Provide the [YouTube demonstration link](https://youtu.be/NTRhqhuwvC8). **Still verify** Unlisted visibility, accessibility, runtime (maximum 3 minutes), and demonstration content.
+- [x] Collect the [repository/README](https://github.com/satya1130/CSC325-Capstone/blob/main/README.md), green workflow, evaluation log, board, and video links together in the [Sprint 3 submission table](#sprint-3-submission-links). Final submission and access checks remain the team's responsibility.
 
 ---
 
