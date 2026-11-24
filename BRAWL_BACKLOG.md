@@ -1,6 +1,6 @@
 # Marvel Clash — Active Brawl Backlog and Future Scope
 
-> **Current Sprint 3 requirement (November 13, 2026):** The overall product has **5 epics with 3 stories each (15 active stories total)**. The Brawl is **Epic 5** with **US-13, US-14, US-15**. Earlier "Epic 6" and "US-16+" identifiers are **historical only**, preserved below for context. The current official story IDs are the GitHub issue titles linked here.
+> **Current implementation note — November 24, 2026:** The product retains **5 epics × 3 stories (15 active stories)**. Epic 5 US-13/US-14/US-15 are now all closed with code merged in [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103) and arcade UI in [PR #110](https://github.com/satya1130/CSC325-Capstone/pull/110). The old Backlog/Ready classifications were a **November 13 planning snapshot**. The original story acceptance criteria and historical Epic 6/7 ideas below are preserved. [Current system guide](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md) · [Live Brawl](https://csc325-capstone.onrender.com/brawl/) (login required).
 
 ## Epic 5 — Brawl Engine (3 active stories)
 
@@ -12,7 +12,7 @@
 - **Given** I select the same character twice, **when** I confirm, **then** the website asks me to choose distinct fighters.
 - **Given** a fighter is missing, **when** I press Start, **then** I stay on selection and no false match is created.
 
-**Delivery:** [Issue #19](https://github.com/satya1130/CSC325-Capstone/issues/19) · Backlog · High priority · Figma mock-up exists; website implementation not yet complete.
+**Delivery update (Nov. 24):** [Issue #19](https://github.com/satya1130/CSC325-Capstone/issues/19) is **closed**; two different fighters can be selected through the Django Brawl page (PR #103). Earlier Figma-only Backlog status is superseded. Live manual verification remains a separate step.
 
 ### US-14 — Display Brawl (original US-17; issue #20)
 
@@ -22,7 +22,7 @@
 - **Given** a turn or attack happens, **when** the view updates, **then** move descriptions and health indicators remain readable.
 - **Given** the match ends, **when** the result appears, **then** the website identifies the winner and shows an understandable outcome.
 
-**Delivery:** [Issue #20](https://github.com/satya1130/CSC325-Capstone/issues/20) · Backlog · High priority · Figma scripted sequence exists, not live Django gameplay.
+**Delivery update (Nov. 24):** [Issue #20](https://github.com/satya1130/CSC325-Capstone/issues/20) is **closed**; the Django interface presents server-provided turns/health/winner with arcade portrait animations, auto-play and reduced-motion styles (PRs #103 and #110). Live manual verification remains a separate step.
 
 ### US-15 — Working Brawl Engine (original US-23; issue #49)
 
@@ -32,7 +32,7 @@
 - **Given** an attack, **when** health changes, **then** damage, health, and victory conditions remain within allowed bounds.
 - **Given** a finished match, **when** the engine determines a winner, **then** the result is repeatable for the same starting conditions and made available to US-14.
 
-**Delivery:** [Issue #49](https://github.com/satya1130/CSC325-Capstone/issues/49) · Ready · High priority · Not implemented in the deployed backend.
+**Delivery update (Nov. 24):** [Issue #49](https://github.com/satya1130/CSC325-Capstone/issues/49) is **closed**; the `brawl_v1` deterministic server engine and tests were merged in PR #103, unchanged by PR #110. Production health is not established by the PR alone.
 
 ### Supporting work (not additional user stories)
 
