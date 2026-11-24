@@ -1,6 +1,20 @@
 # Marvel Clash — GitHub Projects Kanban Placement Guide
 
-**Scope baseline: November 13, 2026.** This is a **verified mapping of the GitHub issue titles and labels**, not proof of actual GitHub Projects card/status placement. User story numbers are preserved as GitHub issue numbers; the new user-facing identifiers are US-01–US-15 and FUT-01–FUT-09.
+> **CURRENT ISSUE-STATUS CORRECTION — November 24, 2026:** All 15 required active user stories have **closed GitHub issues** following code merges. Six original roster/profile stories #4–#9 were already marked Done; nine more **#10, #13–#15, #19–#20, #45–#46, #49** should carry `kanban:done` instead of the November 13 Ready/Backlog labels. Keep all nine FUT stories and supporting task #47 in Future Scope. The table below remains a **November 13 historical baseline** and must not be used as the current Kanban status. The separate GitHub Projects V2 Status fields still need direct verification; label changes alone do not move project cards.
+>
+> **Merged evidence for the nine newly completed active stories:** Epic 3 [PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105) (#10/#45/#46); Epic 4 [PRs #94–#101](https://github.com/satya1130/CSC325-Capstone/pulls?q=is%3Apr+is%3Amerged) (#13–#15); Epic 5 [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103) and [PR #110](https://github.com/satya1130/CSC325-Capstone/pull/110) (#19/#20/#49). Source code has been merged; manual Render acceptance remains separate. [Current implementation guide](CURRENT_WEBSITE_STATUS_2026-11-24.md).
+
+| November 24 active-epic status | Active stories | GitHub issue state | Recommended issue label |
+| --- | --- | --- | --- |
+| Epic 1 Search/Discovery | #4, #5, #6 | All closed | `kanban:done` |
+| Epic 2 Character Profiles | #7, #8, #9 | All closed | `kanban:done` |
+| Epic 3 Accounts/Selection | #10, #45, #46 | All closed | `kanban:done` |
+| Epic 4 OpenAI Character Features | #13, #14, #15 | All closed | `kanban:done` |
+| Epic 5 Deterministic Brawl | #19, #20, #49 | All closed | `kanban:done` |
+
+---
+
+**HISTORICAL scope baseline: November 13, 2026.** This is a **verified mapping of the GitHub issue titles and labels**, not proof of actual GitHub Projects card/status placement. User story numbers are preserved as GitHub issue numbers; the new user-facing identifiers are US-01–US-15 and FUT-01–FUT-09.
 
 ## How to sync the GitHub Projects board
 
