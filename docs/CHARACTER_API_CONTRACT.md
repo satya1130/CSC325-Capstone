@@ -1,5 +1,8 @@
 # Marvel Clash — Character API Contract
 
+> **Scope note — November 24, 2026:** This document deliberately preserves the original **public read-only character list/detail API contract**. It is **not** a contract for all current Django endpoints. The deployed repository now also includes account routes, session character selection (`GET/POST/DELETE /api/selection/`), public AI character summary/recommendation/Q&A endpoints, and authenticated `POST /api/brawl/start/`. The original Figma roles are not production accounts; see [Current Website Status](CURRENT_WEBSITE_STATUS_2026-11-24.md) and [Django root URL configuration](../backend/marvelclash/urls.py) for the complete current route overview. The source-derived ObjectId payload descriptions and historical API notes below are preserved.
+
+
 **Original author:** Aryan Grewal · **Issue:** #43 · **Updated:** November 10, 2026
 
 > This document reflects the **MongoDB Atlas-backed Django application** on `main` after [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88). The first version described the earlier SQLite prototype restored in PR #60. The roster is now deployed on Render; the Figma Brawl is still a prototype.
