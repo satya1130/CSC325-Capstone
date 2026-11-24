@@ -3,7 +3,9 @@
 **Team:** Satya, Kyle, Aryan, and Salih  
 **Repository:** https://github.com/satya1130/CSC325-Capstone
 
-Marvel Clash is a fan-made **Django character-exploration web app** backed by MongoDB Atlas, alongside an interactive **Figma Brawl prototype**. The deployed app lets visitors browse 49 Marvel characters, view their images and profiles, and search or filter their powers and categories. The Figma design also documents early fighter comparisons and Brawl journeys. The Django repository now includes a deterministic playable Brawl arena (merged [PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)) and authenticated accounts (merged [PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)); production deployment and end-to-end behavior must be verified separately.
+> **Current website / team-provided URL (November 24, 2026):** [Open Marvel Clash](https://csc325-capstone.onrender.com/) · [Brawl Arena](https://csc325-capstone.onrender.com/brawl/) (member login required) · [Current implementation, user access levels, architecture, and historical Figma reconciliation](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md). Original prototype and earlier course materials are preserved below as dated historical evidence. Green CI and a deployment hook are not independent end-to-end production verification.
+
+Marvel Clash is a fan-made **Django character-discovery and Brawl website**, hosted on Render and using MongoDB Atlas. Guests can browse the 49-character roster, profiles, search/filters, and public AI features; under the **current implementation** guests can also make session-based character selections. Registered members (informally called **MarvelFans**) sign in with Django accounts and may use the two-fighter Brawl Arena. Authorized staff have protected administration access. The merged website includes three grounded AI character features, a deterministic Brawl engine ([PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)), real signup/login/permissions ([PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)), and 2D arcade Brawl presentation with auto-play ([PR #110](https://github.com/satya1130/CSC325-Capstone/pull/110)). The original multi-account Figma prototype is retained as design history, **not** a description of four live authentication roles. Compare and saved favorites remain Future Scope. The team's public site URL is known; live end-to-end behavior and actual OpenAI provider usage still require independent verification.
 
 **Product Goal:** Make Marvel characters easy to explore and turn character comparisons into entertaining, understandable Brawls.
 
@@ -183,10 +185,10 @@ ChatGPT assisted with versioned prompts, Python services, tests, evaluation runn
 | Database | MongoDB Atlas via the official `django-mongodb-backend` |
 | Hosting | Render web service with Gunicorn and WhiteNoise |
 | Automation | GitHub Actions Django tests plus Setup, Dependencies, Test, Eval, and conditional Deploy jobs |
-| Design | Figma interactive prototype for future fighter comparison/Brawl |
+| Design | Historical Figma user journeys, compare/favorites demonstrations, personas, and Brawl concept; Django implementation is separate |
 | OpenAI features | US-10 character summaries, US-11 roster-grounded recommendations, US-12 character Q&A; safe fallback paths |
-| Merged since the November 10 baseline | Secure member accounts, permissions and character selection ([PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)); deterministic Brawl engine ([PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)). Production verification pending. |
-| Not yet implemented | AI-generated Brawl actions, persistent favorites and match history |
+| Merged since the November 10 baseline | Accounts, permissions and session selection ([PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)); deterministic Brawl ([PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)); arcade portrait animations and auto-play ([PR #110](https://github.com/satya1130/CSC325-Capstone/pull/110)). Production end-to-end verification remains separate. |
+| Not yet implemented | Side-by-side character compare; AI-generated Brawl actions; character-specific fighting sprites; team battles; persistent favorites and match history |
 
 **MongoDB migration:** [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88) migrated Django to MongoDB Atlas, introduced MongoDB-specific migrations and ObjectId character IDs, and updated CI to test against a separate temporary MongoDB service. The 49 character records were imported into Atlas, not committed to Git. The original SQLite database is legacy local development data, **not** the current application database.
 
@@ -220,6 +222,8 @@ The character roster is verified live; the three AI features are implemented in 
 ## 🧭 Project Hub — Important Links
 
 > **Use this section first.** It is the front-door index for the current Marvel Clash project.
+>
+> **🌐 Official deployed website:** [Marvel Clash](https://csc325-capstone.onrender.com/) · [Brawl Arena](https://csc325-capstone.onrender.com/brawl/) · [Login](https://csc325-capstone.onrender.com/accounts/login/) · [Public API](https://csc325-capstone.onrender.com/api/characters/) · [Current roles, integration & release status](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md)
 >
 > **🎨 Design:** [Primary Figma](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) · [Personas](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-20) · [Context Diagram](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2) · [Primary UX Journey](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=42-66)
 >
