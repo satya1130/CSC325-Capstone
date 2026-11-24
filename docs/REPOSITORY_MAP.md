@@ -2,12 +2,14 @@
 
 > **Purpose:** one place to find the project’s current code, data, design, documentation, workflow, and assignment evidence.
 >
-> **Current snapshot:** November 10, 2026. The running character roster uses **MongoDB Atlas** and is deployed on **Render** following [PR #88](https://github.com/satya1130/CSC325-Capstone/pull/88). Historical planning documents are preserved for course evidence; use [README.md](../README.md) for setup and the full migration log.
+> **Current integration update — November 24, 2026:** [Official site](https://csc325-capstone.onrender.com/) · [Brawl Arena](https://csc325-capstone.onrender.com/brawl/) · [Current website architecture, roles and delivery reference](CURRENT_WEBSITE_STATUS_2026-11-24.md). Django now includes real accounts/permissions (PR #105), AI character features (PRs #94–#101), deterministic Brawl (PR #103), and arcade animations (PR #110), alongside MongoDB Atlas, Render and the 49-character roster. The original November 10 roster-only and earlier planning snapshots are preserved for course evidence. See [README](../README.md) for setup and migration history.
 
 ## Start Here
 
 | Area | Link | What it is |
 | --- | --- | --- |
+| Official website | [Marvel Clash](https://csc325-capstone.onrender.com/) · [Brawl](https://csc325-capstone.onrender.com/brawl/) | Public roster and member-only Brawl |
+| Current role/architecture/status reference | [Current Website Status](CURRENT_WEBSITE_STATUS_2026-11-24.md) | Real Guest/member/admin roles, current features and merged evidence |
 | Main project overview | [README.md](../README.md) | Current product goal, setup, architecture, prototype, testing, AI-use statement, and status |
 | Project description / backlog | [Project_Description.md](../Project_Description.md) | Original proposal, epics, user stories, and acceptance criteria |
 | Brawl backlog | [BRAWL_BACKLOG.md](../BRAWL_BACKLOG.md) | Brawl-focused user stories and future AI battle stories |
@@ -50,6 +52,18 @@ The committed source of truth for the current 49-character import is [`backend/c
 - CSV source: [`backend/characters/data/marvel_characters.csv`](../backend/characters/data/marvel_characters.csv)
 - Import command: [`backend/characters/management/commands/import_characters.py`](../backend/characters/management/commands/import_characters.py)
 
+### Account, Brawl and AI implementation (merged)
+
+| System | Source / public route | Behavior |
+| --- | --- | --- |
+| Accounts app | [`backend/accounts/`](../backend/accounts/) · [Login](https://csc325-capstone.onrender.com/accounts/login/) | Django registration, login/logout, session/authenticated state and staff guard (PR #105) |
+| Staff Control Room | [`admin_control.html`](../backend/accounts/templates/accounts/admin_control.html) · [Route](https://csc325-capstone.onrender.com/accounts/admin-control/) | Staff-protected placeholder linking to Django admin; not Figma hidden-logo login |
+| Session selection | [`selection_views.py`](../backend/characters/selection_views.py) | Guest **and** member selection through `/api/selection/`; not stored as a persistent favorite |
+| Deterministic engine | [`brawl.py`](../backend/characters/brawl.py) · [`brawl_views.py`](../backend/characters/brawl_views.py) | Two distinct character ObjectIds, authenticated Brawl, deterministic turns/HP/winner (PR #103) |
+| Arcade Brawl frontend | [`brawl.html`](../backend/characters/templates/characters/brawl.html) · [`brawl.js`](../backend/characters/static/characters/brawl.js) · [`brawl.css`](../backend/characters/static/characters/brawl.css) | Portrait motion, hit/damage effects, auto-play/pause (PR #110) |
+| AI features | [`ai_summary.py`](../backend/characters/ai_summary.py) · [`ai_recommendations.py`](../backend/characters/ai_recommendations.py) · [`ai_questions.py`](../backend/characters/ai_questions.py) | Versioned prompts, OpenAI/fallback paths; mocked evaluation in CI |
+| Prompt/evaluation evidence | [`prompts/`](../prompts/) · [`evals/`](../evals/) | Prompt versions, 15-case offline golden evaluation, model configuration check |
+
 ## Frontend / Roster
 
 | Area | Link |
@@ -57,7 +71,7 @@ The committed source of truth for the current 49-character import is [`backend/c
 | Django roster template | [`index.html`](../backend/characters/templates/characters/index.html) |
 | Django roster JavaScript | [`roster.js`](../backend/characters/static/characters/roster.js) |
 | Django roster CSS | [`style.css`](../backend/characters/static/characters/style.css) |
-| Earlier standalone roster | [`frontend/roster/`](../frontend/roster/) |
+| Earlier standalone roster **(historical sample, not the live frontend)** | [`frontend/roster/`](../frontend/roster/) |
 
 ## CI/CD and GitHub Workflow
 
