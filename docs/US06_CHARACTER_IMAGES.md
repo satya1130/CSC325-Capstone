@@ -1,5 +1,9 @@
 # US-06 — Character portrait assets
 
+> **Historical asset preparation checklist — implementation update November 24, 2026:** All 49 JPG assets now exist in the `main` repository's Django static image directory, and the importer supplies their image references. The “asset upload required” steps below describe the original US-06 preparation stage; they are not outstanding upload instructions. Artwork rights and data-quality review are still open follow-ups.
+
+> **Live product:** [Marvel Clash](https://csc325-capstone.onrender.com/) · [Current roles, completed features, merged PRs and integration reference](CURRENT_WEBSITE_STATUS_2026-11-24.md).
+
 The team provided a 50-page PDF exported from Kyle's slide deck. Pages 2–50 each correspond to one of the 49 characters in `backend/characters/data/marvel_characters.csv`. A primary embedded image from each character page was extracted and resized to a JPEG. Where a page contains multiple images, the first embedded picture was selected.
 
 **Asset upload required before merging:** Put the 49 JPEGs into:
