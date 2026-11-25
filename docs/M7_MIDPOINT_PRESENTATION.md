@@ -1,5 +1,9 @@
 # CSC325 Marvel Clash — Module 7 Midpoint Presentation Package
 
+> **Current implementation cross-reference — November 24, 2026:** This file is preserved as dated assignment, review, or planning evidence. Do not interpret old SQLite, missing-login, future-Brawl, or missing-team-PR statements below as the latest implementation or team status.
+
+> **Live product:** [Marvel Clash](https://csc325-capstone.onrender.com/) · [Current roles, completed features, merged PRs and integration reference](CURRENT_WEBSITE_STATUS_2026-11-24.md).
+
 > **HISTORICAL OCTOBER 27 PRESENTATION PLAN.** The scripts, SQLite architecture references, open-PR comments, and pending milestones below belong to the original midpoint snapshot. They do **not** describe the current Django/MongoDB Atlas deployment. For current features and database architecture, see the [main README](../README.md), [updated feature status](M7_FEATURE_STATUS.md), and [API contract](CHARACTER_API_CONTRACT.md). Keep this file as presentation-planning evidence, not a current setup guide.
 
 > **Status:** READY TO RECORD, NOT SUBMITTED. Current code and records verified on October 27, 2026 UTC. This is preparation material, not proof of a submitted video or of teammates' individual participation.

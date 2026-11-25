@@ -1,5 +1,13 @@
 # ⚔️ MARVEL CLASH — PROJECT HQ
 
+> **CURRENT PROJECT OVERVIEW — November 24, 2026 (supersedes historical status, without deleting it).** [Live website](https://csc325-capstone.onrender.com/) · [Brawl](https://csc325-capstone.onrender.com/brawl/) · [Current integrated architecture & role matrix](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md) · [README](README.md) · [GitHub Kanban](https://github.com/users/satya1130/projects/2/views/1).
+>
+> **Implemented on `main`:** 49-character MongoDB Atlas roster and images; search/filters; public AI character summary, recommendation and Q&A interfaces (OpenAI path plus fallback); real Django signup/login/logout and staff permissions (PR #105); guest/member session selection (PR #105); authenticated deterministic Brawl (PR #103); arcade portrait animation/Auto play (PR #110). The original Figma example identities **Aryan, MarvelFan, Guest, Salih/Admin** are historical UX examples; production has **Guest, registered member (“MarvelFan”), and authorized Staff/Admin** access levels. **Guest selection is currently permitted; comparison and saved favorites are still Future Scope.** Production end-to-end/provider verification remains to be completed.
+>
+> **Historical material below:** The November 5/October 23 planning diagram, SQLite language, Backlog descriptions, and original no-real-login statements are preserved for course traceability and **must not be read as current implementation status**.
+
+
+
 [![Project status](https://img.shields.io/badge/STATUS-ACTIVE%20DEVELOPMENT-ef4444?style=for-the-badge)](https://github.com/satya1130/CSC325-Capstone)
 [![Figma](https://img.shields.io/badge/FIGMA-INTERACTIVE%20PROTOTYPE-a259ff?style=for-the-badge)](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15)
 [![Character roster](https://img.shields.io/badge/CHARACTERS-49-22c55e?style=for-the-badge)](backend/characters/data/marvel_characters.csv)
@@ -18,6 +26,8 @@
 
 | Area | Current link |
 | --- | --- |
+| Official live website | [Open Marvel Clash](https://csc325-capstone.onrender.com/) · [Brawl Arena](https://csc325-capstone.onrender.com/brawl/) |
+| Current roles / systems / status | [Current Website Status](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md) |
 | Repository map | [docs/REPOSITORY_MAP.md](docs/REPOSITORY_MAP.md) |
 | Primary Figma | [Marvel Clash design](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15) |
 | Context diagram | [Updated system context](https://www.figma.com/design/Ofvhw6kOEZxiq2Vz9ECJ15?node-id=324-2) |

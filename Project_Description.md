@@ -1,6 +1,6 @@
 # Marvel Character Selection Project — Marvel Clash
 
-> **Current direction (November 13, 2026):** Deployed Django/MongoDB Atlas roster on Render; Figma Brawl prototype complete. For the authoritative 5-epic / 15-story active Sprint 3 scope and deferred stories, see the section immediately below. Older plans farther down are archived.
+> **Current implementation update (November 24, 2026):** The original November 13 scope remains **five epics / fifteen active stories** with nine deferred FUT stories. Since that planning baseline, the team merged actual account registration/login/roles, session character selection, three AI character tools, deterministic playable Brawls, and the arcade visual replay. The official public website is https://csc325-capstone.onrender.com/. See [Current Website Status](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md) for current permissions, endpoints, architecture and linked PR evidence. Older Figma examples, requirements and snapshots farther down remain **historical**, not four live account roles.
 
 ## CURRENT REQUIREMENTS — Sprint 3 active product scope (November 13, 2026)
 
@@ -8,7 +8,16 @@
 
 ### Current product and technical status
 
-Marvel Clash is a fan-made Marvel character discovery and Brawl website. The **deployed** Django application uses **MongoDB Atlas** as its database and **Render** for hosting, with HTML/CSS/JavaScript and a read-only JSON character API. The **completed Figma prototype** demonstrates the broader experience. The site currently serves the 49-character roster, name search, category/power filters, images, profiles, and descriptions; authentic login, character selection/compare, OpenAI character tools, and playable Brawls are not yet implemented in the deployed site. **Figma-only interaction does not equal a working backend feature.**
+Marvel Clash is a fan-made Marvel character discovery and Brawl website. The **deployed** Django application uses **MongoDB Atlas** as its database and **Render** for hosting, with HTML/CSS/JavaScript and a read-only JSON character API. The **completed Figma prototype** demonstrates the broader experience. The current merged Django code serves the 49-character roster, name search, category/power filters, images, profiles and descriptions; it also contains **real signup/login/logout and staff permissions** ([PR #105](https://github.com/satya1130/CSC325-Capstone/pull/105)), **session-scoped character selection**, **three AI character features** (PRs #94–#101), a **deterministic playable Brawl** ([PR #103](https://github.com/satya1130/CSC325-Capstone/pull/103)) and **2D arcade replay** ([PR #110](https://github.com/satya1130/CSC325-Capstone/pull/110)). Side-by-side comparison and persistent favorites are still deferred. The team supplied the Render URL; live production acceptance verification remains separate. **Figma-only interaction does not equal a working backend feature.**
+
+### Current user experience and Figma-to-production transition (November 24, 2026)
+
+- **Guest:** May explore the public roster, profiles, character information, filters and AI character features. **Current code also permits guest character selection** in the Django session. Guests cannot enter the Brawl Arena.
+- **Registered member / “MarvelFan”:** Any signed-in Django user (not a hardcoded or shared MarvelFan account). Registers with username, email and password, logs in using a persistent authenticated session, and can play the two-character Brawl with damage, turns, winner and arcade animations. The old Figma “Aryan” example is a normal member persona, not a separate role.
+- **Authorized staff/admin:** An existing signed-in user with `is_staff` can reach the restricted Admin Control Room; Django admin itself requires the relevant model permissions or superuser privileges. The hidden-logo Figma shortcut is not implemented, and there is no production Figma demo PIN or shared admin password.
+- **Future decisions:** If the team intends character selection to require login, current code needs a separately approved behavior change. Side-by-side comparison is FUT-01 and saved favorites are FUT-02; do not imply either is live.
+
+The original four demo identities (Guest, MarvelFan, Aryan, Salih/Admin) remain documented later in this file as **Figma-era illustrations**, not as the current website's authentication architecture. See [the current role and architecture reference](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md).
 
 ### Five epics and fifteen active user stories
 
@@ -16,11 +25,11 @@ Marvel Clash is a fan-made Marvel character discovery and Brawl website. The **d
 | --- | --- | --- |
 | **Epic 1 — Character Search and Discovery** | US-01 Search Characters ([#4](https://github.com/satya1130/CSC325-Capstone/issues/4)); US-02 Browse Characters ([#5](https://github.com/satya1130/CSC325-Capstone/issues/5)); US-03 Filter Characters ([#6](https://github.com/satya1130/CSC325-Capstone/issues/6)) | Done (3/3) |
 | **Epic 2 — Character Profiles** | US-04 Character Description ([#7](https://github.com/satya1130/CSC325-Capstone/issues/7)); US-05 Powers and Abilities ([#8](https://github.com/satya1130/CSC325-Capstone/issues/8)); US-06 Character Images ([#9](https://github.com/satya1130/CSC325-Capstone/issues/9)) | Done (3/3) |
-| **Epic 3 — User Accounts and Character Selection** | US-07 Member Login (#45; formerly US-21); US-08 User Permissions (#46; formerly US-22); US-09 Select a Character (#10; formerly US-07) | Ready / Backlog |
-| **Epic 4 — OpenAI Features** | US-10 AI Character Summary ([#13](https://github.com/satya1130/CSC325-Capstone/issues/13)); US-11 AI Character Recommendations ([#14](https://github.com/satya1130/CSC325-Capstone/issues/14)); US-12 Ask AI About a Character ([#15](https://github.com/satya1130/CSC325-Capstone/issues/15)) | Backlog |
-| **Epic 5 — Brawl Engine** | US-13 Choose Two Fighters (#19; formerly US-16); US-14 Display Brawl (#20; formerly US-17); US-15 Working Brawl Engine (#49; formerly US-23) | Ready / Backlog |
+| **Epic 3 — User Accounts and Character Selection** | US-07 Member Login (#45; formerly US-21); US-08 User Permissions (#46; formerly US-22); US-09 Select a Character (#10; formerly US-07) | Implemented in PR #105; live acceptance to verify |
+| **Epic 4 — OpenAI Features** | US-10 AI Character Summary ([#13](https://github.com/satya1130/CSC325-Capstone/issues/13)); US-11 AI Character Recommendations ([#14](https://github.com/satya1130/CSC325-Capstone/issues/14)); US-12 Ask AI About a Character ([#15](https://github.com/satya1130/CSC325-Capstone/issues/15)) | Implemented in PRs #94–#101; live OpenAI calls not independently verified |
+| **Epic 5 — Brawl Engine** | US-13 Choose Two Fighters (#19; formerly US-16); US-14 Display Brawl (#20; formerly US-17); US-15 Working Brawl Engine (#49; formerly US-23) | Implemented in PRs #103 and #110; live acceptance to verify |
 
-**Status rules:** The six completed roster/profile stories (#4–#9) are **Done**. Login (#45), server-side permissions (#46), and deterministic working Brawl engine (#49) are **Ready** for development. The remaining six active stories are in **Backlog** until work actually starts. No stories should be moved to In Progress/Review without corresponding work and evidence. Technical tasks may have their own active workflow but **do not count as user stories**.
+**Status update (November 24):** All fifteen active GitHub user stories are closed after the relevant feature merges; issue labels and the separate Projects board require synchronization against those merged artifacts. The original November 13 Ready/Backlog classifications are preserved in the historical tracking guide. Supporting tasks do **not** count as additional user stories.
 
 ### Acceptance and implementation notes
 
@@ -28,7 +37,7 @@ Marvel Clash is a fan-made Marvel character discovery and Brawl website. The **d
 - **US-07 Member Login** includes secure signup/registration, member login, logout, and persistent authenticated session handling; the UI-only Figma sign-in mock-up is not authentication.
 - **US-08 User Permissions** enforces guest/member/admin access **on the server**, not merely through hidden UI elements.
 - **US-15 Working Brawl Engine** should use verifiable deterministic combat rules, valid character move inputs, and bounded turn/health transitions. **US-14** displays a winner and readable outcome; optional AI narration is separate future scope.
-- **Epic 4 OpenAI Features** remains an active three-story epic as requested by the team, but all three stories are **unimplemented**, low-priority backlog items. API keys, model output validation, and source limitations must be considered when the team starts work.
+- **Epic 4 OpenAI Features:** All three character features are implemented with grounded data and offline fallback. CI Eval uses mocks and does not establish production OpenAI accuracy or API-key configuration. AI-generated *battle actions* remain Future Scope.
 - This backlog change is **planning and documentation only**; it does not modify Django code, MongoDB data, CI, frontend, Figma, or Render configuration.
 
 ### Future Scope — deferred, not deleted

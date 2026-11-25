@@ -1,5 +1,8 @@
 # Marvel Clash — Midpoint Scrum and Kanban Plan
 
+> **HISTORICAL MIDPOINT WORK PLAN (October 2026), NOT THE CURRENT SPRINT STATUS.** The original dates, owners, SQLite assumptions, prior user-story IDs and future-development estimates below are preserved for process evidence. **Current as of November 24:** the product is deployed via [Render](https://csc325-capstone.onrender.com/) with MongoDB Atlas; Epic 3 real accounts/permissions/selection, Epic 4 three AI character features, and Epic 5 deterministic Brawl with arcade animations are merged. The current product uses 5 epics/15 active stories (all closed), plus 9 deferred FUT stories. See [current site/roles/architecture](docs/CURRENT_WEBSITE_STATUS_2026-11-24.md), [README](README.md), and [GitHub Projects](https://github.com/users/satya1130/projects/2/views/1). Do not present this October schedule as uncompleted November features.
+
+
 > **Historical October 22 planning snapshot, not today's implementation status.** Current verified Django code and CI are on `main` via PR #60 (Oct 27 UTC). See [current Kanban/team matrix](docs/M7_TEAM_KANBAN_EVIDENCE.md) and [midpoint run of show](docs/M7_MIDPOINT_PRESENTATION.md).
 
 ## Product goal

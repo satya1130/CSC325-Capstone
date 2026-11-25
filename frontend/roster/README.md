@@ -1,5 +1,9 @@
 # Marvel Clash: Working Character Roster Preview (Satya's Feature)
 
+> **Historical standalone prototype (not the current website).** This 12-record browser-only sample remains for sprint evidence. The working 49-character frontend runs from the Django `backend/characters/` templates and static files on Render with MongoDB Atlas, login, AI panels, and Brawl; this preview does not connect to those services.
+
+> **Live product:** [Marvel Clash](https://csc325-capstone.onrender.com/) · [Current roles, completed features, merged PRs and integration reference](../../docs/CURRENT_WEBSITE_STATUS_2026-11-24.md).
+
 **User stories:** US-01 Search for a Marvel Character, US-02 Browse Marvel Characters, US-04 View Character Description, US-05 View Powers and Abilities.
 
 This independent, working frontend preview demonstrates searchable character cards and an accessible profile dialog. It is **not a Django integration** and does **not** implement all 49 characters yet.

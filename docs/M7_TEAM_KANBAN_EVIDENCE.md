@@ -1,5 +1,9 @@
 # CSC325 Midpoint — Scrum/Kanban, ownership and GitHub evidence
 
+> **Current implementation cross-reference — November 24, 2026:** This file is preserved as dated assignment, review, or planning evidence. Do not interpret old SQLite, missing-login, future-Brawl, or missing-team-PR statements below as the latest implementation or team status.
+
+> **Live product:** [Marvel Clash](https://csc325-capstone.onrender.com/) · [Current roles, completed features, merged PRs and integration reference](CURRENT_WEBSITE_STATUS_2026-11-24.md).
+
 > **HISTORICAL MIDPOINT SNAPSHOT (October 2026).** Some pending-review statements, proposed assignments, and missing-Kyle-PR notes below are no longer current. Kyle later merged [PR #62](https://github.com/satya1130/CSC325-Capstone/pull/62) and contributed the [sanity check PR #81](https://github.com/satya1130/CSC325-Capstone/pull/81). The current project uses MongoDB Atlas and is deployed on Render; see [README](../README.md), [updated feature status](M7_FEATURE_STATUS.md) and [current PRs](https://github.com/satya1130/CSC325-Capstone/pulls). This document is retained as dated process evidence.
 
 > **Accuracy rule:** Actual GitHub issues, pull requests and CI are evidence. Proposed assignments below must be confirmed by teammates. GitHub `kanban:*` issue labels are not the same as a live GitHub Projects board. This document is a board-setup checklist and presentation reference, not proof that Projects cards have been updated.
