@@ -32,6 +32,11 @@ class Command(BaseCommand):
 
                 image_ref = f"characters/images/{slugify(name)}.jpg"
                 image_path = csv_path.parents[1] / "static" / image_ref
+                if not image_path.is_file():
+                    svg_ref = f"characters/images/{slugify(name)}.svg"
+                    svg_path = csv_path.parents[1] / "static" / svg_ref
+                    if svg_path.is_file():
+                        image_ref, image_path = svg_ref, svg_path
 
                 Character.objects.update_or_create(
                     name=name,
